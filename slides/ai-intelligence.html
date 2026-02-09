@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¿Es la IA Realmente Inteligente? - Trifolia</title>
+
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="¿Son los LLMs realmente inteligentes? Una pregunta filosófica fascinante con implicaciones prácticas para abogados.">
+    <meta property="og:title" content="¿Es la IA Realmente Inteligente?">
+    <meta property="og:description" content="El debate sobre la inteligencia de los LLMs y lo que significa para el trabajo legal.">
+    <meta property="og:type" content="article">
+
+    <!-- License -->
+    <link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+    <meta name="author" content="Trifolia (trifolia.cl)">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="../images/logo.svg">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Slides Base CSS -->
+    <link href="../css/slides-base.css" rel="stylesheet">
+
+    <style>
+        /* Override for this slide */
+        :root {
+            --viz-max-width: 1100px;
+            --viz-padding: 32px 20px;
+        }
+
+        .viz-header {
+            margin-bottom: 24px;
+        }
+
+        .viz-title {
+            font-size: clamp(22px, 3.5vw, 32px);
+            margin: 0 0 8px 0;
+        }
+
+        .viz-description {
+            font-size: 15px;
+            max-width: 700px;
+        }
+
+        /* Two column layout */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 28px;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        /* Left column - The debate */
+        .debate-section {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .tweet-container {
+            background: rgba(30, 40, 55, 0.6);
+            border: 1px solid rgba(60, 120, 253, 0.2);
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .tweet-context {
+            font-size: 13px;
+            color: rgba(248, 249, 250, 0.7);
+            margin-top: 12px;
+            line-height: 1.5;
+        }
+
+        .insight-card {
+            background: rgba(114, 0, 252, 0.08);
+            border: 1px solid rgba(114, 0, 252, 0.25);
+            border-radius: 8px;
+            padding: 14px 16px;
+        }
+
+        .insight-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--paper-white);
+            margin: 0 0 8px 0;
+        }
+
+        .insight-text {
+            font-size: 13px;
+            color: rgba(248, 249, 250, 0.85);
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        .insight-examples {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+            flex-wrap: wrap;
+        }
+
+        .example-tag {
+            background: rgba(114, 0, 252, 0.15);
+            border: 1px solid rgba(114, 0, 252, 0.3);
+            border-radius: 4px;
+            padding: 4px 10px;
+            font-size: 12px;
+            color: rgba(248, 249, 250, 0.9);
+        }
+
+        /* Right column - What matters */
+        .importance-section {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .key-message-card {
+            background: rgba(60, 120, 253, 0.08);
+            border: 1px solid rgba(60, 120, 253, 0.25);
+            border-radius: 8px;
+            padding: 18px 20px;
+        }
+
+        .key-message-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--paper-white);
+            margin: 0 0 12px 0;
+        }
+
+        .key-points {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .key-points li {
+            font-size: 14px;
+            color: rgba(248, 249, 250, 0.85);
+            line-height: 1.5;
+            padding-left: 20px;
+            position: relative;
+            margin-bottom: 8px;
+        }
+
+        .key-points li:last-child {
+            margin-bottom: 0;
+        }
+
+        .key-points li::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 8px;
+            width: 8px;
+            height: 8px;
+            background: var(--clover-purple);
+            border-radius: 50%;
+        }
+
+        .key-points li strong {
+            color: var(--paper-white);
+            font-weight: 500;
+        }
+
+        .difference-highlight {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(16, 185, 129, 0.05));
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 8px;
+            padding: 14px 16px;
+        }
+
+        .difference-highlight::before {
+            content: "";
+            display: none;
+        }
+
+        .difference-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--success-green);
+            margin: 0 0 6px 0;
+        }
+
+        .difference-text {
+            font-size: 13px;
+            color: rgba(248, 249, 250, 0.85);
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        /* Reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            .content-grid {
+                animation: none;
+            }
+        }
+
+        /* Responsive - Tablet */
+        @media (max-width: 1023px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+        }
+
+        /* Responsive - Mobile */
+        @media (max-width: 767.98px) {
+            :root {
+                --viz-padding: 20px 16px;
+            }
+
+            .content-grid {
+                gap: 16px;
+            }
+
+            .tweet-container {
+                padding: 12px;
+            }
+
+            .key-message-card {
+                padding: 14px 16px;
+            }
+
+            .key-points li {
+                font-size: 13px;
+            }
+
+            .insight-card,
+            .difference-highlight {
+                padding: 12px 14px;
+            }
+        }
+
+        /* Large screen optimization */
+        @media (min-width: 1400px) {
+            .viz-title {
+                font-size: 36px;
+            }
+
+            .key-message-card {
+                padding: 20px 24px;
+            }
+
+            .key-points li {
+                font-size: 15px;
+            }
+        }
+
+        /* Fullscreen presentation mode adjustments */
+        body.fullscreen-mode .viz-header {
+            margin-bottom: 20px;
+        }
+
+        body.fullscreen-mode .content-grid {
+            gap: 24px;
+        }
+
+        body.fullscreen-mode .tweet-container {
+            padding: 14px;
+        }
+
+        body.fullscreen-mode .tweet-context {
+            font-size: 13px;
+            margin-top: 10px;
+        }
+
+        body.fullscreen-mode .insight-card,
+        body.fullscreen-mode .difference-highlight {
+            padding: 14px 18px;
+        }
+
+        body.fullscreen-mode .insight-title,
+        body.fullscreen-mode .difference-title {
+            font-size: 15px;
+            margin-bottom: 6px;
+        }
+
+        body.fullscreen-mode .insight-text,
+        body.fullscreen-mode .difference-text {
+            font-size: 14px;
+        }
+
+        body.fullscreen-mode .example-tag {
+            font-size: 13px;
+            padding: 5px 12px;
+        }
+
+        body.fullscreen-mode .key-message-card {
+            padding: 18px 22px;
+        }
+
+        body.fullscreen-mode .key-message-title {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        body.fullscreen-mode .key-points li {
+            font-size: 14px;
+            margin-bottom: 8px;
+            padding-left: 18px;
+        }
+
+        body.fullscreen-mode .key-points li::before {
+            width: 7px;
+            height: 7px;
+            top: 7px;
+        }
+    </style>
+</head>
+<body>
+    <div class="page-container">
+        <!-- Main Content -->
+        <main class="viz-container">
+            <div class="corner-top-left"></div>
+            <div class="corner-bottom-right"></div>
+
+            <div class="viz-content">
+                <!-- Header -->
+                <header class="viz-header">
+                    <h1 class="viz-title">
+                        ¿Es la IA Realmente <span class="highlight">Inteligente</span>?
+                    </h1>
+                    <p class="viz-description">
+                        Una pregunta filosófica fascinante... pero lo importante es otra cosa
+                    </p>
+                </header>
+
+                <!-- Two Column Layout -->
+                <div class="content-grid">
+                    <!-- Left Column - The Debate -->
+                    <div class="debate-section">
+                        <div class="tweet-container">
+                            <blockquote style="font-family: 'Inter', sans-serif; font-size: 20px; font-style: italic; color: var(--paper-white); margin: 0; padding: 16px 0; text-align: center; line-height: 1.4;">
+                                "i am a stochastic parrot, and so r u"
+                            </blockquote>
+                            <p class="tweet-context">
+                                Sam Altman, CEO de OpenAI, 4 de diciembre de 2022 (4 días después de lanzar ChatGPT).
+                                "Stochastic parrot" (loro estadístico) sugiere que los LLMs solo imitan patrones.
+                            </p>
+                        </div>
+
+                        <div class="insight-card">
+                            <h3 class="insight-title">Dato curioso: ¿Cómo medimos inteligencia?</h3>
+                            <p class="insight-text">
+                                Usamos formas de "autocompletado" para medir inteligencia humana:
+                            </p>
+                            <div class="insight-examples">
+                                <span class="example-tag">Complete la oración</span>
+                                <span class="example-tag">Preguntas y respuestas</span>
+                                <span class="example-tag">Verdadero o Falso</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column - What Matters -->
+                    <div class="importance-section">
+                        <div class="key-message-card">
+                            <h3 class="key-message-title">Lo que importa para abogados</h3>
+                            <ul class="key-points">
+                                <li><strong>Los LLMs no tienen acceso al mundo real</strong></li>
+                                <li>Solo conocen sus datos de entrenamiento + lo que tú les das</li>
+                                <li>No pueden verificar hechos actuales ni consultar fuentes (¿o sí?)</li>
+                                <li>No saben qué leyes han cambiado desde su entrenamiento</li>
+                            </ul>
+                        </div>
+
+                        <div class="difference-highlight">
+                            <h4 class="difference-title">La diferencia clave: Tú</h4>
+                            <p class="difference-text">
+                                Tú tienes experiencia profesional, conocimiento del contexto chileno,
+                                y la capacidad de verificar información en el mundo real.
+                                <strong>Siempre valida las respuestas del LLM.</strong>
+                                El LLM es un punto de partida, no la respuesta final.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Attribution Footer -->
+        <footer class="brand-footer">
+            <div class="footer-brand">
+                <a href="https://trifolia.cl" target="_blank" rel="noopener" style="color: inherit; text-decoration: none;"><strong>Trifolia</strong></a> · Contenido educativo
+            </div>
+            <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="license noopener" class="btn-cta" style="font-size: 12px; padding: 8px 14px;">
+                CC BY-NC-SA 4.0
+            </a>
+        </footer>
+    </div>
+
+    <!-- Slide Navigation Bar -->
+    <nav class="slide-nav" role="navigation" aria-label="Navegación de slides educativos">
+        <div class="slide-nav-container">
+            <div class="slide-nav-prev">
+                <a href="context-window.html" class="slide-nav-btn" aria-label="Anterior: Ventana de Contexto"><span class="slide-nav-arrow">&larr;</span><span class="slide-nav-label">Anterior</span></a>
+            </div>
+            <div class="slide-nav-dots" role="tablist" aria-label="Slides">
+                <a href="intro.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Introducción" title="Introducción"></a>
+                <a href="ai-taxonomy.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Taxonomía de IA" title="Taxonomía de IA"></a>
+                <a href="ai-ecosystem.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Ecosistema de IA" title="Ecosistema de IA"></a>
+                <a href="autocomplete.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Autocompletado" title="Autocompletado"></a>
+                <a href="context-window.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Ventana de Contexto" title="Ventana de Contexto"></a>
+                <a href="ai-intelligence.html" class="slide-nav-dot active" role="tab" aria-selected="true" aria-label="¿IA Inteligente?" title="¿IA Inteligente?"></a>
+                <a href="practical-implications.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Capacidades LLMs" title="Capacidades LLMs"></a>
+                <a href="practical-tips.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Consejos Prácticos" title="Consejos Prácticos"></a>
+                <a href="model-tradeoffs.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Trade-offs de Modelos" title="Trade-offs de Modelos"></a>
+                <a href="prompting-tips.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Prompts Efectivos" title="Prompts Efectivos"></a>
+                <a href="hallucinations.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Alucinaciones" title="Alucinaciones"></a>
+                <a href="knowledge-problem.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Problema del Conocimiento" title="Problema del Conocimiento"></a>
+                <a href="trifolia-demo.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Trifolia en Acción" title="Trifolia en Acción"></a>
+                <a href="tools-context.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Herramientas y Contexto" title="Herramientas y Contexto"></a>
+                <a href="sources-section.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Fuentes Consultadas" title="Fuentes Consultadas"></a>
+                <a href="trifolia.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Trifolia" title="Trifolia"></a>
+                <a href="conclusiones.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Conclusiones" title="Conclusiones"></a>
+                <a href="privacidad-datos.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Privacidad: Datos" title="Privacidad: Datos"></a>
+                <a href="privacidad-proteccion.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Privacidad: Protección" title="Privacidad: Protección"></a>
+                <a href="privacidad-onpremise.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Privacidad: On-Premise" title="Privacidad: On-Premise"></a>
+            </div>
+            <div class="slide-nav-next">
+                <a href="practical-implications.html" class="slide-nav-btn" aria-label="Siguiente: Capacidades LLMs"><span class="slide-nav-label">Siguiente</span><span class="slide-nav-arrow">&rarr;</span></a>
+            </div>
+        </div>
+    </nav>
+    <div class="slide-nav-hint" id="slideNavHint"><span>&larr; &rarr; para navegar</span></div>
+    <div class="slide-progress-indicator">
+        <div class="progress-fill" style="width: 30%"></div>
+    </div>
+    <link rel="stylesheet" href="../css/slide-nav.css">
+    <script src="../js/slide-nav.js"></script>
+</body>
+</html>

@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taxonomía de la IA: De la Inteligencia Artificial a los LLMs - Trifolia</title>
+
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Entiende la relación entre Inteligencia Artificial, Machine Learning, Deep Learning, IA Generativa y LLMs. Visualización educativa para profesionales del derecho.">
+    <meta property="og:title" content="Taxonomía de la IA: De la Inteligencia Artificial a los LLMs">
+    <meta property="og:description" content="Visualización de conjuntos anidados mostrando cómo los LLMs son un subconjunto de la IA generativa, que es parte del Deep Learning, y así sucesivamente.">
+    <meta property="og:type" content="article">
+
+    <!-- License -->
+    <link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+    <meta name="author" content="Trifolia (trifolia.cl)">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="../images/logo.svg">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Slides Base CSS -->
+    <link href="../css/slides-base.css" rel="stylesheet">
+
+    <style>
+        /* Override max-width for this slide */
+        :root {
+            --viz-max-width: 1400px;
+        }
+
+        .viz-header {
+            margin-bottom: 32px;
+        }
+
+        /* Main Content Row - Side by Side Layout */
+        .main-content-row {
+            display: flex;
+            gap: 48px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Nested Sets Container */
+        .sets-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px 10px;
+            flex: 0 0 auto;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        /* Individual Set Layer */
+        .set-layer {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 24px;
+            border-radius: 8px;
+            position: relative;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .set-layer:hover {
+            transform: scale(1.01);
+        }
+
+        .set-layer.active {
+            transform: scale(1.02);
+        }
+
+        /* Set Labels */
+        .set-label {
+            font-family: "Inter", system-ui, sans-serif;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-align: center;
+            padding: 8px 16px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .set-label-bottom {
+            margin-top: auto;
+            padding-top: 16px;
+        }
+
+        /* Layer-specific styling */
+        .layer-ai {
+            background: rgba(26, 35, 50, 0.6);
+            border: 2px solid rgba(60, 120, 253, 0.2);
+            padding: 32px 40px;
+        }
+
+        .layer-ai > .set-label {
+            font-size: 18px;
+            color: rgba(248, 249, 250, 0.7);
+            background: rgba(60, 120, 253, 0.1);
+            border: 1px solid rgba(60, 120, 253, 0.2);
+        }
+
+        .layer-ai:hover,
+        .layer-ai.active {
+            border-color: rgba(60, 120, 253, 0.5);
+            background: rgba(26, 35, 50, 0.8);
+        }
+
+        .layer-ml {
+            background: rgba(60, 120, 253, 0.06);
+            border: 2px solid rgba(60, 120, 253, 0.25);
+            margin-top: 18px;
+            padding: 28px 34px;
+        }
+
+        .layer-ml > .set-label {
+            font-size: 16px;
+            color: rgba(60, 120, 253, 0.9);
+            background: rgba(60, 120, 253, 0.12);
+            border: 1px solid rgba(60, 120, 253, 0.25);
+        }
+
+        .layer-ml:hover,
+        .layer-ml.active {
+            border-color: rgba(60, 120, 253, 0.6);
+            background: rgba(60, 120, 253, 0.12);
+        }
+
+        .layer-dl {
+            background: rgba(80, 100, 200, 0.08);
+            border: 2px solid rgba(100, 120, 220, 0.3);
+            margin-top: 16px;
+            padding: 26px 32px;
+        }
+
+        .layer-dl > .set-label {
+            font-size: 15px;
+            color: rgba(130, 150, 240, 0.95);
+            background: rgba(100, 120, 220, 0.15);
+            border: 1px solid rgba(100, 120, 220, 0.3);
+        }
+
+        .layer-dl:hover,
+        .layer-dl.active {
+            border-color: rgba(100, 120, 220, 0.7);
+            background: rgba(80, 100, 200, 0.15);
+        }
+
+        .layer-genai {
+            background: rgba(114, 0, 252, 0.08);
+            border: 2px solid rgba(114, 0, 252, 0.3);
+            margin-top: 14px;
+            padding: 24px 30px;
+        }
+
+        .layer-genai > .set-label {
+            font-size: 14px;
+            color: rgba(160, 100, 255, 0.95);
+            background: rgba(114, 0, 252, 0.15);
+            border: 1px solid rgba(114, 0, 252, 0.3);
+        }
+
+        .layer-genai:hover,
+        .layer-genai.active {
+            border-color: rgba(114, 0, 252, 0.7);
+            background: rgba(114, 0, 252, 0.15);
+        }
+
+        .layer-llm {
+            background: linear-gradient(135deg, rgba(0, 255, 255, 0.08) 0%, rgba(114, 0, 252, 0.12) 100%);
+            border: 2px solid;
+            border-image: linear-gradient(135deg, rgba(0, 255, 255, 0.5), rgba(114, 0, 252, 0.5)) 1;
+            margin-top: 12px;
+            padding: 22px 28px;
+            min-width: 220px;
+        }
+
+        .layer-llm > .set-label {
+            font-size: 15px;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--gradient-cyan), var(--gradient-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            border: none;
+            padding: 4px 0;
+        }
+
+        .layer-llm .llm-examples {
+            font-size: 14px;
+            color: rgba(248, 249, 250, 0.6);
+            margin-top: 6px;
+            font-weight: 400;
+            letter-spacing: 0.5px;
+            text-transform: none;
+        }
+
+        .layer-llm:hover,
+        .layer-llm.active {
+            background: linear-gradient(135deg, rgba(0, 255, 255, 0.12) 0%, rgba(114, 0, 252, 0.18) 100%);
+            box-shadow: 0 0 30px rgba(114, 0, 252, 0.2), 0 0 60px rgba(0, 255, 255, 0.1);
+        }
+
+        /* Description Panel */
+        .description-panel {
+            background: rgba(60, 120, 253, 0.06);
+            border: 1px solid rgba(60, 120, 253, 0.2);
+            border-radius: 6px;
+            padding: 32px;
+            flex: 1;
+            max-width: 500px;
+            min-height: 280px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            transition: all 0.3s ease;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        .description-panel.active {
+            border-color: rgba(60, 120, 253, 0.4);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .description-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .description-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+        }
+
+        .description-title {
+            font-family: "Inter", system-ui, sans-serif;
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--paper-white);
+            margin: 0;
+        }
+
+        .description-text {
+            font-size: 22px;
+            color: rgba(248, 249, 250, 0.8);
+            line-height: 1.7;
+            margin: 0 0 16px 0;
+        }
+
+        .description-examples {
+            font-size: 18px;
+            color: rgba(248, 249, 250, 0.6);
+            padding-left: 16px;
+            border-left: 2px solid rgba(60, 120, 253, 0.3);
+        }
+
+        .description-examples strong {
+            color: var(--clover-purple);
+        }
+
+        /* Reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            .set-layer, .description-panel {
+                transition: none;
+            }
+            .set-layer:hover {
+                transform: none;
+            }
+        }
+
+        /* Responsive - Tablet and below: stack vertically */
+        @media (max-width: 991.98px) {
+            .main-content-row {
+                flex-direction: column;
+                gap: 24px;
+            }
+
+            .description-panel {
+                max-width: 100%;
+                min-height: auto;
+            }
+
+            .prompt-text {
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 767.98px) {
+            .sets-container {
+                padding: 10px 5px;
+            }
+
+            .set-layer {
+                padding: 12px 14px;
+            }
+
+            .layer-ai {
+                padding: 16px 18px;
+            }
+
+            .layer-ml {
+                padding: 14px 16px;
+                margin-top: 10px;
+            }
+
+            .layer-dl {
+                padding: 12px 14px;
+                margin-top: 8px;
+            }
+
+            .layer-genai {
+                padding: 10px 12px;
+                margin-top: 6px;
+            }
+
+            .layer-llm {
+                padding: 10px 14px;
+                margin-top: 6px;
+                min-width: 140px;
+            }
+
+            .set-label {
+                font-size: 10px !important;
+                padding: 6px 10px;
+                letter-spacing: 1px;
+            }
+
+            .layer-llm .llm-examples {
+                font-size: 10px;
+            }
+
+            .description-panel {
+                padding: 16px;
+            }
+
+            .description-text {
+                font-size: 16px;
+            }
+
+            .description-examples {
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .layer-ai > .set-label,
+            .layer-ml > .set-label {
+                font-size: 9px !important;
+            }
+
+            .layer-dl > .set-label,
+            .layer-genai > .set-label {
+                font-size: 8px !important;
+            }
+        }
+
+        /* Large screen optimization */
+        @media (min-width: 1400px) {
+            :root {
+                --viz-max-width: 1100px;
+            }
+
+            .set-label {
+                font-size: 15px !important;
+            }
+        }
+
+        /* Fullscreen presentation mode adjustments */
+        body.fullscreen-mode .viz-header {
+            margin-bottom: 16px;
+        }
+
+        body.fullscreen-mode .main-content-row {
+            gap: 32px;
+        }
+
+        body.fullscreen-mode .sets-container {
+            padding: 10px 5px;
+        }
+
+        body.fullscreen-mode .layer-ai {
+            padding: 20px 28px;
+        }
+
+        body.fullscreen-mode .layer-ml {
+            padding: 18px 24px;
+            margin-top: 12px;
+        }
+
+        body.fullscreen-mode .layer-dl {
+            padding: 16px 22px;
+            margin-top: 10px;
+        }
+
+        body.fullscreen-mode .layer-genai {
+            padding: 14px 20px;
+            margin-top: 8px;
+        }
+
+        body.fullscreen-mode .layer-llm {
+            padding: 14px 20px;
+            margin-top: 8px;
+            min-width: 180px;
+        }
+
+        body.fullscreen-mode .set-label {
+            font-size: 12px !important;
+            padding: 6px 12px;
+        }
+
+        body.fullscreen-mode .layer-llm .llm-examples {
+            font-size: 11px;
+        }
+
+        body.fullscreen-mode .description-panel {
+            min-height: auto;
+            max-height: 320px;
+            padding: 20px;
+        }
+
+        body.fullscreen-mode .description-title {
+            font-size: 20px;
+        }
+
+        body.fullscreen-mode .description-text {
+            font-size: 16px;
+            margin-bottom: 12px;
+        }
+
+        body.fullscreen-mode .description-examples {
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="page-container">
+        <!-- Main Visualization -->
+        <main class="viz-container">
+            <div class="corner-top-left"></div>
+            <div class="corner-bottom-right"></div>
+
+            <div class="viz-content">
+                <!-- Header -->
+                <header class="viz-header">
+                    <h1 class="viz-title">
+                        Taxonomía de la <span class="highlight">Inteligencia Artificial</span>
+                    </h1>
+                    <p class="viz-description">
+                        Los LLMs como ChatGPT o Gemini son solo una parte de un campo mucho más amplio.
+                    </p>
+                </header>
+
+                <!-- Main Content Row: Visualization + Description -->
+                <div class="main-content-row">
+                    <!-- Nested Sets Visualization -->
+                    <section class="sets-container">
+                        <div class="set-layer layer-ai" data-layer="ai" onclick="showDescription('ai')" onmouseenter="showDescription('ai')">
+                            <span class="set-label">Inteligencia Artificial</span>
+
+                            <div class="set-layer layer-ml" data-layer="ml" onclick="showDescription('ml'); event.stopPropagation();" onmouseenter="showDescription('ml'); event.stopPropagation();">
+                                <span class="set-label">Machine Learning</span>
+
+                                <div class="set-layer layer-dl" data-layer="dl" onclick="showDescription('dl'); event.stopPropagation();" onmouseenter="showDescription('dl'); event.stopPropagation();">
+                                    <span class="set-label">Deep Learning</span>
+
+                                    <div class="set-layer layer-genai" data-layer="genai" onclick="showDescription('genai'); event.stopPropagation();" onmouseenter="showDescription('genai'); event.stopPropagation();">
+                                        <span class="set-label">IA Generativa</span>
+
+                                        <div class="set-layer layer-llm" data-layer="llm" onclick="showDescription('llm'); event.stopPropagation();" onmouseenter="showDescription('llm'); event.stopPropagation();">
+                                            <span class="set-label">LLMs</span>
+                                            <span class="llm-examples">GPT, Claude, Gemini</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Description Panel -->
+                    <section class="description-panel active" id="descriptionPanel">
+                        <div class="description-header">
+                            <div class="description-icon" id="descIcon">🤖</div>
+                            <h2 class="description-title" id="descTitle">Inteligencia Artificial</h2>
+                        </div>
+                        <p class="description-text" id="descText">
+                            Sistemas que simulan capacidades cognitivas humanas, desde reglas simples hasta redes neuronales.
+                        </p>
+                        <div class="description-examples" id="descExamples">
+                            <strong>Ejemplos:</strong> Sistemas expertos, chatbots básicos, reconocimiento de patrones, algoritmos de búsqueda.
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </main>
+
+        <!-- Attribution Footer -->
+        <footer class="brand-footer">
+            <div class="footer-brand">
+                <a href="https://trifolia.cl" target="_blank" rel="noopener" style="color: inherit; text-decoration: none;"><strong>Trifolia</strong></a> · Contenido educativo
+            </div>
+            <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="license noopener" class="btn-cta" style="font-size: 12px; padding: 8px 14px;">
+                CC BY-NC-SA 4.0
+            </a>
+        </footer>
+    </div>
+
+    <!-- Slide Navigation Bar -->
+    <nav class="slide-nav" role="navigation" aria-label="Navegación de slides educativos">
+        <div class="slide-nav-container">
+            <div class="slide-nav-prev">
+                <a href="intro.html" class="slide-nav-btn" aria-label="Anterior: Introducción"><span class="slide-nav-arrow">&larr;</span><span class="slide-nav-label">Anterior</span></a>
+            </div>
+            <div class="slide-nav-dots" role="tablist" aria-label="Slides">
+                <a href="intro.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Introducción" title="Introducción"></a>
+                <a href="ai-taxonomy.html" class="slide-nav-dot active" role="tab" aria-selected="true" aria-label="Taxonomía de IA" title="Taxonomía de IA"></a>
+                <a href="ai-ecosystem.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Ecosistema de IA" title="Ecosistema de IA"></a>
+                <a href="autocomplete.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Autocompletado" title="Autocompletado"></a>
+                <a href="context-window.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Ventana de Contexto" title="Ventana de Contexto"></a>
+                <a href="ai-intelligence.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="¿IA Inteligente?" title="¿IA Inteligente?"></a>
+                <a href="practical-implications.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Capacidades LLMs" title="Capacidades LLMs"></a>
+                <a href="practical-tips.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Consejos Prácticos" title="Consejos Prácticos"></a>
+                <a href="model-tradeoffs.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Trade-offs de Modelos" title="Trade-offs de Modelos"></a>
+                <a href="prompting-tips.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Prompts Efectivos" title="Prompts Efectivos"></a>
+                <a href="hallucinations.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Alucinaciones" title="Alucinaciones"></a>
+                <a href="knowledge-problem.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Problema del Conocimiento" title="Problema del Conocimiento"></a>
+                <a href="trifolia-demo.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Trifolia en Acción" title="Trifolia en Acción"></a>
+                <a href="tools-context.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Herramientas y Contexto" title="Herramientas y Contexto"></a>
+                <a href="sources-section.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Fuentes Consultadas" title="Fuentes Consultadas"></a>
+                <a href="trifolia.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Trifolia" title="Trifolia"></a>
+                <a href="conclusiones.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Conclusiones" title="Conclusiones"></a>
+                <a href="privacidad-datos.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Privacidad: Datos" title="Privacidad: Datos"></a>
+                <a href="privacidad-proteccion.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Privacidad: Protección" title="Privacidad: Protección"></a>
+                <a href="privacidad-onpremise.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Privacidad: On-Premise" title="Privacidad: On-Premise"></a>
+            </div>
+            <div class="slide-nav-next">
+                <a href="ai-ecosystem.html" class="slide-nav-btn" aria-label="Siguiente: Ecosistema de IA"><span class="slide-nav-label">Siguiente</span><span class="slide-nav-arrow">&rarr;</span></a>
+            </div>
+        </div>
+    </nav>
+    <div class="slide-nav-hint" id="slideNavHint"><span>&larr; &rarr; para navegar</span></div>
+    <div class="slide-progress-indicator">
+        <div class="progress-fill" style="width: 10%"></div>
+    </div>
+    <link rel="stylesheet" href="../css/slide-nav.css">
+    <script src="../js/slide-nav.js"></script>
+
+    <script>
+    (function() {
+        'use strict';
+
+        // Layer descriptions data
+        const descriptions = {
+            ai: {
+                icon: '🤖',
+                title: 'Inteligencia Artificial',
+                text: 'Sistemas que simulan capacidades cognitivas humanas, desde reglas simples hasta redes neuronales.',
+                examples: '<strong>Ejemplos:</strong> Sistemas expertos, chatbots básicos, reconocimiento de patrones, algoritmos de búsqueda.'
+            },
+            ml: {
+                icon: '📊',
+                title: 'Machine Learning',
+                text: 'Algoritmos que aprenden patrones de los datos sin programación explícita. Mejoran con la experiencia.',
+                examples: '<strong>Ejemplos:</strong> Detección de spam, recomendaciones (Netflix, Spotify), predicción de precios, detección de fraude.'
+            },
+            dl: {
+                icon: '🧠',
+                title: 'Deep Learning',
+                text: 'Redes neuronales con múltiples capas para procesar datos complejos: imágenes, audio y texto.',
+                examples: '<strong>Ejemplos:</strong> Reconocimiento facial, transcripción de voz, traducción automática, conducción autónoma.'
+            },
+            genai: {
+                icon: '✨',
+                title: 'IA Generativa',
+                text: 'Modelos que crean contenido nuevo: texto, imágenes, audio, video o código.',
+                examples: '<strong>Ejemplos:</strong> DALL-E y Midjourney (imágenes), Suno (música), GitHub Copilot (código).'
+            },
+            llm: {
+                icon: '💬',
+                title: 'Large Language Models (LLMs)',
+                text: 'Modelos de lenguaje que entienden y generan texto. Conversan, resumen, traducen y razonan.',
+                examples: '<strong>Ejemplos:</strong> GPT-4, Claude, Gemini, Llama, DeepSeek. Trifolia los usa para investigación jurídica.'
+            }
+        };
+
+        let activeLayer = null;
+
+        // Layer order for keyboard navigation (outer to inner)
+        const layerOrder = ['ai', 'ml', 'dl', 'genai', 'llm'];
+        let currentLayerIndex = -1;
+
+        // Show description for a layer
+        window.showDescription = function(layer) {
+            const data = descriptions[layer];
+            if (!data) return;
+
+            // Update panel content
+            document.getElementById('descIcon').textContent = data.icon;
+            document.getElementById('descTitle').textContent = data.title;
+            document.getElementById('descText').textContent = data.text;
+            document.getElementById('descExamples').innerHTML = data.examples;
+
+            // Update active states
+            document.querySelectorAll('.set-layer').forEach(el => {
+                el.classList.remove('active');
+            });
+
+            const layerEl = document.querySelector(`[data-layer="${layer}"]`);
+            if (layerEl) {
+                layerEl.classList.add('active');
+            }
+
+            document.getElementById('descriptionPanel').classList.add('active');
+            activeLayer = layer;
+
+            // Sync keyboard index with current layer
+            currentLayerIndex = layerOrder.indexOf(layer);
+        };
+
+        // Register with slide navigation for clicker support
+        document.addEventListener('DOMContentLoaded', function() {
+            // Start with AI layer selected
+            currentLayerIndex = 0;
+            document.querySelector('[data-layer="ai"]').classList.add('active');
+
+            if (window.slideInteraction) {
+                window.slideInteraction.register(function() {
+                    currentLayerIndex++;
+                    if (currentLayerIndex < layerOrder.length) {
+                        showDescription(layerOrder[currentLayerIndex]);
+                        return false;  // Don't navigate yet
+                    }
+                    return true;  // All layers shown, navigate to next slide
+                });
+            }
+        });
+    })();
+    </script>
+</body>
+</html>

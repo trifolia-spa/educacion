@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>El Contexto en una Conversación con IA - Trifolia</title>
+
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Visualiza cómo un modelo de lenguaje procesa el contexto completo en cada respuesta. Cada palabra nueva requiere procesar todo el historial de la conversación.">
+    <meta property="og:title" content="El Contexto en una Conversación con IA">
+    <meta property="og:description" content="Visualización interactiva del procesamiento de contexto en conversaciones con LLMs - contenido educativo de Trifolia.">
+    <meta property="og:type" content="article">
+
+    <!-- License -->
+    <link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+    <meta name="author" content="Trifolia (trifolia.cl)">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="../images/logo.svg">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+
+    <!-- Slides Base CSS -->
+    <link href="../css/slides-base.css" rel="stylesheet">
+
+    <style>
+        /* Slide-specific overrides */
+        :root {
+            --viz-max-width: 900px;
+            --user-bubble: #3c78fd;
+            --assistant-bubble: rgba(255, 255, 255, 0.08);
+        }
+
+        .viz-title {
+            font-size: clamp(24px, 4vw, 36px);
+        }
+
+        /* Explanation panel */
+        .explanation-panel {
+            background: rgba(60, 120, 253, 0.08);
+            border: 1px solid rgba(60, 120, 253, 0.25);
+            border-radius: 4px;
+            padding: 20px 24px;
+            margin-bottom: 24px;
+            position: relative;
+        }
+
+        .explanation-panel .label {
+            position: absolute;
+            top: -11px;
+            left: 20px;
+            background: var(--law-navy);
+            padding: 3px 12px;
+            font-size: 11px;
+            letter-spacing: 2px;
+            color: var(--clover-purple);
+            font-family: "Inter", system-ui, sans-serif;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+
+        .explanation-panel p {
+            font-size: 15px;
+            line-height: 1.7;
+            margin: 0;
+            color: rgba(248, 249, 250, 0.85);
+        }
+
+        .explanation-panel strong {
+            color: var(--clover-purple);
+        }
+
+        /* Context bar */
+        .context-bar-container {
+            margin-bottom: 20px;
+        }
+
+        .context-bar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .context-bar-label {
+            font-size: 11px;
+            letter-spacing: 2px;
+            color: rgba(255, 255, 255, 0.5);
+            font-family: "Inter", system-ui, sans-serif;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .context-percent {
+            color: var(--clover-purple);
+            font-weight: 500;
+            text-transform: none;
+            letter-spacing: 0;
+        }
+
+        .context-percent.warning {
+            color: var(--warning-amber);
+        }
+
+        .context-percent.full {
+            color: var(--error-red);
+        }
+
+        .context-bar {
+            height: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 4px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .context-bar-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--gradient-cyan) 0%, var(--clover-purple) 50%, var(--gradient-purple) 100%);
+            transition: width 0.3s ease, background 0.3s ease;
+            border-radius: 3px;
+        }
+
+        .context-bar-fill.warning {
+            background: linear-gradient(90deg, var(--warning-amber) 0%, #e8a547 100%);
+        }
+
+        .context-bar-fill.full {
+            background: linear-gradient(90deg, var(--error-red) 0%, #e87447 100%);
+        }
+
+        /* Chat viewport - scrollable conversation container */
+        .chat-viewport {
+            background: rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            height: 380px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding: 20px;
+            margin-bottom: 20px;
+            scroll-behavior: smooth;
+        }
+
+        /* Chat bubbles */
+        .chat-bubble {
+            max-width: 85%;
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 15px;
+            line-height: 1.6;
+            margin-bottom: 12px;
+            opacity: 0;
+            transform: translateY(10px);
+            animation: bubbleIn 0.3s ease forwards;
+        }
+
+        .chat-bubble.user {
+            background: var(--user-bubble);
+            color: white;
+            margin-left: auto;
+            border-bottom-right-radius: 4px;
+        }
+
+        .chat-bubble.assistant {
+            background: var(--assistant-bubble);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--paper-white);
+            margin-right: auto;
+            border-bottom-left-radius: 4px;
+        }
+
+        .chat-bubble .role-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.7;
+            margin-bottom: 6px;
+            font-weight: 500;
+            font-family: "Inter", system-ui, sans-serif;
+        }
+
+        .chat-bubble.user .role-label {
+            text-align: right;
+        }
+
+        .chat-bubble .content {
+            word-wrap: break-word;
+        }
+
+        /* Word highlighting for processing visualization */
+        .chat-bubble .word {
+            display: inline;
+            padding: 1px 2px;
+            border-radius: 2px;
+            transition: background 0.1s ease;
+        }
+
+        .chat-bubble .word.processing {
+            background: rgba(60, 120, 253, 0.4);
+        }
+
+        /* User bubbles have blue background, so use white highlight for visibility */
+        .chat-bubble.user .word.processing {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .chat-bubble .word.new {
+            animation: wordFadeIn 0.2s ease;
+        }
+
+        /* File attachment indicator */
+        .attachment-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 10px;
+            padding: 8px 12px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 6px;
+            font-size: 12px;
+            font-family: "Inter", system-ui, sans-serif;
+        }
+
+        .attachment-indicator i {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .attachment-name {
+            font-weight: 500;
+            flex: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .attachment-tokens {
+            opacity: 0.7;
+            font-size: 11px;
+            white-space: nowrap;
+        }
+
+        /* File attachment processing state - pulsing highlight */
+        .attachment-indicator.processing {
+            background: rgba(255, 255, 255, 0.35);
+            box-shadow: 0 0 12px rgba(255, 255, 255, 0.4);
+            animation: attachmentPulse 0.6s ease-in-out infinite;
+        }
+
+        @keyframes attachmentPulse {
+            0%, 100% {
+                background: rgba(255, 255, 255, 0.25);
+                box-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+            }
+            50% {
+                background: rgba(255, 255, 255, 0.45);
+                box-shadow: 0 0 16px rgba(255, 255, 255, 0.5);
+            }
+        }
+
+        /* Cursor */
+        .cursor {
+            display: inline-block;
+            width: 8px;
+            height: 16px;
+            background: var(--clover-purple);
+            margin-left: 3px;
+            animation: blink 0.8s infinite;
+            vertical-align: middle;
+            border-radius: 1px;
+        }
+
+        @keyframes bubbleIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes wordFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        /* Controls */
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 14px;
+            margin-top: 20px;
+        }
+
+        .btn-start {
+            background: var(--clover-purple);
+            color: white;
+            border: none;
+            padding: 14px 32px;
+            font-size: 13px;
+            letter-spacing: 1.5px;
+            font-family: "Inter", system-ui, sans-serif;
+            text-transform: uppercase;
+            font-weight: 500;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-start:hover:not(:disabled) {
+            background: #2b5fd9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(60, 120, 253, 0.3);
+        }
+
+        .btn-start:disabled {
+            background: rgba(60, 120, 253, 0.3);
+            color: rgba(255, 255, 255, 0.5);
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-reset {
+            background: transparent;
+            color: rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 14px 32px;
+            font-size: 13px;
+            letter-spacing: 1.5px;
+            font-family: "Inter", system-ui, sans-serif;
+            text-transform: uppercase;
+            font-weight: 500;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+            display: none;
+        }
+
+        .btn-reset.visible {
+            display: inline-block;
+        }
+
+        .btn-reset:hover {
+            transform: translateY(-2px);
+            border-color: rgba(255, 255, 255, 0.4);
+            color: white;
+        }
+
+        /* Reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            .chat-bubble, .context-bar-fill, .btn-start, .btn-reset, .word {
+                transition: none;
+            }
+            .chat-bubble {
+                animation: none;
+                opacity: 1;
+                transform: none;
+            }
+            .cursor {
+                animation: none;
+                opacity: 1;
+            }
+            .word.new {
+                animation: none;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 767.98px) {
+            .chat-viewport {
+                height: 300px;
+                padding: 16px;
+            }
+
+            .chat-bubble {
+                max-width: 90%;
+                font-size: 14px;
+                padding: 10px 14px;
+            }
+
+            .attachment-indicator {
+                padding: 6px 10px;
+                font-size: 11px;
+            }
+
+            .attachment-indicator i {
+                font-size: 14px;
+            }
+
+            .attachment-tokens {
+                font-size: 10px;
+            }
+
+            .controls {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .btn-start, .btn-reset {
+                width: 100%;
+            }
+        }
+
+        /* Large screen / projector optimization */
+        @media (min-width: 1400px) {
+            :root {
+                --viz-max-width: 1000px;
+            }
+
+            .viz-title {
+                font-size: 42px;
+            }
+
+            .chat-viewport {
+                height: 450px;
+            }
+
+            .chat-bubble {
+                font-size: 16px;
+            }
+        }
+
+        /* Fullscreen presentation mode adjustments */
+        body.fullscreen-mode .viz-header {
+            margin-bottom: 16px;
+        }
+
+        body.fullscreen-mode .viz-title {
+            font-size: 28px;
+        }
+
+        body.fullscreen-mode .explanation-panel {
+            padding: 14px 18px;
+            margin-bottom: 16px;
+        }
+
+        body.fullscreen-mode .explanation-panel .label {
+            font-size: 9px;
+            padding: 2px 8px;
+        }
+
+        body.fullscreen-mode .explanation-panel p {
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        body.fullscreen-mode .context-bar-container {
+            margin-bottom: 12px;
+        }
+
+        body.fullscreen-mode .context-bar-label {
+            font-size: 10px;
+        }
+
+        body.fullscreen-mode .context-bar {
+            height: 16px;
+        }
+
+        body.fullscreen-mode .chat-viewport {
+            height: 380px;
+            padding: 14px;
+            margin-bottom: 12px;
+        }
+
+        body.fullscreen-mode .chat-bubble {
+            font-size: 13px;
+            padding: 10px 14px;
+            margin-bottom: 8px;
+        }
+
+        body.fullscreen-mode .chat-bubble .role-label {
+            font-size: 9px;
+            margin-bottom: 4px;
+        }
+
+        body.fullscreen-mode .attachment-indicator {
+            margin-top: 8px;
+            padding: 6px 10px;
+            font-size: 11px;
+        }
+
+        body.fullscreen-mode .attachment-indicator i {
+            font-size: 14px;
+        }
+
+        body.fullscreen-mode .attachment-tokens {
+            font-size: 10px;
+        }
+
+        body.fullscreen-mode .controls {
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        body.fullscreen-mode .btn-start,
+        body.fullscreen-mode .btn-reset {
+            padding: 10px 24px;
+            font-size: 11px;
+        }
+    </style>
+</head>
+<body>
+    <div class="page-container">
+        <!-- Main Visualization -->
+        <main class="viz-container">
+            <div class="corner-top-left"></div>
+            <div class="corner-bottom-right"></div>
+
+            <div class="viz-content">
+                <!-- Header -->
+                <header class="viz-header">
+                    <h1 class="viz-title">
+                        El <span class="highlight">Contexto</span> en una
+                        <br>Conversación con IA
+                    </h1>
+                </header>
+
+                <!-- Explanation Panel -->
+                <div class="explanation-panel" id="explanation-panel">
+                    <div class="label">Concepto Clave</div>
+                    <p>
+                        Cada vez que un LLM genera una nueva palabra, debe <strong>procesar
+                        todas las palabras anteriores</strong> de la conversación. Por eso, mientras más largo
+                        es el historial, más tiempo y recursos se requieren para cada respuesta.
+                    </p>
+                </div>
+
+                <!-- Context bar -->
+                <div class="context-bar-container">
+                    <div class="context-bar-header">
+                        <div class="context-bar-label">
+                            Ventana de Contexto: <span class="context-percent" id="context-percent">0%</span>
+                        </div>
+                    </div>
+                    <div class="context-bar">
+                        <div class="context-bar-fill" id="context-bar-fill"></div>
+                    </div>
+                </div>
+
+                <!-- Chat viewport -->
+                <div class="chat-viewport" id="chat-viewport">
+                    <!-- Chat bubbles will be inserted here -->
+                </div>
+
+                <!-- Controls -->
+                <div class="controls">
+                    <button class="btn-start" id="btn-start">Iniciar Conversación</button>
+                    <button class="btn-reset" id="btn-reset">Reiniciar</button>
+                </div>
+            </div>
+        </main>
+
+        <!-- Attribution Footer -->
+        <footer class="brand-footer">
+            <div class="footer-brand">
+                <a href="https://trifolia.cl" target="_blank" rel="noopener" style="color: inherit; text-decoration: none;"><strong>Trifolia</strong></a> · Contenido educativo
+            </div>
+            <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="license noopener" class="btn-cta" style="font-size: 12px; padding: 8px 14px;">
+                CC BY-NC-SA 4.0
+            </a>
+        </footer>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="../js/llm-context-viz.js"></script>
+
+    <!-- Slide Navigation Bar -->
+    <nav class="slide-nav" role="navigation" aria-label="Navegación de slides educativos">
+        <div class="slide-nav-container">
+            <div class="slide-nav-prev">
+                <a href="autocomplete.html" class="slide-nav-btn" aria-label="Anterior: Autocompletado"><span class="slide-nav-arrow">&larr;</span><span class="slide-nav-label">Anterior</span></a>
+            </div>
+            <div class="slide-nav-dots" role="tablist" aria-label="Slides">
+                <a href="intro.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Introducción" title="Introducción"></a>
+                <a href="ai-taxonomy.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Taxonomía de IA" title="Taxonomía de IA"></a>
+                <a href="ai-ecosystem.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Ecosistema de IA" title="Ecosistema de IA"></a>
+                <a href="autocomplete.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Autocompletado" title="Autocompletado"></a>
+                <a href="context-window.html" class="slide-nav-dot active" role="tab" aria-selected="true" aria-label="Ventana de Contexto" title="Ventana de Contexto"></a>
+                <a href="ai-intelligence.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="¿IA Inteligente?" title="¿IA Inteligente?"></a>
+                <a href="practical-implications.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Capacidades LLMs" title="Capacidades LLMs"></a>
+                <a href="practical-tips.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Consejos Prácticos" title="Consejos Prácticos"></a>
+                <a href="model-tradeoffs.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Trade-offs de Modelos" title="Trade-offs de Modelos"></a>
+                <a href="prompting-tips.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Prompts Efectivos" title="Prompts Efectivos"></a>
+                <a href="hallucinations.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Alucinaciones" title="Alucinaciones"></a>
+                <a href="knowledge-problem.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Problema del Conocimiento" title="Problema del Conocimiento"></a>
+                <a href="trifolia-demo.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Trifolia en Acción" title="Trifolia en Acción"></a>
+                <a href="tools-context.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Herramientas y Contexto" title="Herramientas y Contexto"></a>
+                <a href="sources-section.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Fuentes Consultadas" title="Fuentes Consultadas"></a>
+                <a href="trifolia.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Trifolia" title="Trifolia"></a>
+                <a href="conclusiones.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Conclusiones" title="Conclusiones"></a>
+                <a href="privacidad-datos.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Privacidad: Datos" title="Privacidad: Datos"></a>
+                <a href="privacidad-proteccion.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Privacidad: Protección" title="Privacidad: Protección"></a>
+                <a href="privacidad-onpremise.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Privacidad: On-Premise" title="Privacidad: On-Premise"></a>
+            </div>
+            <div class="slide-nav-next">
+                <a href="ai-intelligence.html" class="slide-nav-btn" aria-label="Siguiente: ¿IA Inteligente?"><span class="slide-nav-label">Siguiente</span><span class="slide-nav-arrow">&rarr;</span></a>
+            </div>
+        </div>
+    </nav>
+    <div class="slide-nav-hint" id="slideNavHint"><span>&larr; &rarr; para navegar</span></div>
+    <div class="slide-progress-indicator">
+        <div class="progress-fill" style="width: 25%"></div>
+    </div>
+    <link rel="stylesheet" href="../css/slide-nav.css">
+    <script src="../js/slide-nav.js"></script>
+</body>
+</html>

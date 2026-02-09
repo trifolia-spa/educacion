@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>El Ecosistema de la IA: Empresas, Modelos y Apps - Trifolia</title>
+
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Entiende las capas del ecosistema de Inteligencia Artificial: empresas desarrolladoras, modelos de lenguaje (LLMs), y aplicaciones para usuarios finales.">
+    <meta property="og:title" content="El Ecosistema de la IA: Empresas, Modelos y Apps">
+    <meta property="og:description" content="Visualización educativa sobre el ecosistema de IA - contenido educativo de Trifolia.">
+    <meta property="og:type" content="article">
+
+    <!-- License -->
+    <link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+    <meta name="author" content="Trifolia (trifolia.cl)">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="../images/logo.svg">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Slides Base CSS -->
+    <link href="../css/slides-base.css" rel="stylesheet">
+
+    <style>
+        /* Override max-width for this slide */
+        :root {
+            --viz-max-width: 1200px;
+        }
+
+        /* Main Grid - unequal columns: Empresas, Apps narrow, Modelos wide */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 2fr;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 1024px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Card Styles */
+        .card {
+            background: rgba(60, 120, 253, 0.06);
+            border: 1px solid rgba(60, 120, 253, 0.2);
+            border-radius: 6px;
+            padding: 20px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2), 0 0 20px rgba(60, 120, 253, 0.06);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 12px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(60, 120, 253, 0.15);
+        }
+
+        .card-header h2 {
+            font-family: "Inter", system-ui, sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--clover-purple);
+            letter-spacing: 2px;
+            margin: 0;
+            text-transform: uppercase;
+        }
+
+        .header-icon {
+            font-size: 26px;
+        }
+
+        /* Item List */
+        .item-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        /* Models grid - 2 columns for better readability */
+        .models-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 4px;
+            border: 1px solid transparent;
+            transition: all 0.2s ease;
+        }
+
+        .item:hover {
+            border-color: rgba(60, 120, 253, 0.2);
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .item-logo {
+            width: 40px;
+            height: 40px;
+            min-width: 40px;
+            border-radius: 6px;
+            object-fit: contain;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 4px;
+        }
+
+        .item-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .item-name {
+            font-family: "Inter", system-ui, sans-serif;
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--paper-white);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Compact items in models grid */
+        .models-grid .item {
+            padding: 12px;
+        }
+
+        .models-grid .item-logo {
+            width: 36px;
+            height: 36px;
+            min-width: 36px;
+        }
+
+        .models-grid .item-name {
+            font-size: 16px;
+        }
+
+        .open-source-badge {
+            font-size: 9px;
+            color: var(--success-green);
+            background: rgba(16, 185, 129, 0.15);
+            padding: 2px 6px;
+            border-radius: 2px;
+            margin-left: 8px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        /* Note Section */
+        .note-section {
+            background: rgba(60, 120, 253, 0.08);
+            border: 1px solid rgba(60, 120, 253, 0.25);
+            border-radius: 4px;
+            padding: 16px 24px;
+            text-align: center;
+        }
+
+        .note-section p {
+            font-size: 17px;
+            color: rgba(248, 249, 250, 0.8);
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        .note-section strong {
+            color: var(--clover-purple);
+            font-weight: 600;
+        }
+
+        /* Reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            .card, .item {
+                transition: none;
+            }
+            .card:hover {
+                transform: none;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 767.98px) {
+            .card {
+                padding: 20px;
+            }
+        }
+
+        /* Large screen optimization */
+        @media (min-width: 1400px) {
+            :root {
+                --viz-max-width: 1300px;
+            }
+        }
+
+        /* Fullscreen presentation mode adjustments */
+        body.fullscreen-mode .viz-header {
+            margin-bottom: 16px;
+        }
+
+        body.fullscreen-mode .main-grid {
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        body.fullscreen-mode .card {
+            padding: 14px;
+        }
+
+        body.fullscreen-mode .card-header {
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+            gap: 8px;
+        }
+
+        body.fullscreen-mode .card-header h2 {
+            font-size: 13px;
+        }
+
+        body.fullscreen-mode .header-icon {
+            font-size: 20px;
+        }
+
+        body.fullscreen-mode .item-list {
+            gap: 6px;
+        }
+
+        body.fullscreen-mode .item {
+            padding: 10px;
+            gap: 10px;
+        }
+
+        body.fullscreen-mode .item-logo {
+            width: 32px;
+            height: 32px;
+            min-width: 32px;
+        }
+
+        body.fullscreen-mode .item-name {
+            font-size: 14px;
+        }
+
+        body.fullscreen-mode .models-grid {
+            gap: 6px;
+        }
+
+        body.fullscreen-mode .models-grid .item {
+            padding: 8px;
+        }
+
+        body.fullscreen-mode .models-grid .item-logo {
+            width: 28px;
+            height: 28px;
+            min-width: 28px;
+        }
+
+        body.fullscreen-mode .models-grid .item-name {
+            font-size: 13px;
+        }
+
+        body.fullscreen-mode .open-source-badge {
+            font-size: 8px;
+            padding: 1px 4px;
+        }
+
+        body.fullscreen-mode .note-section {
+            padding: 12px 16px;
+        }
+
+        body.fullscreen-mode .note-section p {
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="page-container">
+        <!-- Main Visualization -->
+        <main class="viz-container">
+            <div class="corner-top-left"></div>
+            <div class="corner-bottom-right"></div>
+
+            <div class="viz-content">
+                <!-- Header -->
+                <header class="viz-header">
+                    <h1 class="viz-title">
+                        El Ecosistema de la <span class="highlight">Inteligencia Artificial</span>
+                    </h1>
+                </header>
+
+                <!-- Main Grid -->
+                <section class="main-grid">
+                    <!-- EMPRESAS -->
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="header-icon">🏭</span>
+                            <h2>Empresas</h2>
+                        </div>
+                        <div class="item-list">
+                            <!-- Third-party logos fetched via Google Favicon API. Trademarks belong to their respective owners. -->
+                            <div class="item">
+                                <img src="https://www.google.com/s2/favicons?domain=openai.com&sz=64" alt="OpenAI" class="item-logo">
+                                <div class="item-content">
+                                    <div class="item-name">OpenAI</div>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <img src="https://www.google.com/s2/favicons?domain=google.com&sz=64" alt="Google" class="item-logo">
+                                <div class="item-content">
+                                    <div class="item-name">Google</div>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <img src="https://www.google.com/s2/favicons?domain=anthropic.com&sz=64" alt="Anthropic" class="item-logo">
+                                <div class="item-content">
+                                    <div class="item-name">Anthropic</div>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <img src="https://www.google.com/s2/favicons?domain=meta.com&sz=64" alt="Meta" class="item-logo">
+                                <div class="item-content">
+                                    <div class="item-name">Meta</div>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <img src="https://www.google.com/s2/favicons?domain=mistral.ai&sz=64" alt="Mistral AI" class="item-logo">
+                                <div class="item-content">
+                                    <div class="item-name">Mistral AI</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- APLICACIONES -->
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="header-icon">🚗</span>
+                            <h2>Aplicaciones</h2>
+                        </div>
+                        <div class="item-list">
+                            <div class="item">
+                                <img src="https://www.google.com/s2/favicons?domain=chatgpt.com&sz=64" alt="ChatGPT" class="item-logo">
+                                <div class="item-content">
+                                    <div class="item-name">ChatGPT</div>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <img src="https://www.google.com/s2/favicons?domain=gemini.google.com&sz=64" alt="Google Gemini" class="item-logo">
+                                <div class="item-content">
+                                    <div class="item-name">Google Gemini</div>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <img src="https://www.google.com/s2/favicons?domain=claude.ai&sz=64" alt="Claude.ai" class="item-logo">
+                                <div class="item-content">
+                                    <div class="item-name">Claude.ai</div>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <img src="https://www.google.com/s2/favicons?domain=whatsapp.com&sz=64" alt="WhatsApp" class="item-logo">
+                                <div class="item-content">
+                                    <div class="item-name">WhatsApp</div>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <img src="https://www.google.com/s2/favicons?domain=chat.mistral.ai&sz=64" alt="Le Chat" class="item-logo">
+                                <div class="item-content">
+                                    <div class="item-name">Le Chat</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- MODELOS -->
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="header-icon">⚙️</span>
+                            <h2>Modelos</h2>
+                        </div>
+                        <div class="item-list models-grid">
+                            <div class="item">
+                                <img src="https://www.google.com/s2/favicons?domain=openai.com&sz=64" alt="GPT" class="item-logo">
+                                <div class="item-content">
+                                    <div class="item-name">GPT-5</div>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <img src="https://www.google.com/s2/favicons?domain=openai.com&sz=64" alt="GPT" class="item-logo">
+                                <div class="item-content">
+                                    <div class="item-name">GPT-4.1</div>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <img src="https://www.google.com/s2/favicons?domain=google.com&sz=64" alt="Gemini" class="item-logo">
+                                <div class="item-content">
+                                    <div class="item-name">Gemini 3 Flash</div>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <img src="https://www.google.com/s2/favicons?domain=google.com&sz=64" alt="Gemini" class="item-logo">
+                                <div class="item-content">
+                                    <div class="item-name">Gemini 3 Pro</div>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <img src="https://www.google.com/s2/favicons?domain=anthropic.com&sz=64" alt="Claude" class="item-logo">
+                                <div class="item-content">
+                                    <div class="item-name">Claude Sonnet 4.5</div>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <img src="https://www.google.com/s2/favicons?domain=anthropic.com&sz=64" alt="Claude" class="item-logo">
+                                <div class="item-content">
+                                    <div class="item-name">Claude Haiku 4.5</div>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <img src="https://www.google.com/s2/favicons?domain=mistral.ai&sz=64" alt="Mistral" class="item-logo">
+                                <div class="item-content">
+                                    <div class="item-name">Mistral Large 3</div>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <img src="https://www.google.com/s2/favicons?domain=meta.com&sz=64" alt="Llama" class="item-logo">
+                                <div class="item-content">
+                                    <div class="item-name">Llama 4 Scout<span class="open-source-badge">Open Source</span></div>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <img src="https://www.google.com/s2/favicons?domain=deepseek.com&sz=64" alt="DeepSeek" class="item-logo">
+                                <div class="item-content">
+                                    <div class="item-name">DeepSeek V3.2<span class="open-source-badge">Open Source</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Note Section -->
+                <section class="note-section">
+                    <p>
+                        <strong>🚗 La analogía:</strong> Las <strong>EMPRESAS</strong> (fabricantes) crean <strong>APLICACIONES</strong> (autos) impulsadas por sus <strong>MODELOS</strong> (motores).<br>
+                        Los modelos <strong>Open Source</strong> son como motores que cualquier fabricante puede usar.
+                    </p>
+                </section>
+            </div>
+        </main>
+
+        <!-- Attribution Footer -->
+        <footer class="brand-footer">
+            <div class="footer-brand">
+                <a href="https://trifolia.cl" target="_blank" rel="noopener" style="color: inherit; text-decoration: none;"><strong>Trifolia</strong></a> · Contenido educativo
+            </div>
+            <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="license noopener" class="btn-cta" style="font-size: 12px; padding: 8px 14px;">
+                CC BY-NC-SA 4.0
+            </a>
+        </footer>
+    </div>
+
+    <!-- Slide Navigation Bar -->
+    <nav class="slide-nav" role="navigation" aria-label="Navegación de slides educativos">
+        <div class="slide-nav-container">
+            <div class="slide-nav-prev">
+                <a href="ai-taxonomy.html" class="slide-nav-btn" aria-label="Anterior: Taxonomía de IA"><span class="slide-nav-arrow">&larr;</span><span class="slide-nav-label">Anterior</span></a>
+            </div>
+            <div class="slide-nav-dots" role="tablist" aria-label="Slides">
+                <a href="intro.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Introducción" title="Introducción"></a>
+                <a href="ai-taxonomy.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Taxonomía de IA" title="Taxonomía de IA"></a>
+                <a href="ai-ecosystem.html" class="slide-nav-dot active" role="tab" aria-selected="true" aria-label="Ecosistema de IA" title="Ecosistema de IA"></a>
+                <a href="autocomplete.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Autocompletado" title="Autocompletado"></a>
+                <a href="context-window.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Ventana de Contexto" title="Ventana de Contexto"></a>
+                <a href="ai-intelligence.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="¿IA Inteligente?" title="¿IA Inteligente?"></a>
+                <a href="practical-implications.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Capacidades LLMs" title="Capacidades LLMs"></a>
+                <a href="practical-tips.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Consejos Prácticos" title="Consejos Prácticos"></a>
+                <a href="model-tradeoffs.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Trade-offs de Modelos" title="Trade-offs de Modelos"></a>
+                <a href="prompting-tips.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Prompts Efectivos" title="Prompts Efectivos"></a>
+                <a href="hallucinations.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Alucinaciones" title="Alucinaciones"></a>
+                <a href="knowledge-problem.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Problema del Conocimiento" title="Problema del Conocimiento"></a>
+                <a href="trifolia-demo.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Trifolia en Acción" title="Trifolia en Acción"></a>
+                <a href="tools-context.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Herramientas y Contexto" title="Herramientas y Contexto"></a>
+                <a href="sources-section.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Fuentes Consultadas" title="Fuentes Consultadas"></a>
+                <a href="trifolia.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Trifolia" title="Trifolia"></a>
+                <a href="conclusiones.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Conclusiones" title="Conclusiones"></a>
+                <a href="privacidad-datos.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Privacidad: Datos" title="Privacidad: Datos"></a>
+                <a href="privacidad-proteccion.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Privacidad: Protección" title="Privacidad: Protección"></a>
+                <a href="privacidad-onpremise.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Privacidad: On-Premise" title="Privacidad: On-Premise"></a>
+            </div>
+            <div class="slide-nav-next">
+                <a href="autocomplete.html" class="slide-nav-btn" aria-label="Siguiente: Autocompletado"><span class="slide-nav-label">Siguiente</span><span class="slide-nav-arrow">&rarr;</span></a>
+            </div>
+        </div>
+    </nav>
+    <div class="slide-nav-hint" id="slideNavHint"><span>&larr; &rarr; para navegar</span></div>
+    <div class="slide-progress-indicator">
+        <div class="progress-fill" style="width: 15%"></div>
+    </div>
+    <link rel="stylesheet" href="../css/slide-nav.css">
+    <script src="../js/slide-nav.js"></script>
+</body>
+</html>

@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacidad: ¿Cómo se Protegen tus Datos? - Trifolia</title>
+
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Cómo una aplicación de IA responsable protege tus datos: base de seguridad compartida con cualquier servicio cloud, más protecciones específicas para inteligencia artificial.">
+    <meta property="og:title" content="Privacidad: ¿Cómo se Protegen tus Datos?">
+    <meta property="og:description" content="La seguridad en IA parte de una base común con cualquier servicio que maneja datos sensibles, pero además implementa protecciones específicas para los riesgos de la inteligencia artificial.">
+    <meta property="og:type" content="article">
+
+    <!-- License -->
+    <link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+    <meta name="author" content="Trifolia (trifolia.cl)">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="../images/logo.svg">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Slides Base CSS -->
+    <link href="../css/slides-base.css" rel="stylesheet">
+
+    <style>
+        /* Slide-specific overrides */
+        :root {
+            --viz-max-width: 920px;
+            --viz-padding: 36px 24px;
+        }
+
+        .viz-header {
+            margin-bottom: 20px;
+        }
+
+        .viz-title {
+            font-size: clamp(22px, 3.5vw, 32px);
+            margin: 0 0 8px 0;
+        }
+
+        .viz-description {
+            font-size: 18px;
+            max-width: 600px;
+            color: rgba(248, 249, 250, 0.85);
+        }
+
+        /* Section Styling */
+        .info-section {
+            margin-bottom: 14px;
+            animation: fadeIn 0.5s ease-out both;
+        }
+
+        .info-section { animation-delay: 0.1s; }
+
+        .section-card {
+            background: rgba(60, 120, 253, 0.06);
+            border: 1px solid rgba(60, 120, 253, 0.15);
+            border-radius: 10px;
+            padding: 22px 26px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 14px;
+        }
+
+        .section-icon {
+            font-size: 32px;
+            flex-shrink: 0;
+        }
+
+        .section-label {
+            font-size: 15px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-weight: 600;
+            color: var(--clover-purple);
+            margin: 0;
+        }
+
+        .section-text {
+            font-size: 17px;
+            line-height: 1.6;
+            color: rgba(248, 249, 250, 0.9);
+            margin: 0;
+        }
+
+        /* Layers Section (two-layer stacked model) */
+        .layers-section .section-card {
+            background: rgba(245, 158, 11, 0.06);
+            border-color: rgba(245, 158, 11, 0.2);
+        }
+
+        .layers-section .section-label {
+            color: var(--warning-amber);
+        }
+
+        .security-layer {
+            border-radius: 8px;
+            padding: 18px 20px;
+            transition: all 0.3s ease;
+        }
+
+        .security-layer:hover {
+            filter: brightness(1.1);
+        }
+
+        .layer-ai {
+            background: rgba(16, 185, 129, 0.08);
+            border: 1px solid rgba(16, 185, 129, 0.25);
+            margin-bottom: 12px;
+        }
+
+        .layer-base {
+            background: rgba(245, 158, 11, 0.08);
+            border: 1px solid rgba(245, 158, 11, 0.25);
+        }
+
+        .layer-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+
+        .layer-badge {
+            display: inline-block;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 4px 12px;
+            border-radius: 20px;
+        }
+
+        .layer-badge-ai {
+            background: rgba(16, 185, 129, 0.15);
+            color: rgba(16, 185, 129, 0.95);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .layer-badge-base {
+            background: rgba(245, 158, 11, 0.15);
+            color: rgba(245, 158, 11, 0.95);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+
+        .layer-subtitle {
+            font-size: 15px;
+            color: rgba(248, 249, 250, 0.7);
+            margin: 0;
+        }
+
+        .layer-items {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+        }
+
+        .layer-item {
+            text-align: center;
+        }
+
+        .layer-item-icon {
+            font-size: 28px;
+            margin-bottom: 6px;
+        }
+
+        .layer-item-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--paper-white);
+            margin-bottom: 3px;
+        }
+
+        .layer-item-desc {
+            font-size: 13px;
+            color: rgba(248, 249, 250, 0.65);
+            line-height: 1.4;
+        }
+
+        /* Key Message */
+        .key-message {
+            margin-top: 18px;
+            font-size: 16px;
+            font-weight: 500;
+            color: rgba(248, 249, 250, 0.95);
+            background: rgba(245, 158, 11, 0.1);
+            border-radius: 6px;
+            padding: 12px 18px;
+            text-align: center;
+            line-height: 1.5;
+        }
+
+        /* Reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            .security-layer {
+                transition: none;
+            }
+            .security-layer:hover {
+                transform: none;
+            }
+        }
+
+        /* Responsive - Tablet */
+        @media (max-width: 991.98px) {
+            .layer-items {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+
+            .layer-item {
+                display: flex;
+                align-items: center;
+                text-align: left;
+                gap: 10px;
+            }
+
+            .layer-item-icon {
+                margin-bottom: 0;
+                flex-shrink: 0;
+            }
+        }
+
+        /* Responsive - Mobile */
+        @media (max-width: 767.98px) {
+            .viz-description {
+                font-size: 15px;
+            }
+
+            .section-card {
+                padding: 16px;
+            }
+
+            .section-icon {
+                font-size: 24px;
+            }
+
+            .section-text {
+                font-size: 14px;
+            }
+
+            .security-layer {
+                padding: 12px;
+            }
+
+            .key-message {
+                font-size: 13px;
+            }
+        }
+
+        /* Small mobile */
+        @media (max-width: 479.98px) {
+            .layer-item-title {
+                font-size: 12px;
+            }
+
+            .layer-item-desc {
+                font-size: 10px;
+            }
+        }
+
+        /* Fullscreen presentation mode */
+        body.fullscreen-mode .viz-header {
+            margin-bottom: 14px;
+        }
+
+        body.fullscreen-mode .viz-title {
+            font-size: clamp(20px, 3vw, 28px);
+        }
+
+        body.fullscreen-mode .viz-description {
+            font-size: 15px;
+        }
+
+        body.fullscreen-mode .info-section {
+            margin-bottom: 12px;
+        }
+
+        body.fullscreen-mode .section-card {
+            padding: 18px 22px;
+        }
+
+        body.fullscreen-mode .section-header {
+            margin-bottom: 12px;
+        }
+
+        body.fullscreen-mode .section-icon {
+            font-size: 26px;
+        }
+
+        body.fullscreen-mode .section-label {
+            font-size: 13px;
+        }
+
+        body.fullscreen-mode .section-text {
+            font-size: 15px;
+        }
+
+        body.fullscreen-mode .security-layer {
+            padding: 14px 16px;
+        }
+
+        body.fullscreen-mode .layer-badge {
+            font-size: 11px;
+            padding: 3px 10px;
+        }
+
+        body.fullscreen-mode .layer-subtitle {
+            font-size: 13px;
+        }
+
+        body.fullscreen-mode .layer-items {
+            gap: 10px;
+        }
+
+        body.fullscreen-mode .layer-item-icon {
+            font-size: 22px;
+            margin-bottom: 4px;
+        }
+
+        body.fullscreen-mode .layer-item-title {
+            font-size: 13px;
+        }
+
+        body.fullscreen-mode .layer-item-desc {
+            font-size: 11px;
+        }
+
+        body.fullscreen-mode .layer-header {
+            margin-bottom: 10px;
+        }
+
+        body.fullscreen-mode .key-message {
+            margin-top: 14px;
+            font-size: 14px;
+            padding: 10px 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="page-container">
+        <!-- Main Content -->
+        <main class="viz-container">
+            <div class="corner-top-left"></div>
+            <div class="corner-bottom-right"></div>
+
+            <div class="viz-content">
+                <!-- Header -->
+                <header class="viz-header">
+                    <h1 class="viz-title">
+                        <span class="highlight">Privacidad</span>: ¿Cómo se Protegen tus Datos?
+                    </h1>
+                    <p class="viz-description">
+                        La seguridad en IA parte de una base común, pero va más allá
+                    </p>
+                </header>
+
+                <!-- Security Layers Section (stacked model) -->
+                <div class="info-section layers-section">
+                    <div class="section-card">
+                        <div class="section-header">
+                            <span class="section-icon">&#128737;</span>
+                            <h2 class="section-label">Modelo de seguridad en capas</h2>
+                        </div>
+                        <p class="section-text">
+                            Una app de IA responsable cumple la base de seguridad de cualquier servicio, y además implementa protecciones específicas:
+                        </p>
+
+                        <!-- Top layer: AI-specific -->
+                        <div class="security-layer layer-ai">
+                            <div class="layer-header">
+                                <span class="layer-badge layer-badge-ai">Capa IA</span>
+                                <span class="layer-subtitle">Protecciones específicas de inteligencia artificial</span>
+                            </div>
+                            <div class="layer-items">
+                                <div class="layer-item">
+                                    <div class="layer-item-icon">&#128165;</div>
+                                    <div>
+                                        <div class="layer-item-title">Zero-Retention</div>
+                                        <div class="layer-item-desc">El LLM no retiene datos tras procesar</div>
+                                    </div>
+                                </div>
+                                <div class="layer-item">
+                                    <div class="layer-item-icon">&#128683;</div>
+                                    <div>
+                                        <div class="layer-item-title">Exclusión de entrenamiento</div>
+                                        <div class="layer-item-desc">Tus datos no entrenan el modelo</div>
+                                    </div>
+                                </div>
+                                <div class="layer-item">
+                                    <div class="layer-item-icon">&#128300;</div>
+                                    <div>
+                                        <div class="layer-item-title">Filtrado de salidas</div>
+                                        <div class="layer-item-desc">Control de lo que el modelo genera</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Bottom layer: Shared baseline -->
+                        <div class="security-layer layer-base">
+                            <div class="layer-header">
+                                <span class="layer-badge layer-badge-base">Base común</span>
+                                <span class="layer-subtitle">Seguridad compartida con email, cloud y otros servicios</span>
+                            </div>
+                            <div class="layer-items">
+                                <div class="layer-item">
+                                    <div class="layer-item-icon">&#128272;</div>
+                                    <div>
+                                        <div class="layer-item-title">Cifrado</div>
+                                        <div class="layer-item-desc">Datos cifrados en tránsito y en reposo</div>
+                                    </div>
+                                </div>
+                                <div class="layer-item">
+                                    <div class="layer-item-icon">&#128274;</div>
+                                    <div>
+                                        <div class="layer-item-title">Control de acceso</div>
+                                        <div class="layer-item-desc">Autenticación y permisos por cuenta</div>
+                                    </div>
+                                </div>
+                                <div class="layer-item">
+                                    <div class="layer-item-icon">&#128203;</div>
+                                    <div>
+                                        <div class="layer-item-title">Auditorías</div>
+                                        <div class="layer-item-desc">Registro y revisión de accesos</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <p class="key-message">
+                            Una app de IA responsable cumple la base de seguridad de cualquier servicio que maneja datos sensibles, <strong>y además implementa protecciones específicas</strong> para los riesgos propios de la inteligencia artificial.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Attribution Footer -->
+        <footer class="brand-footer">
+            <div class="footer-brand">
+                <a href="https://trifolia.cl" target="_blank" rel="noopener" style="color: inherit; text-decoration: none;"><strong>Trifolia</strong></a> · Contenido educativo
+            </div>
+            <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="license noopener" class="btn-cta" style="font-size: 12px; padding: 8px 14px;">
+                CC BY-NC-SA 4.0
+            </a>
+        </footer>
+    </div>
+
+    <!-- Slide Navigation Bar -->
+    <nav class="slide-nav" role="navigation" aria-label="Navegación de slides educativos">
+        <div class="slide-nav-container">
+            <div class="slide-nav-prev">
+                <a href="privacidad-datos.html" class="slide-nav-btn" aria-label="Anterior: Privacidad: Datos"><span class="slide-nav-arrow">&larr;</span><span class="slide-nav-label">Anterior</span></a>
+            </div>
+            <div class="slide-nav-dots" role="tablist" aria-label="Slides">
+                <a href="intro.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Introducción" title="Introducción"></a>
+                <a href="ai-taxonomy.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Taxonomía de IA" title="Taxonomía de IA"></a>
+                <a href="ai-ecosystem.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Ecosistema de IA" title="Ecosistema de IA"></a>
+                <a href="autocomplete.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Autocompletado" title="Autocompletado"></a>
+                <a href="context-window.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Ventana de Contexto" title="Ventana de Contexto"></a>
+                <a href="ai-intelligence.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="¿IA Inteligente?" title="¿IA Inteligente?"></a>
+                <a href="practical-implications.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Capacidades LLMs" title="Capacidades LLMs"></a>
+                <a href="practical-tips.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Consejos Prácticos" title="Consejos Prácticos"></a>
+                <a href="model-tradeoffs.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Trade-offs de Modelos" title="Trade-offs de Modelos"></a>
+                <a href="prompting-tips.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Prompts Efectivos" title="Prompts Efectivos"></a>
+                <a href="hallucinations.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Alucinaciones" title="Alucinaciones"></a>
+                <a href="knowledge-problem.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Problema del Conocimiento" title="Problema del Conocimiento"></a>
+                <a href="trifolia-demo.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Trifolia en Acción" title="Trifolia en Acción"></a>
+                <a href="tools-context.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Herramientas y Contexto" title="Herramientas y Contexto"></a>
+                <a href="sources-section.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Fuentes Consultadas" title="Fuentes Consultadas"></a>
+                <a href="trifolia.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Trifolia" title="Trifolia"></a>
+                <a href="conclusiones.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Conclusiones" title="Conclusiones"></a>
+                <a href="privacidad-datos.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Privacidad: Datos" title="Privacidad: Datos"></a>
+                <a href="privacidad-proteccion.html" class="slide-nav-dot active" role="tab" aria-selected="true" aria-label="Privacidad: Protección" title="Privacidad: Protección"></a>
+                <a href="privacidad-onpremise.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Privacidad: On-Premise" title="Privacidad: On-Premise"></a>
+            </div>
+            <div class="slide-nav-next">
+                <a href="privacidad-onpremise.html" class="slide-nav-btn" aria-label="Siguiente: Privacidad: On-Premise"><span class="slide-nav-label">Siguiente</span><span class="slide-nav-arrow">&rarr;</span></a>
+            </div>
+        </div>
+    </nav>
+    <div class="slide-nav-hint" id="slideNavHint"><span>&larr; &rarr; para navegar</span></div>
+    <div class="slide-progress-indicator">
+        <div class="progress-fill" style="width: 95%"></div>
+    </div>
+    <link rel="stylesheet" href="../css/slide-nav.css">
+    <script src="../js/slide-nav.js"></script>
+</body>
+</html>

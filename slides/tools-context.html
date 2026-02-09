@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Herramientas: Información Real en el Contexto - Trifolia</title>
+
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Cómo las herramientas inyectan información real en la ventana de contexto del LLM, permitiendo respuestas fundamentadas con fuentes verificables.">
+    <meta property="og:title" content="Herramientas: Información Real en el Contexto">
+    <meta property="og:description" content="El mecanismo: las herramientas llenan el contexto con datos reales para que el LLM pueda citar fuentes verificables.">
+    <meta property="og:type" content="article">
+
+    <!-- License -->
+    <link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+    <meta name="author" content="Trifolia (trifolia.cl)">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="../images/logo.svg">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Slides Base CSS -->
+    <link href="../css/slides-base.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --viz-max-width: 1050px;
+            --viz-padding: 28px 24px;
+        }
+
+        .viz-header {
+            margin-bottom: 18px;
+        }
+
+        .viz-title {
+            font-size: clamp(22px, 3.5vw, 32px);
+            margin: 0 0 6px 0;
+        }
+
+        .viz-description {
+            font-size: clamp(14px, 1.8vw, 16px);
+            max-width: 650px;
+        }
+
+        /* Main layout: context window + side callout */
+        .context-layout {
+            display: grid;
+            grid-template-columns: 1fr 280px;
+            gap: 20px;
+            margin-bottom: 18px;
+            animation: fadeIn 0.5s ease-out 0.1s both;
+        }
+
+        /* Context Window */
+        .context-window {
+            border: 2px solid rgba(60, 120, 253, 0.3);
+            border-radius: 12px;
+            overflow: hidden;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .context-window-header {
+            background: rgba(60, 120, 253, 0.1);
+            padding: 8px 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 1px solid rgba(60, 120, 253, 0.2);
+        }
+
+        .window-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(248, 249, 250, 0.3);
+        }
+
+        .window-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: rgba(248, 249, 250, 0.6);
+            letter-spacing: 0.5px;
+        }
+
+        /* Context Sections */
+        .context-section {
+            padding: 12px 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .context-section:last-child {
+            border-bottom: none;
+        }
+
+        .section-tag {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .section-tag .tag-icon {
+            font-size: 12px;
+        }
+
+        .section-content {
+            font-size: 12px;
+            line-height: 1.5;
+            color: rgba(248, 249, 250, 0.8);
+        }
+
+        /* Instructions section */
+        .section-instructions {
+            background: rgba(60, 120, 253, 0.05);
+        }
+
+        .section-instructions .section-tag {
+            color: var(--clover-purple);
+        }
+
+        .section-instructions .section-content {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: rgba(248, 249, 250, 0.5);
+            font-style: italic;
+        }
+
+        /* User question section */
+        .section-question {
+            background: rgba(60, 120, 253, 0.08);
+        }
+
+        .section-question .section-tag {
+            color: var(--clover-purple);
+        }
+
+        .section-question .section-content {
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            color: rgba(248, 249, 250, 0.9);
+        }
+
+        /* Tool results section */
+        .section-tools {
+            background: rgba(16, 185, 129, 0.05);
+            padding: 12px 16px 14px;
+        }
+
+        .section-tools .section-tag {
+            color: var(--success-green);
+        }
+
+        .tool-results-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .tool-result-group {
+            background: rgba(16, 185, 129, 0.06);
+            border: 1px solid rgba(16, 185, 129, 0.15);
+            border-radius: 6px;
+            padding: 10px 12px;
+        }
+
+        .tool-result-header {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: var(--success-green);
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .tool-result-header .tool-icon {
+            font-size: 13px;
+        }
+
+        .mini-case-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .mini-case {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: 4px;
+            padding: 3px 8px;
+            color: rgba(248, 249, 250, 0.7);
+        }
+
+        .tool-content-preview {
+            font-family: 'Libre Baskerville', serif;
+            font-size: 11px;
+            color: rgba(248, 249, 250, 0.4);
+            margin-top: 6px;
+            line-height: 1.5;
+            font-style: italic;
+        }
+
+        /* Response section */
+        .section-response {
+            background: rgba(114, 0, 252, 0.04);
+        }
+
+        .section-response .section-tag {
+            color: var(--petal-accent);
+        }
+
+        .section-response .section-content {
+            color: rgba(248, 249, 250, 0.8);
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        /* Side callout */
+        .side-callout {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            justify-content: center;
+        }
+
+        .callout-card {
+            background: rgba(16, 185, 129, 0.08);
+            border: 1px solid rgba(16, 185, 129, 0.25);
+            border-radius: 8px;
+            padding: 16px 18px;
+        }
+
+        .callout-card-icon {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .callout-card-text {
+            font-size: 14px;
+            color: rgba(248, 249, 250, 0.9);
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        .callout-card-text strong {
+            color: var(--success-green);
+        }
+
+        /* Key Insight */
+        .key-insight {
+            text-align: center;
+            animation: fadeIn 0.5s ease-out 0.25s both;
+        }
+
+        .key-insight-box {
+            display: inline-block;
+            background: rgba(245, 158, 11, 0.08);
+            border: 1px solid rgba(245, 158, 11, 0.25);
+            border-radius: 8px;
+            padding: 14px 28px;
+        }
+
+        .key-insight-text {
+            font-size: clamp(13px, 1.6vw, 16px);
+            color: rgba(248, 249, 250, 0.9);
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        .key-insight-text strong {
+            color: var(--warning-amber);
+        }
+
+        /* Responsive - Tablet */
+        @media (max-width: 991.98px) {
+            .context-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .side-callout {
+                flex-direction: row;
+            }
+
+            .callout-card {
+                flex: 1;
+            }
+        }
+
+        /* Responsive - Mobile */
+        @media (max-width: 767.98px) {
+            .side-callout {
+                flex-direction: column;
+            }
+
+            .context-section {
+                padding: 10px 14px;
+            }
+
+            .mini-case-list {
+                gap: 4px;
+            }
+
+            .key-insight-box {
+                padding: 12px 18px;
+            }
+        }
+
+        /* Reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* Fullscreen presentation mode */
+        body.fullscreen-mode .viz-container {
+            padding: 16px 24px;
+        }
+
+        body.fullscreen-mode .viz-header {
+            margin-bottom: 12px;
+        }
+
+        body.fullscreen-mode .viz-title {
+            font-size: 28px;
+            margin-bottom: 4px;
+        }
+
+        body.fullscreen-mode .viz-description {
+            font-size: 14px;
+        }
+
+        body.fullscreen-mode .context-layout {
+            gap: 16px;
+            margin-bottom: 14px;
+        }
+
+        body.fullscreen-mode .context-window-header {
+            padding: 6px 14px;
+        }
+
+        body.fullscreen-mode .context-section {
+            padding: 10px 14px;
+        }
+
+        body.fullscreen-mode .section-tag {
+            font-size: 9px;
+            margin-bottom: 4px;
+        }
+
+        body.fullscreen-mode .section-content {
+            font-size: 11px;
+        }
+
+        body.fullscreen-mode .section-instructions .section-content {
+            font-size: 10px;
+        }
+
+        body.fullscreen-mode .section-question .section-content {
+            font-size: 12px;
+        }
+
+        body.fullscreen-mode .tool-result-group {
+            padding: 8px 10px;
+        }
+
+        body.fullscreen-mode .tool-result-header {
+            font-size: 10px;
+            margin-bottom: 4px;
+        }
+
+        body.fullscreen-mode .mini-case {
+            font-size: 9px;
+            padding: 2px 6px;
+        }
+
+        body.fullscreen-mode .tool-content-preview {
+            font-size: 10px;
+        }
+
+        body.fullscreen-mode .callout-card {
+            padding: 12px 14px;
+        }
+
+        body.fullscreen-mode .callout-card-icon {
+            font-size: 22px;
+            margin-bottom: 6px;
+        }
+
+        body.fullscreen-mode .callout-card-text {
+            font-size: 12px;
+        }
+
+        body.fullscreen-mode .key-insight-box {
+            padding: 10px 22px;
+        }
+
+        body.fullscreen-mode .key-insight-text {
+            font-size: 14px;
+        }
+
+        body.fullscreen-mode .brand-footer {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="page-container">
+        <main class="viz-container">
+            <div class="corner-top-left"></div>
+            <div class="corner-bottom-right"></div>
+
+            <div class="viz-content">
+                <!-- Header -->
+                <header class="viz-header">
+                    <h1 class="viz-title">
+                        <span class="highlight">Herramientas</span>: Información Real en el Contexto
+                    </h1>
+                    <p class="viz-description">
+                        Las herramientas inyectan datos reales en la ventana de contexto del LLM.
+                    </p>
+                </header>
+
+                <!-- Context Window + Side Callout -->
+                <div class="context-layout">
+                    <!-- Context Window Diagram -->
+                    <div class="context-window">
+                        <div class="context-window-header">
+                            <div class="window-dot"></div>
+                            <div class="window-dot"></div>
+                            <div class="window-dot"></div>
+                            <span class="window-title">Ventana de Contexto del LLM</span>
+                        </div>
+
+                        <!-- Section 1: Agent Instructions (~15%) -->
+                        <div class="context-section section-instructions">
+                            <div class="section-tag">
+                                <span class="tag-icon">&#9881;</span>
+                                Instrucciones del agente
+                            </div>
+                            <div class="section-content">
+                                "Eres un asistente jurídico experto en derecho chileno. Cita siempre las fuentes con ROL y tribunal..."
+                            </div>
+                        </div>
+
+                        <!-- Section 2: User Question (~10%) -->
+                        <div class="context-section section-question">
+                            <div class="section-tag">
+                                <span class="tag-icon">&#128100;</span>
+                                Pregunta del usuario
+                            </div>
+                            <div class="section-content">
+                                "Necesito jurisprudencia sobre compensación económica en divorcios donde hubo dedicación exclusiva al hogar."
+                            </div>
+                        </div>
+
+                        <!-- Section 3: Tool Results (~50%) -->
+                        <div class="context-section section-tools">
+                            <div class="section-tag">
+                                <span class="tag-icon">&#128295;</span>
+                                Resultados de herramientas
+                            </div>
+                            <div class="tool-results-grid">
+                                <div class="tool-result-group">
+                                    <div class="tool-result-header">
+                                        <span class="tool-icon">&#9878;&#65039;</span>
+                                        buscar_jurisprudencia &#8594; 9 fallos encontrados
+                                    </div>
+                                    <div class="mini-case-list">
+                                        <span class="mini-case">ROL C-2321-2021 &middot; 2do Fam. Stgo</span>
+                                        <span class="mini-case">ROL C-891-2022 &middot; 1er Fam. Valpo</span>
+                                        <span class="mini-case">ROL C-445-2023 &middot; Fam. Concepción</span>
+                                        <span class="mini-case">+ 6 fallos más</span>
+                                    </div>
+                                    <div class="tool-content-preview">
+                                        &ldquo;VISTOS: En Santiago, a 12 de marzo de 2021, el 2do Juzgado de Familia...&rdquo;
+                                    </div>
+                                </div>
+                                <div class="tool-result-group">
+                                    <div class="tool-result-header">
+                                        <span class="tool-icon">&#128214;</span>
+                                        buscar_legislacion &#8594; Art. 61-62, Ley 19.947
+                                    </div>
+                                    <div class="mini-case-list">
+                                        <span class="mini-case">Art. 61 &middot; Procedencia</span>
+                                        <span class="mini-case">Art. 62 &middot; Factores de cálculo</span>
+                                    </div>
+                                    <div class="tool-content-preview">
+                                        &ldquo;Art. 61.&mdash; Si, como consecuencia de haberse dedicado al cuidado de los hijos o...&rdquo;
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Section 4: Agent Response -->
+                        <div class="context-section section-response">
+                            <div class="section-tag">
+                                <span class="tag-icon">&#9998;</span>
+                                Respuesta del agente
+                            </div>
+                            <div class="section-content">
+                                Basándome en los 9 fallos encontrados y la legislación vigente, la compensación económica en divorcios con dedicación exclusiva al hogar se rige por los artículos 61 y 62 de la Ley 19.947. En el caso ROL C-2321-2021 del 2do Juzgado de Familia de Santiago...
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Side Callouts -->
+                    <div class="side-callout">
+                        <div class="callout-card">
+                            <div class="callout-card-icon">&#127919;</div>
+                            <p class="callout-card-text">
+                                Ahora el LLM tiene información <strong>REAL</strong> para citar en su respuesta.
+                            </p>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Key Insight -->
+                <div class="key-insight">
+                    <div class="key-insight-box">
+                        <p class="key-insight-text">
+                            Las herramientas <strong>no hacen al LLM más inteligente</strong>. Le dan materia prima real para trabajar.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Attribution Footer -->
+        <footer class="brand-footer">
+            <div class="footer-brand">
+                <a href="https://trifolia.cl" target="_blank" rel="noopener" style="color: inherit; text-decoration: none;"><strong>Trifolia</strong></a> · Contenido educativo
+            </div>
+            <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="license noopener" class="btn-cta" style="font-size: 12px; padding: 8px 14px;">
+                CC BY-NC-SA 4.0
+            </a>
+        </footer>
+    </div>
+
+    <!-- Slide Navigation Bar -->
+    <nav class="slide-nav" role="navigation" aria-label="Navegación de slides educativos">
+        <div class="slide-nav-container">
+            <div class="slide-nav-prev">
+                <a href="trifolia-demo.html" class="slide-nav-btn" aria-label="Anterior: Trifolia en Acción"><span class="slide-nav-arrow">&larr;</span><span class="slide-nav-label">Anterior</span></a>
+            </div>
+            <div class="slide-nav-dots" role="tablist" aria-label="Slides">
+                <a href="intro.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Introducción" title="Introducción"></a>
+                <a href="ai-taxonomy.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Taxonomía de IA" title="Taxonomía de IA"></a>
+                <a href="ai-ecosystem.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Ecosistema de IA" title="Ecosistema de IA"></a>
+                <a href="autocomplete.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Autocompletado" title="Autocompletado"></a>
+                <a href="context-window.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Ventana de Contexto" title="Ventana de Contexto"></a>
+                <a href="ai-intelligence.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="¿IA Inteligente?" title="¿IA Inteligente?"></a>
+                <a href="practical-implications.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Capacidades LLMs" title="Capacidades LLMs"></a>
+                <a href="practical-tips.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Consejos Prácticos" title="Consejos Prácticos"></a>
+                <a href="model-tradeoffs.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Trade-offs de Modelos" title="Trade-offs de Modelos"></a>
+                <a href="prompting-tips.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Prompts Efectivos" title="Prompts Efectivos"></a>
+                <a href="hallucinations.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Alucinaciones" title="Alucinaciones"></a>
+                <a href="knowledge-problem.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Problema del Conocimiento" title="Problema del Conocimiento"></a>
+                <a href="trifolia-demo.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Trifolia en Acción" title="Trifolia en Acción"></a>
+                <a href="tools-context.html" class="slide-nav-dot active" role="tab" aria-selected="true" aria-label="Herramientas y Contexto" title="Herramientas y Contexto"></a>
+                <a href="sources-section.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Fuentes Consultadas" title="Fuentes Consultadas"></a>
+                <a href="trifolia.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Trifolia" title="Trifolia"></a>
+                <a href="conclusiones.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Conclusiones" title="Conclusiones"></a>
+                <a href="privacidad-datos.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Privacidad: Datos" title="Privacidad: Datos"></a>
+                <a href="privacidad-proteccion.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Privacidad: Protección" title="Privacidad: Protección"></a>
+                <a href="privacidad-onpremise.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Privacidad: On-Premise" title="Privacidad: On-Premise"></a>
+            </div>
+            <div class="slide-nav-next">
+                <a href="sources-section.html" class="slide-nav-btn" aria-label="Siguiente: Fuentes Consultadas"><span class="slide-nav-label">Siguiente</span><span class="slide-nav-arrow">&rarr;</span></a>
+            </div>
+        </div>
+    </nav>
+    <div class="slide-nav-hint" id="slideNavHint"><span>&larr; &rarr; para navegar</span></div>
+    <div class="slide-progress-indicator">
+        <div class="progress-fill" style="width: 70%"></div>
+    </div>
+    <link rel="stylesheet" href="../css/slide-nav.css">
+    <script src="../js/slide-nav.js"></script>
+</body>
+</html>

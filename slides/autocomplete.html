@@ -1,0 +1,1128 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cómo Predicen los LLMs: Autocompletado de Texto - Trifolia</title>
+
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Aprende cómo los modelos de lenguaje (LLMs) predicen la siguiente palabra basándose en el contexto. Visualización interactiva para entender la IA generativa.">
+    <meta property="og:title" content="Cómo Predicen los LLMs: Autocompletado de Texto">
+    <meta property="og:description" content="Visualización animada mostrando cómo los LLMs calculan probabilidades para predecir la siguiente palabra en una oración.">
+    <meta property="og:type" content="article">
+
+    <!-- License -->
+    <link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+    <meta name="author" content="Trifolia (trifolia.cl)">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="../images/logo.svg">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Slides Base CSS -->
+    <link href="../css/slides-base.css" rel="stylesheet">
+
+    <style>
+        /* Slide-specific CSS Variables */
+        :root {
+            --viz-max-width: 1100px;
+            --token-bg: rgba(114, 0, 252, 0.15);
+            --token-border: rgba(114, 0, 252, 0.4);
+            --context-bg: rgba(60, 120, 253, 0.08);
+            --context-border: rgba(60, 120, 253, 0.3);
+        }
+
+        .viz-header {
+            margin-bottom: 24px;
+        }
+
+        .viz-description {
+            max-width: 700px;
+            font-size: 18px;
+        }
+
+        /* Visualization Area */
+        .viz-area {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(60, 120, 253, 0.15);
+            border-radius: 12px;
+            padding: 40px 30px 32px;
+            margin-bottom: 16px;
+            min-height: 420px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Start Button */
+        .start-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(135deg, var(--clover-purple), var(--petal-accent));
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            font-size: 16px;
+            font-family: "Inter", system-ui, sans-serif;
+            font-weight: 500;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(60, 120, 253, 0.3);
+        }
+
+        .start-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 30px rgba(60, 120, 253, 0.4);
+        }
+
+        .start-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .start-btn.hidden {
+            display: none;
+        }
+
+        /* Token Chain Container */
+        .token-chain {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            width: 100%;
+        }
+
+        .token-chain.visible {
+            display: flex;
+        }
+
+        /* Bottom row: question + predictions + reset button */
+        .bottom-row {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            justify-content: center;
+        }
+
+
+        /* Context Box */
+        .context-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: var(--context-bg);
+            border: 2px solid var(--context-border);
+            border-radius: 8px;
+            padding: 16px 20px 12px;
+            position: relative;
+            opacity: 0;
+            transform: scale(0.95);
+            transition: all 0.5s ease;
+        }
+
+        .context-box.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .context-label {
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--law-navy);
+            padding: 2px 12px;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            color: var(--clover-purple);
+            border-radius: 4px;
+            border: 1px solid var(--context-border);
+        }
+
+        /* Tokens Row */
+        .tokens-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        /* Individual Token */
+        .token {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--token-bg);
+            border: 1px solid var(--token-border);
+            border-radius: 6px;
+            padding: 10px 14px;
+            font-family: "JetBrains Mono", monospace;
+            font-size: 18px;
+            font-weight: 500;
+            color: var(--paper-white);
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .token.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .token.selected {
+            background: linear-gradient(135deg, rgba(0, 255, 255, 0.2), rgba(114, 0, 252, 0.3));
+            border-color: var(--gradient-cyan);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+        }
+
+        /* Generated token (distinct from context tokens) */
+        .token.generated {
+            background: linear-gradient(135deg, rgba(0, 255, 255, 0.12), rgba(114, 0, 252, 0.18));
+            border-color: rgba(0, 255, 255, 0.4);
+            color: rgba(0, 255, 255, 0.9);
+        }
+
+        .token.generated.final-highlight {
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.35), 0 0 40px rgba(0, 255, 255, 0.15);
+            border-color: rgba(0, 255, 255, 0.6);
+            transition: all 0.6s ease;
+        }
+
+        /* Prediction fade-out */
+        .prediction.fading-out {
+            opacity: 0 !important;
+            transform: translateX(20px) !important;
+            transition: all 0.3s ease;
+        }
+
+        /* Arrow between tokens */
+        .arrow {
+            color: rgba(60, 120, 253, 0.6);
+            font-size: 16px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .arrow.visible {
+            opacity: 1;
+        }
+
+        /* Question Token */
+        .token-question {
+            background: rgba(245, 158, 11, 0.15);
+            border: 2px solid rgba(245, 158, 11, 0.5);
+            color: var(--warning-amber);
+            font-weight: 700;
+            font-size: 24px;
+            min-width: 54px;
+            animation: none;
+        }
+
+        .token-question.pulse {
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.4);
+            }
+            50% {
+                box-shadow: 0 0 20px 5px rgba(245, 158, 11, 0.2);
+            }
+        }
+
+        /* Predictions Container */
+        .predictions-container {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            position: relative;
+            margin-left: 8px;
+        }
+
+        /* Prediction Item */
+        .prediction {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            opacity: 0;
+            transform: translateX(-20px);
+            transition: all 0.4s ease;
+        }
+
+        .prediction.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .prediction-line {
+            width: 30px;
+            height: 2px;
+            background: rgba(60, 120, 253, 0.4);
+            position: relative;
+        }
+
+        .prediction-line::before {
+            content: "";
+            position: absolute;
+            right: 0;
+            top: -3px;
+            border: 4px solid transparent;
+            border-left-color: rgba(60, 120, 253, 0.4);
+        }
+
+        .prediction-box {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--token-bg);
+            border: 1px solid var(--token-border);
+            border-radius: 6px;
+            padding: 12px 18px;
+            transition: all 0.3s ease;
+        }
+
+        .prediction-word {
+            font-family: "JetBrains Mono", monospace;
+            font-size: 20px;
+            color: var(--paper-white);
+        }
+
+        .prediction-prob {
+            font-size: 16px;
+            font-weight: 600;
+            padding: 3px 10px;
+            border-radius: 4px;
+            background: rgba(60, 120, 253, 0.2);
+            color: var(--clover-purple);
+        }
+
+        /* High probability prediction */
+        .prediction.high .prediction-box {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(16, 185, 129, 0.25));
+            border-color: var(--success-green);
+        }
+
+        .prediction.high .prediction-prob {
+            background: rgba(16, 185, 129, 0.3);
+            color: var(--success-green);
+        }
+
+        .prediction.high .prediction-line {
+            background: var(--success-green);
+            height: 3px;
+        }
+
+        .prediction.high .prediction-line::before {
+            border-left-color: var(--success-green);
+        }
+
+        .prediction.selected .prediction-box {
+            box-shadow: 0 0 25px rgba(16, 185, 129, 0.4);
+            transform: scale(1.05);
+        }
+
+        /* Medium probability */
+        .prediction.medium .prediction-prob {
+            background: rgba(60, 120, 253, 0.2);
+            color: var(--clover-purple);
+        }
+
+        /* Low probability */
+        .prediction.low .prediction-box {
+            opacity: 0.7;
+        }
+
+        .prediction.low .prediction-prob {
+            background: rgba(255, 255, 255, 0.1);
+            color: rgba(248, 249, 250, 0.6);
+        }
+
+        /* Reset Button */
+        .reset-btn {
+            visibility: hidden;
+            opacity: 0;
+            background: transparent;
+            color: rgba(248, 249, 250, 0.6);
+            border: 1px solid rgba(248, 249, 250, 0.2);
+            padding: 10px 20px;
+            font-size: 14px;
+            font-family: "Inter", system-ui, sans-serif;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-left: 20px;
+            align-self: center;
+        }
+
+        .reset-btn:hover {
+            color: var(--paper-white);
+            border-color: var(--clover-purple);
+        }
+
+        .reset-btn.visible {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        /* Reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            .token, .context-box, .prediction, .start-btn {
+                transition: none;
+            }
+            .token-question.pulse {
+                animation: none;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 767.98px) {
+            .viz-area {
+                padding: 20px 16px;
+                min-height: 320px;
+            }
+
+            .token {
+                padding: 8px 12px;
+                font-size: 13px;
+            }
+
+            .arrow {
+                font-size: 14px;
+            }
+
+            .tokens-row {
+                gap: 6px;
+            }
+
+            .context-box {
+                padding: 14px 12px 10px;
+            }
+
+            .bottom-row {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .predictions-container {
+                margin-left: 0;
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .prediction-line {
+                display: none;
+            }
+
+            .prediction-box {
+                padding: 6px 10px;
+            }
+
+            .prediction-word {
+                font-size: 12px;
+            }
+
+            .prediction-prob {
+                font-size: 10px;
+            }
+
+            .reset-btn {
+                margin-left: 0;
+                margin-top: 8px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .token {
+                padding: 6px 10px;
+                font-size: 12px;
+            }
+
+            .context-label {
+                font-size: 9px;
+                padding: 2px 8px;
+            }
+        }
+
+        /* Large screen optimization */
+        @media (min-width: 1400px) {
+            :root {
+                --viz-max-width: 1200px;
+            }
+
+            .token {
+                padding: 12px 18px;
+                font-size: 20px;
+            }
+
+            .token-question {
+                font-size: 26px;
+                min-width: 58px;
+            }
+
+            .prediction-word {
+                font-size: 22px;
+            }
+
+            .prediction-prob {
+                font-size: 18px;
+            }
+
+            .comparison-title {
+                font-size: 16px;
+            }
+
+            .comparison-label {
+                font-size: 14px;
+            }
+
+            .phone-value, .llm-value {
+                font-size: 18px;
+            }
+        }
+
+        .viz-area {
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        /* Fullscreen presentation mode adjustments */
+        body.fullscreen-mode .viz-header {
+            margin-bottom: 16px;
+        }
+
+        body.fullscreen-mode .viz-description {
+            font-size: 15px;
+        }
+
+        body.fullscreen-mode .viz-area {
+            min-height: 320px;
+            padding: 20px 24px;
+            margin-bottom: 12px;
+        }
+
+        body.fullscreen-mode .start-btn {
+            padding: 12px 24px;
+            font-size: 14px;
+        }
+
+        body.fullscreen-mode .token-chain {
+            gap: 14px;
+        }
+
+        body.fullscreen-mode .context-box {
+            padding: 12px 16px 10px;
+        }
+
+        body.fullscreen-mode .context-label {
+            font-size: 9px;
+            padding: 2px 8px;
+        }
+
+        body.fullscreen-mode .tokens-row {
+            gap: 6px;
+        }
+
+        body.fullscreen-mode .token {
+            padding: 8px 12px;
+            font-size: 15px;
+        }
+
+        body.fullscreen-mode .token-question {
+            font-size: 18px;
+            min-width: 40px;
+            padding: 8px 14px;
+        }
+
+        body.fullscreen-mode .arrow {
+            font-size: 14px;
+        }
+
+        body.fullscreen-mode .bottom-row {
+            gap: 12px;
+        }
+
+        body.fullscreen-mode .predictions-container {
+            gap: 6px;
+        }
+
+        body.fullscreen-mode .prediction-box {
+            padding: 8px 12px;
+            gap: 8px;
+        }
+
+        body.fullscreen-mode .prediction-word {
+            font-size: 14px;
+        }
+
+        body.fullscreen-mode .prediction-prob {
+            font-size: 12px;
+            padding: 2px 6px;
+        }
+
+        body.fullscreen-mode .prediction-line {
+            width: 20px;
+        }
+
+        body.fullscreen-mode .reset-btn {
+            padding: 8px 14px;
+            font-size: 12px;
+            margin-left: 12px;
+        }
+
+        body.fullscreen-mode .comparison-section {
+            margin-top: 12px;
+            padding: 14px 18px;
+        }
+
+        body.fullscreen-mode .comparison-title {
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+
+        body.fullscreen-mode .comparison-grid {
+            gap: 14px;
+        }
+
+        body.fullscreen-mode .comparison-label {
+            font-size: 10px;
+            margin-bottom: 6px;
+        }
+
+        body.fullscreen-mode .comparison-values {
+            gap: 8px;
+        }
+
+        body.fullscreen-mode .phone-value,
+        body.fullscreen-mode .llm-value {
+            font-size: 13px;
+        }
+
+        body.fullscreen-mode .arrow-separator {
+            font-size: 14px;
+        }
+
+        /* Phone vs LLM Comparison Section */
+        .comparison-section {
+            margin-top: 20px;
+            padding: 20px 24px;
+            background: rgba(0, 0, 0, 0.15);
+            border: 1px solid rgba(60, 120, 253, 0.1);
+            border-radius: 10px;
+        }
+
+        .comparison-title {
+            font-size: 15px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            color: var(--clover-purple);
+            text-transform: uppercase;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .comparison-item {
+            text-align: center;
+        }
+
+        .comparison-label {
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            color: rgba(248, 249, 250, 0.5);
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .comparison-values {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .phone-value {
+            font-size: 16px;
+            color: rgba(248, 249, 250, 0.6);
+            font-family: "Inter", system-ui, sans-serif;
+        }
+
+        .arrow-separator {
+            color: var(--clover-purple);
+            font-size: 18px;
+        }
+
+        .llm-value {
+            font-size: 16px;
+            font-weight: 600;
+            background: linear-gradient(90deg, var(--gradient-cyan), var(--gradient-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-family: "Inter", system-ui, sans-serif;
+        }
+
+        @media (max-width: 767.98px) {
+            .comparison-grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            .comparison-section {
+                padding: 14px 16px;
+                margin-top: 16px;
+            }
+
+            .comparison-title {
+                font-size: 13px;
+            }
+
+            .comparison-label {
+                font-size: 11px;
+            }
+
+            .comparison-values {
+                gap: 8px;
+            }
+
+            .phone-value, .llm-value {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-container">
+        <!-- Main Visualization -->
+        <main class="viz-container">
+            <div class="corner-top-left"></div>
+            <div class="corner-bottom-right"></div>
+
+            <div class="viz-content">
+                <!-- Header -->
+                <header class="viz-header">
+                    <h1 class="viz-title">
+                        Cómo <span class="highlight">predicen</span> los LLMs
+                    </h1>
+                    <p class="viz-description">
+                        Los LLMs predicen la siguiente palabra basándose en el contexto y lo aprendido en su entrenamiento.
+                    </p>
+                </header>
+
+                <!-- Visualization Area -->
+                <section class="viz-area">
+                    <button class="start-btn" id="startBtn">
+                        <span>Ver demostración</span>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                        </svg>
+                    </button>
+
+                    <div class="token-chain" id="tokenChain">
+                        <!-- Context Box Row -->
+                        <div class="context-box" id="contextBox">
+                            <span class="context-label">CONTEXTO</span>
+                            <div class="tokens-row" id="tokensRow">
+                                <!-- Tokens will be added here by JS -->
+                            </div>
+                        </div>
+
+                        <!-- Bottom Row: Question + Predictions + Reset -->
+                        <div class="bottom-row">
+                            <!-- Arrow to question -->
+                            <span class="arrow" id="questionArrow">→</span>
+
+                            <!-- Question Token -->
+                            <div class="token token-question" id="questionToken">?</div>
+
+                            <!-- Predictions (generated dynamically by JS) -->
+                            <div class="predictions-container" id="predictionsContainer">
+                            </div>
+
+                            <button class="reset-btn" id="resetBtn">
+                                Reiniciar demostración
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Phone vs LLM Comparison -->
+                <section class="comparison-section">
+                    <div class="comparison-title">¿Por qué un LLM es diferente al autocomplete del celular?</div>
+                    <div class="comparison-grid">
+                        <div class="comparison-item">
+                            <div class="comparison-label">Entrenamiento</div>
+                            <div class="comparison-values">
+                                <span class="phone-value">Tus mensajes</span>
+                                <span class="arrow-separator">→</span>
+                                <span class="llm-value">Billones de documentos</span>
+                            </div>
+                        </div>
+                        <div class="comparison-item">
+                            <div class="comparison-label">Contexto</div>
+                            <div class="comparison-values">
+                                <span class="phone-value">~5 palabras</span>
+                                <span class="arrow-separator">→</span>
+                                <span class="llm-value">500,000+ palabras</span>
+                            </div>
+                        </div>
+                        <div class="comparison-item">
+                            <div class="comparison-label">Generación</div>
+                            <div class="comparison-values">
+                                <span class="phone-value">1 palabra</span>
+                                <span class="arrow-separator">→</span>
+                                <span class="llm-value">Documentos completos</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <!-- Attribution Footer -->
+        <footer class="brand-footer">
+            <div class="footer-brand">
+                <a href="https://trifolia.cl" target="_blank" rel="noopener" style="color: inherit; text-decoration: none;"><strong>Trifolia</strong></a> · Contenido educativo
+            </div>
+            <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="license noopener" class="btn-cta" style="font-size: 12px; padding: 8px 14px;">
+                CC BY-NC-SA 4.0
+            </a>
+        </footer>
+    </div>
+
+    <!-- Slide Navigation Bar -->
+    <nav class="slide-nav" role="navigation" aria-label="Navegación de slides educativos">
+        <div class="slide-nav-container">
+            <div class="slide-nav-prev">
+                <a href="ai-ecosystem.html" class="slide-nav-btn" aria-label="Anterior: Ecosistema de IA"><span class="slide-nav-arrow">&larr;</span><span class="slide-nav-label">Anterior</span></a>
+            </div>
+            <div class="slide-nav-dots" role="tablist" aria-label="Slides">
+                <a href="intro.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Introducción" title="Introducción"></a>
+                <a href="ai-taxonomy.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Taxonomía de IA" title="Taxonomía de IA"></a>
+                <a href="ai-ecosystem.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Ecosistema de IA" title="Ecosistema de IA"></a>
+                <a href="autocomplete.html" class="slide-nav-dot active" role="tab" aria-selected="true" aria-label="Autocompletado" title="Autocompletado"></a>
+                <a href="context-window.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Ventana de Contexto" title="Ventana de Contexto"></a>
+                <a href="ai-intelligence.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="¿IA Inteligente?" title="¿IA Inteligente?"></a>
+                <a href="practical-implications.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Capacidades LLMs" title="Capacidades LLMs"></a>
+                <a href="practical-tips.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Consejos Prácticos" title="Consejos Prácticos"></a>
+                <a href="model-tradeoffs.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Trade-offs de Modelos" title="Trade-offs de Modelos"></a>
+                <a href="prompting-tips.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Prompts Efectivos" title="Prompts Efectivos"></a>
+                <a href="hallucinations.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Alucinaciones" title="Alucinaciones"></a>
+                <a href="knowledge-problem.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Problema del Conocimiento" title="Problema del Conocimiento"></a>
+                <a href="trifolia-demo.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Trifolia en Acción" title="Trifolia en Acción"></a>
+                <a href="tools-context.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Herramientas y Contexto" title="Herramientas y Contexto"></a>
+                <a href="sources-section.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Fuentes Consultadas" title="Fuentes Consultadas"></a>
+                <a href="trifolia.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Trifolia" title="Trifolia"></a>
+                <a href="conclusiones.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Conclusiones" title="Conclusiones"></a>
+                <a href="privacidad-datos.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Privacidad: Datos" title="Privacidad: Datos"></a>
+                <a href="privacidad-proteccion.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Privacidad: Protección" title="Privacidad: Protección"></a>
+                <a href="privacidad-onpremise.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Privacidad: On-Premise" title="Privacidad: On-Premise"></a>
+            </div>
+            <div class="slide-nav-next">
+                <a href="context-window.html" class="slide-nav-btn" aria-label="Siguiente: Ventana de Contexto"><span class="slide-nav-label">Siguiente</span><span class="slide-nav-arrow">&rarr;</span></a>
+            </div>
+        </div>
+    </nav>
+    <div class="slide-nav-hint" id="slideNavHint"><span>&larr; &rarr; para navegar</span></div>
+    <div class="slide-progress-indicator">
+        <div class="progress-fill" style="width: 20%"></div>
+    </div>
+    <link rel="stylesheet" href="../css/slide-nav.css">
+    <script src="../js/slide-nav.js"></script>
+
+    <script>
+    (function() {
+        'use strict';
+
+        // Token data (initial context)
+        const tokens = ['El', 'abogado', 'presentó', 'la', 'demanda', 'ante', 'el'];
+        const tokenDelay = 300; // ms between each token
+
+        // Prediction steps: 6 rounds of word-by-word generation
+        const predictionSteps = [
+            { options: [
+                { word: 'tribunal', prob: '85%', level: 'high' },
+                { word: 'juzgado', prob: '10%', level: 'medium' },
+                { word: 'juez', prob: '3%', level: 'low' }
+            ]},
+            { options: [
+                { word: 'de', prob: '72%', level: 'high' },
+                { word: 'civil', prob: '15%', level: 'medium' },
+                { word: 'competente', prob: '8%', level: 'low' }
+            ]},
+            { options: [
+                { word: 'justicia', prob: '68%', level: 'high' },
+                { word: 'primera', prob: '18%', level: 'medium' },
+                { word: 'familia', prob: '9%', level: 'low' }
+            ]},
+            { options: [
+                { word: 'por', prob: '78%', level: 'high' },
+                { word: 'de', prob: '12%', level: 'medium' },
+                { word: 'en', prob: '6%', level: 'low' }
+            ]},
+            { options: [
+                { word: 'incumplimiento', prob: '52%', level: 'high' },
+                { word: 'daños', prob: '25%', level: 'medium' },
+                { word: 'despido', prob: '14%', level: 'low' }
+            ]},
+            { options: [
+                { word: 'contractual', prob: '74%', level: 'high' },
+                { word: 'de', prob: '16%', level: 'medium' },
+                { word: 'grave', prob: '7%', level: 'low' }
+            ]}
+        ];
+
+        // DOM elements
+        const startBtn = document.getElementById('startBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const tokenChain = document.getElementById('tokenChain');
+        const tokensRow = document.getElementById('tokensRow');
+        const contextBox = document.getElementById('contextBox');
+        const questionArrow = document.getElementById('questionArrow');
+        const questionToken = document.getElementById('questionToken');
+        const predictionsContainer = document.getElementById('predictionsContainer');
+        const vizArea = document.querySelector('.viz-area');
+
+        let animationInProgress = false;
+        let animationComplete = false;
+
+        // Create initial context token elements
+        function createTokenElements() {
+            tokensRow.innerHTML = '';
+            tokens.forEach((word, index) => {
+                const tokenEl = document.createElement('span');
+                tokenEl.className = 'token';
+                tokenEl.textContent = word;
+                tokenEl.dataset.index = index;
+                tokensRow.appendChild(tokenEl);
+
+                // Add arrow after each token except the last
+                if (index < tokens.length - 1) {
+                    const arrowEl = document.createElement('span');
+                    arrowEl.className = 'arrow';
+                    arrowEl.textContent = '→';
+                    tokensRow.appendChild(arrowEl);
+                }
+            });
+        }
+
+        // Create prediction DOM elements for a given step
+        function createPredictionElements(step) {
+            predictionsContainer.innerHTML = '';
+            step.options.forEach(opt => {
+                const predDiv = document.createElement('div');
+                predDiv.className = 'prediction ' + opt.level;
+                predDiv.dataset.word = opt.word;
+                predDiv.dataset.prob = opt.prob;
+
+                predDiv.innerHTML =
+                    '<div class="prediction-line"></div>' +
+                    '<div class="prediction-box">' +
+                        '<span class="prediction-word">' + opt.word + '</span>' +
+                        '<span class="prediction-prob">' + opt.prob + '</span>' +
+                    '</div>';
+
+                predictionsContainer.appendChild(predDiv);
+            });
+        }
+
+        // Add a generated word to the context box
+        function addTokenToContext(word) {
+            // Add arrow
+            const arrowEl = document.createElement('span');
+            arrowEl.className = 'arrow visible';
+            arrowEl.textContent = '→';
+            tokensRow.appendChild(arrowEl);
+
+            // Add token with generated styling
+            const tokenEl = document.createElement('span');
+            tokenEl.className = 'token generated visible';
+            tokenEl.textContent = word;
+            tokensRow.appendChild(tokenEl);
+        }
+
+        // Fade out current predictions
+        async function clearPredictions() {
+            const predictions = predictionsContainer.querySelectorAll('.prediction');
+            predictions.forEach(pred => pred.classList.add('fading-out'));
+            await delay(300);
+            predictionsContainer.innerHTML = '';
+        }
+
+        // Run one predict→select→transfer cycle
+        async function runPredictionStep(stepIndex) {
+            const step = predictionSteps[stepIndex];
+            const isFirst = (stepIndex === 0);
+
+            // Timing: first step is slower
+            const predDelay = isFirst ? 250 : 150;
+            const winnerWait = isFirst ? 800 : 400;
+
+            // Start pulsing question mark
+            questionToken.classList.add('pulse');
+
+            // Create and show predictions one by one
+            createPredictionElements(step);
+            const predictions = predictionsContainer.querySelectorAll('.prediction');
+
+            await delay(isFirst ? 600 : 300);
+
+            for (let i = 0; i < predictions.length; i++) {
+                predictions[i].classList.add('visible');
+                await delay(predDelay);
+            }
+
+            // Wait then highlight the winner (first option)
+            await delay(winnerWait);
+            predictions[0].classList.add('selected');
+            questionToken.classList.remove('pulse');
+
+            // Transfer winner word to context
+            await delay(isFirst ? 500 : 300);
+            const winnerWord = step.options[0].word;
+            addTokenToContext(winnerWord);
+
+            // Clear predictions for next step (unless last step)
+            if (stepIndex < predictionSteps.length - 1) {
+                await delay(200);
+                await clearPredictions();
+            }
+        }
+
+        // Reset visualization
+        function reset() {
+            animationInProgress = false;
+            animationComplete = false;
+            startBtn.classList.remove('hidden');
+            tokenChain.classList.remove('visible');
+            resetBtn.classList.remove('visible');
+
+            // Reset context box
+            contextBox.classList.remove('visible');
+
+            // Reset question elements
+            questionArrow.classList.remove('visible');
+            questionToken.classList.remove('visible', 'pulse');
+            questionToken.style.display = '';
+
+            // Reset question arrow
+            questionArrow.style.display = '';
+
+            // Clear dynamic predictions
+            predictionsContainer.innerHTML = '';
+
+            // Recreate initial context tokens (reset their visibility)
+            createTokenElements();
+        }
+
+        // Main animation sequence
+        async function runAnimation() {
+            if (animationInProgress) return;
+            animationInProgress = true;
+
+            // Hide start button, show token chain
+            startBtn.classList.add('hidden');
+            tokenChain.classList.add('visible');
+
+            // Wait a moment
+            await delay(300);
+
+            // Phase 1: Show context box and animate initial 7 tokens
+            contextBox.classList.add('visible');
+            await delay(400);
+
+            const tokenElements = tokensRow.querySelectorAll('.token');
+            const arrowElements = tokensRow.querySelectorAll('.arrow');
+
+            for (let i = 0; i < tokenElements.length; i++) {
+                tokenElements[i].classList.add('visible');
+                await delay(tokenDelay);
+
+                if (i < arrowElements.length) {
+                    arrowElements[i].classList.add('visible');
+                    await delay(100);
+                }
+            }
+
+            // Show question mark
+            await delay(400);
+            questionArrow.classList.add('visible');
+            await delay(200);
+            questionToken.classList.add('visible');
+            await delay(300);
+
+            // Phase 2: Loop through all 6 prediction steps
+            for (let i = 0; i < predictionSteps.length; i++) {
+                await runPredictionStep(i);
+            }
+
+            // Phase 3: Final highlight - hide question mark and arrow
+            await delay(400);
+            questionToken.style.display = 'none';
+            questionArrow.style.display = 'none';
+
+            // Clear the last predictions
+            await clearPredictions();
+
+            // Glow all generated tokens
+            const generatedTokens = tokensRow.querySelectorAll('.token.generated');
+            generatedTokens.forEach(t => t.classList.add('final-highlight'));
+
+            // Phase 4: Show reset button
+            await delay(600);
+            resetBtn.classList.add('visible');
+
+            animationInProgress = false;
+            animationComplete = true;
+        }
+
+        // Utility delay function
+        function delay(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        // Event listeners
+        startBtn.addEventListener('click', runAnimation);
+        resetBtn.addEventListener('click', reset);
+
+        // Initialize
+        createTokenElements();
+
+        // Register with slide navigation for clicker support
+        if (window.slideInteraction) {
+            window.slideInteraction.register(function() {
+                if (!animationComplete && !animationInProgress) {
+                    runAnimation();
+                    return false;  // Don't navigate, animation starting
+                }
+                return true;  // Animation done, navigate to next slide
+            });
+        }
+    })();
+    </script>
+</body>
+</html>

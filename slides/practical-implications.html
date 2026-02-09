@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Capacidades de los LLMs - Trifolia</title>
+
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="¿Qué pueden y no pueden hacer los LLMs? Descubre las fortalezas y limitaciones de los modelos de lenguaje para usarlos efectivamente.">
+    <meta property="og:title" content="Capacidades de los LLMs">
+    <meta property="og:description" content="Lo que los modelos de lenguaje hacen bien, regular y no pueden hacer en absoluto.">
+    <meta property="og:type" content="article">
+
+    <!-- License -->
+    <link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+    <meta name="author" content="Trifolia (trifolia.cl)">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="../images/logo.svg">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Slides Base CSS -->
+    <link href="../css/slides-base.css" rel="stylesheet">
+
+    <style>
+        /* Override for this slide */
+        :root {
+            --viz-max-width: 1100px;
+            --viz-padding: 32px 20px;
+        }
+
+        .viz-header {
+            margin-bottom: 28px;
+        }
+
+        .viz-title {
+            font-size: clamp(22px, 3.5vw, 32px);
+            margin: 0 0 8px 0;
+        }
+
+        .viz-description {
+            font-size: 15px;
+            max-width: 600px;
+        }
+
+        /* Tips Grid */
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        .tip-card {
+            border-radius: 10px;
+            padding: 28px 28px;
+            transition: all 0.3s ease;
+        }
+
+        .tip-card:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Good at - Green */
+        .tip-card.card-good {
+            background: rgba(16, 185, 129, 0.08);
+            border: 1px solid rgba(16, 185, 129, 0.25);
+        }
+        .tip-card.card-good:hover {
+            border-color: rgba(16, 185, 129, 0.5);
+            background: rgba(16, 185, 129, 0.12);
+        }
+        .tip-card.card-good .tip-icon { color: var(--success-green); }
+        .tip-card.card-good .tip-list li::before { background: var(--success-green); }
+
+        /* OK at - Amber */
+        .tip-card.card-ok {
+            background: rgba(245, 158, 11, 0.08);
+            border: 1px solid rgba(245, 158, 11, 0.25);
+        }
+        .tip-card.card-ok:hover {
+            border-color: rgba(245, 158, 11, 0.5);
+            background: rgba(245, 158, 11, 0.12);
+        }
+        .tip-card.card-ok .tip-icon { color: var(--warning-amber); }
+        .tip-card.card-ok .tip-list li::before { background: var(--warning-amber); }
+
+        /* Can't do - Red */
+        .tip-card.card-cant {
+            background: rgba(239, 68, 68, 0.08);
+            border: 1px solid rgba(239, 68, 68, 0.25);
+        }
+        .tip-card.card-cant:hover {
+            border-color: rgba(239, 68, 68, 0.5);
+            background: rgba(239, 68, 68, 0.12);
+        }
+        .tip-card.card-cant .tip-icon { color: var(--danger-red); }
+        .tip-card.card-cant .tip-list li::before { background: var(--danger-red); }
+
+        .tip-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 16px;
+        }
+
+        .tip-icon {
+            font-size: 32px;
+            flex-shrink: 0;
+        }
+
+        .tip-title {
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--paper-white);
+            margin: 0;
+        }
+
+        .tip-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .tip-list li {
+            font-size: 18px;
+            color: rgba(248, 249, 250, 0.85);
+            line-height: 1.6;
+            padding-left: 22px;
+            position: relative;
+            margin-bottom: 12px;
+        }
+
+        .tip-list li:last-child {
+            margin-bottom: 0;
+        }
+
+        .tip-list li::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 9px;
+            width: 7px;
+            height: 7px;
+            background: var(--clover-purple);
+            border-radius: 50%;
+        }
+
+        .tip-list strong {
+            color: var(--paper-white);
+            font-weight: 500;
+        }
+
+        /* Reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            .tip-card {
+                transition: none;
+            }
+            .tip-card:hover {
+                transform: none;
+            }
+            .tips-grid {
+                animation: none;
+            }
+        }
+
+        /* Responsive - Tablet */
+        @media (max-width: 1023px) {
+            .tips-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+        }
+
+        /* Responsive - Mobile */
+        @media (max-width: 767.98px) {
+            :root {
+                --viz-padding: 20px 16px;
+            }
+
+            .tips-grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            .tip-card {
+                padding: 14px 16px;
+            }
+
+            .tip-icon {
+                font-size: 20px;
+            }
+
+            .tip-title {
+                font-size: 15px;
+            }
+
+            .tip-list li {
+                font-size: 13px;
+            }
+        }
+
+        /* Large screen optimization */
+        @media (min-width: 1400px) {
+            .viz-title {
+                font-size: 36px;
+            }
+
+            .tip-card {
+                padding: 20px 24px;
+            }
+
+            .tip-title {
+                font-size: 17px;
+            }
+
+            .tip-list li {
+                font-size: 15px;
+            }
+        }
+
+        /* Fullscreen presentation mode adjustments */
+        body.fullscreen-mode .viz-header {
+            margin-bottom: 20px;
+        }
+
+        body.fullscreen-mode .tips-grid {
+            gap: 16px;
+        }
+
+        body.fullscreen-mode .tip-card {
+            padding: 22px 24px;
+        }
+
+        body.fullscreen-mode .tip-header {
+            margin-bottom: 14px;
+            gap: 12px;
+        }
+
+        body.fullscreen-mode .tip-icon {
+            font-size: 28px;
+        }
+
+        body.fullscreen-mode .tip-title {
+            font-size: 19px;
+        }
+
+        body.fullscreen-mode .tip-list li {
+            font-size: 16px;
+            margin-bottom: 10px;
+            padding-left: 20px;
+        }
+
+        body.fullscreen-mode .tip-list li::before {
+            width: 6px;
+            height: 6px;
+            top: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="page-container">
+        <!-- Main Content -->
+        <main class="viz-container">
+            <div class="corner-top-left"></div>
+            <div class="corner-bottom-right"></div>
+
+            <div class="viz-content">
+                <!-- Header -->
+                <header class="viz-header">
+                    <h1 class="viz-title">
+                        Capacidades de los <span class="highlight">LLMs</span>
+                    </h1>
+                    <p class="viz-description">
+                        Lo que pueden y no pueden hacer
+                    </p>
+                </header>
+
+                <!-- Tips Grid -->
+                <div class="tips-grid">
+                    <!-- Good at -->
+                    <div class="tip-card card-good">
+                        <div class="tip-header">
+                            <span class="tip-icon">✅</span>
+                            <h3 class="tip-title">Buenos Para</h3>
+                        </div>
+                        <ul class="tip-list">
+                            <li>Resumir documentos extensos</li>
+                            <li>Redactar borradores iniciales</li>
+                            <li>Explicar conceptos complejos de forma simple</li>
+                            <li>Traducir entre idiomas</li>
+                            <li>Encontrar patrones en texto</li>
+                        </ul>
+                    </div>
+
+                    <!-- OK at -->
+                    <div class="tip-card card-ok">
+                        <div class="tip-header">
+                            <span class="tip-icon">⚠️</span>
+                            <h3 class="tip-title">Más o Menos</h3>
+                        </div>
+                        <ul class="tip-list">
+                            <li>Razonamiento sobre problemas nuevos</li>
+                            <li>Seguir instrucciones complejas de varios pasos</li>
+                            <li>Escritura creativa (depende del caso)</li>
+                            <li>Cálculos básicos</li>
+                        </ul>
+                    </div>
+
+                    <!-- Can't do -->
+                    <div class="tip-card card-cant">
+                        <div class="tip-header">
+                            <span class="tip-icon">❌</span>
+                            <h3 class="tip-title">No Pueden</h3>
+                        </div>
+                        <ul class="tip-list">
+                            <li>Acceder a información en tiempo real</li>
+                            <li>Verificar hechos en el mundo real</li>
+                            <li>Recordar conversaciones anteriores</li>
+                            <li>Saber qué pasó después de su entrenamiento</li>
+                            <li>Acceder a bases de datos externas (sin herramientas)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Attribution Footer -->
+        <footer class="brand-footer">
+            <div class="footer-brand">
+                <a href="https://trifolia.cl" target="_blank" rel="noopener" style="color: inherit; text-decoration: none;"><strong>Trifolia</strong></a> · Contenido educativo
+            </div>
+            <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="license noopener" class="btn-cta" style="font-size: 12px; padding: 8px 14px;">
+                CC BY-NC-SA 4.0
+            </a>
+        </footer>
+    </div>
+
+    <!-- Slide Navigation Bar -->
+    <nav class="slide-nav" role="navigation" aria-label="Navegación de slides educativos">
+        <div class="slide-nav-container">
+            <div class="slide-nav-prev">
+                <a href="ai-intelligence.html" class="slide-nav-btn" aria-label="Anterior: ¿IA Inteligente?"><span class="slide-nav-arrow">&larr;</span><span class="slide-nav-label">Anterior</span></a>
+            </div>
+            <div class="slide-nav-dots" role="tablist" aria-label="Slides">
+                <a href="intro.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Introducción" title="Introducción"></a>
+                <a href="ai-taxonomy.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Taxonomía de IA" title="Taxonomía de IA"></a>
+                <a href="ai-ecosystem.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Ecosistema de IA" title="Ecosistema de IA"></a>
+                <a href="autocomplete.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Autocompletado" title="Autocompletado"></a>
+                <a href="context-window.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Ventana de Contexto" title="Ventana de Contexto"></a>
+                <a href="ai-intelligence.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="¿IA Inteligente?" title="¿IA Inteligente?"></a>
+                <a href="practical-implications.html" class="slide-nav-dot active" role="tab" aria-selected="true" aria-label="Capacidades LLMs" title="Capacidades LLMs"></a>
+                <a href="practical-tips.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Consejos Prácticos" title="Consejos Prácticos"></a>
+                <a href="model-tradeoffs.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Trade-offs de Modelos" title="Trade-offs de Modelos"></a>
+                <a href="prompting-tips.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Prompts Efectivos" title="Prompts Efectivos"></a>
+                <a href="hallucinations.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Alucinaciones" title="Alucinaciones"></a>
+                <a href="knowledge-problem.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Problema del Conocimiento" title="Problema del Conocimiento"></a>
+                <a href="trifolia-demo.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Trifolia en Acción" title="Trifolia en Acción"></a>
+                <a href="tools-context.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Herramientas y Contexto" title="Herramientas y Contexto"></a>
+                <a href="sources-section.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Fuentes Consultadas" title="Fuentes Consultadas"></a>
+                <a href="trifolia.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Trifolia" title="Trifolia"></a>
+                <a href="conclusiones.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Conclusiones" title="Conclusiones"></a>
+                <a href="privacidad-datos.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Privacidad: Datos" title="Privacidad: Datos"></a>
+                <a href="privacidad-proteccion.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Privacidad: Protección" title="Privacidad: Protección"></a>
+                <a href="privacidad-onpremise.html" class="slide-nav-dot" role="tab" aria-selected="false" aria-label="Privacidad: On-Premise" title="Privacidad: On-Premise"></a>
+            </div>
+            <div class="slide-nav-next">
+                <a href="practical-tips.html" class="slide-nav-btn" aria-label="Siguiente: Consejos Prácticos"><span class="slide-nav-label">Siguiente</span><span class="slide-nav-arrow">&rarr;</span></a>
+            </div>
+        </div>
+    </nav>
+    <div class="slide-nav-hint" id="slideNavHint"><span>&larr; &rarr; para navegar</span></div>
+    <div class="slide-progress-indicator">
+        <div class="progress-fill" style="width: 35%"></div>
+    </div>
+    <link rel="stylesheet" href="../css/slide-nav.css">
+    <script src="../js/slide-nav.js"></script>
+</body>
+</html>
