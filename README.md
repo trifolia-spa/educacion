@@ -27,11 +27,37 @@ Serie educativa de visualizaciones interactivas sobre inteligencia artificial di
 19. **Privacidad: Protección** - Modelo de seguridad en capas
 20. **Privacidad: On-Premise** - Despliegue en tu propia infraestructura
 
-## Uso
+## Uso local
 
-Abre `index.html` en un navegador o despliega en GitHub Pages.
+No requiere instalación ni build — todo es HTML/CSS/JS vanilla con dependencias externas vía CDN.
 
-Navega entre slides con:
+### Opción 1: Abrir directamente
+
+Abre `index.html` en tu navegador (doble clic o arrastrar al navegador).
+
+### Opción 2: Servidor local (recomendado)
+
+Un servidor HTTP local evita restricciones del navegador con `file://` y refleja mejor el comportamiento en producción.
+
+Con Python (incluido en macOS/Linux):
+
+```bash
+# Python 3
+python3 -m http.server 8000
+
+# Luego abre http://localhost:8000
+```
+
+Con Node.js:
+
+```bash
+npx serve .
+
+# Luego abre http://localhost:3000
+```
+
+### Navegación
+
 - Flechas del teclado (← →)
 - Botones de navegación
 - Swipe en mobile
