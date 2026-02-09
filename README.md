@@ -1,6 +1,12 @@
 # Fundamentos Técnicos de IA para Abogados
 
+[![CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
+
 Serie educativa de visualizaciones interactivas sobre inteligencia artificial diseñada para profesionales del derecho.
+
+![Fundamentos Técnicos de IA para Abogados](images/og-cover.png)
+
+> **Demo en vivo**: [DEPLOY_URL](https://DEPLOY_URL)
 
 ## Contenido
 
@@ -62,6 +68,48 @@ npx serve .
 - Botones de navegación
 - Swipe en mobile
 - Presiona **P** para modo presentación (16:9)
+
+## Despliegue
+
+### GitHub Pages
+
+1. Ve a **Settings > Pages** en tu repositorio
+2. En **Source**, selecciona la rama `main` y la carpeta `/ (root)`
+3. Guarda y espera unos minutos
+4. Tu sitio estará disponible en `https://<usuario>.github.io/<repo>/`
+
+Después de desplegar, reemplaza `DEPLOY_URL` en todos los archivos HTML con tu URL real para que las previsualizaciones sociales funcionen:
+
+```bash
+# macOS/Linux
+grep -rl 'DEPLOY_URL' --include='*.html' . | xargs sed -i '' 's/DEPLOY_URL/tu-usuario.github.io\/tu-repo/g'
+```
+
+## Estructura del proyecto
+
+```
+├── index.html              # Landing page con tabla de contenidos
+├── slides/                 # 20 slides individuales (HTML autocontenido)
+│   ├── intro.html
+│   ├── ai-taxonomy.html
+│   ├── ai-ecosystem.html
+│   └── ...
+├── css/
+│   ├── slides-base.css     # Estilos base, variables CSS, layout, modo presentación
+│   └── slide-nav.css       # Barra de navegación, indicadores de progreso
+├── js/
+│   ├── slide-nav.js        # Navegación por teclado, touch, modo presentación
+│   └── llm-context-viz.js  # Visualización interactiva de ventana de contexto
+├── images/
+│   ├── logo.svg            # Logo Trifolia
+│   └── og-cover.png        # Imagen para previsualizaciones sociales
+├── CONTRIBUTING.md         # Guía para contribuir
+└── CLAUDE.md               # Instrucciones para Claude Code
+```
+
+## Contribuir
+
+Las contribuciones son bienvenidas. Consulta [CONTRIBUTING.md](CONTRIBUTING.md) para las convenciones del proyecto y cómo agregar slides.
 
 ## Licencia
 

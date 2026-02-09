@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1200">
+    <title>OG Cover - Screenshot this at 1200x630</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            width: 1200px;
+            height: 630px;
+            overflow: hidden;
+            background: linear-gradient(165deg, #0d1117 0%, #1A2332 50%, #0d1420 100%);
+            font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            color: #F8F9FA;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        /* Decorative corners */
+        .corner-top-left {
+            position: absolute;
+            top: 40px;
+            left: 40px;
+            width: 80px;
+            height: 80px;
+            border-top: 3px solid #3c78fd;
+            border-left: 3px solid #3c78fd;
+            opacity: 0.5;
+        }
+
+        .corner-bottom-right {
+            position: absolute;
+            bottom: 40px;
+            right: 40px;
+            width: 80px;
+            height: 80px;
+            border-bottom: 3px solid #7200fc;
+            border-right: 3px solid #7200fc;
+            opacity: 0.5;
+        }
+
+        /* Subtle gradient accent line */
+        .accent-line {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #00ffff, #3c78fd, #7200fc);
+        }
+
+        .content {
+            text-align: center;
+            max-width: 900px;
+            padding: 0 60px;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            letter-spacing: 6px;
+            color: #3c78fd;
+            text-transform: uppercase;
+            font-weight: 500;
+            margin-bottom: 24px;
+        }
+
+        .title {
+            font-family: "Libre Baskerville", Georgia, serif;
+            font-size: 52px;
+            font-weight: 400;
+            line-height: 1.25;
+            margin-bottom: 24px;
+            letter-spacing: -0.5px;
+        }
+
+        .title .highlight {
+            background: linear-gradient(90deg, #00ffff, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-style: italic;
+        }
+
+        .description {
+            font-size: 20px;
+            color: rgba(248, 249, 250, 0.7);
+            line-height: 1.5;
+            margin-bottom: 40px;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: rgba(248, 249, 250, 0.5);
+            border: 1px solid rgba(248, 249, 250, 0.15);
+            padding: 8px 18px;
+            border-radius: 20px;
+        }
+
+        .slide-count {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 15px;
+            color: rgba(248, 249, 250, 0.6);
+            margin-bottom: 16px;
+        }
+
+        .slide-count .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #00ffff, #3c78fd, #7200fc);
+        }
+
+        /* Bottom brand bar */
+        .brand-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 16px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .brand-name {
+            font-size: 15px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .brand-name strong {
+            color: #F8F9FA;
+            font-weight: 500;
+        }
+
+        .brand-license {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <div class="accent-line"></div>
+    <div class="corner-top-left"></div>
+    <div class="corner-bottom-right"></div>
+
+    <div class="content">
+        <div class="subtitle">Visualizaciones Educativas</div>
+        <h1 class="title">
+            Fundamentos Técnicos de <span class="highlight">IA para Abogados</span>
+        </h1>
+        <p class="description">
+            20 slides interactivas para entender cómo funcionan los modelos de lenguaje y usarlos de manera efectiva en el ejercicio del derecho.
+        </p>
+        <div class="slide-count">
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            20 visualizaciones interactivas
+        </div>
+    </div>
+
+    <div class="brand-bar">
+        <div class="brand-name"><strong>Trifolia</strong> · trifolia.cl</div>
+        <div class="brand-license">CC BY-NC-SA 4.0</div>
+    </div>
+</body>
+</html>

@@ -92,6 +92,19 @@
     border: 1px solid rgba(255, 255, 255, 0.25);
     transition: all 0.2s ease;
     text-decoration: none;
+    position: relative;
+}
+
+/* Invisible expanded touch target (44px minimum) */
+.slide-nav-dot::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
 }
 
 .slide-nav-dot:hover {
@@ -104,6 +117,21 @@
     border-color: transparent;
     transform: scale(1.2);
     box-shadow: 0 0 8px rgba(60, 120, 253, 0.5);
+}
+
+/* Focus Indicators */
+.slide-nav-btn:focus-visible {
+    outline: 2px solid #3c78fd;
+    outline-offset: 2px;
+    color: white;
+    background: rgba(60, 120, 253, 0.2);
+    border-color: rgba(60, 120, 253, 0.4);
+}
+
+.slide-nav-dot:focus-visible {
+    outline: 2px solid #3c78fd;
+    outline-offset: 4px;
+    background: rgba(255, 255, 255, 0.4);
 }
 
 /* Keyboard Hint */
