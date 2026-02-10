@@ -1,0 +1,22 @@
+{
+  "name": "educacion-trifolia",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Fundamentos Técnicos de IA para Abogados — slide deck educativo",
+  "scripts": {
+    "start": "npx serve . -l 3000",
+    "lint": "npm run lint:html && npm run lint:css && npm run lint:js",
+    "lint:html": "htmlhint index.html 'slides/*.html'",
+    "lint:css": "stylelint 'css/*.css'",
+    "lint:js": "node --check js/slide-nav.js && node --check js/llm-context-viz.js",
+    "validate:nav": "node scripts/validate-nav.js",
+    "validate": "npm run lint && npm run validate:nav",
+    "setup": "npm install && bash scripts/install-hooks.sh"
+  },
+  "devDependencies": {
+    "htmlhint": "^1.1.4",
+    "stylelint": "^16.12.0",
+    "stylelint-config-standard": "^37.0.0",
+    "serve": "^14.2.4"
+  }
+}
