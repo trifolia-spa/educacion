@@ -330,6 +330,74 @@
             padding: 8px 16px;
             font-size: 12px;
         }
+
+        /* Feedback box */
+        .feedback-section {
+            flex: 1;
+            padding: 20px;
+            background: rgba(60, 120, 253, 0.06);
+            border: 1px solid rgba(60, 120, 253, 0.15);
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .feedback-title {
+            font-size: 14px;
+            font-weight: 500;
+            color: rgba(248, 249, 250, 0.9);
+            margin-bottom: 6px;
+        }
+
+        .feedback-text {
+            font-size: 13px;
+            color: rgba(248, 249, 250, 0.6);
+            margin: 0 0 12px 0;
+        }
+
+        .feedback-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .btn-feedback {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: transparent;
+            color: var(--clover-purple);
+            border: 1px solid rgba(60, 120, 253, 0.3);
+            padding: 8px 14px;
+            font-size: 13px;
+            font-family: "Inter", system-ui, sans-serif;
+            font-weight: 500;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-feedback:hover {
+            background: rgba(60, 120, 253, 0.12);
+            border-color: var(--clover-purple);
+            color: var(--paper-white);
+        }
+
+        @media (max-width: 767.98px) {
+            .feedback-section {
+                padding: 16px;
+            }
+        }
+
+        body.fullscreen-mode .feedback-section {
+            padding: 14px;
+        }
+
+        body.fullscreen-mode .btn-feedback {
+            padding: 6px 12px;
+            font-size: 12px;
+        }
     </style>
 </head>
 <body>
@@ -422,6 +490,19 @@
                             </svg>
                         </a>
                     </div>
+
+                    <div class="feedback-section">
+                        <p class="feedback-title">¿Comentarios o sugerencias?</p>
+                        <p class="feedback-text">Ayúdanos a mejorar este contenido educativo.</p>
+                        <div class="feedback-links">
+                            <a href="#GOOGLE_FORM_URL" target="_blank" rel="noopener" class="btn-feedback">
+                                📝 Feedback
+                            </a>
+                            <a id="email-link" href="#" class="btn-feedback">
+                                ✉️ <span id="email-text">Email</span>
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </main>
@@ -475,5 +556,16 @@
     </div>
     <link rel="stylesheet" href="../css/slide-nav.css">
     <script src="../js/slide-nav.js"></script>
+    <script>
+        (function() {
+            var u = 'educacion';
+            var d = 'trifolia.cl';
+            var addr = u + '@' + d;
+            var el = document.getElementById('email-link');
+            var txt = document.getElementById('email-text');
+            if (el) el.href = 'mailto:' + addr;
+            if (txt) txt.textContent = addr;
+        })();
+    </script>
 </body>
 </html>

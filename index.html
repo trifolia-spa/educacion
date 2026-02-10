@@ -195,6 +195,67 @@
             }
         }
 
+        /* Feedback section */
+        .feedback-section {
+            max-width: 700px;
+            margin: 0 auto 24px;
+            animation: fadeIn 0.5s ease-out 0.4s both;
+        }
+
+        .feedback-section-title {
+            font-size: 11px;
+            letter-spacing: 4px;
+            color: var(--clover-purple);
+            text-transform: uppercase;
+            font-weight: 500;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+
+        .feedback-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
+
+        .feedback-card {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            background: rgba(60, 120, 253, 0.06);
+            border: 1px solid rgba(60, 120, 253, 0.15);
+            border-radius: 6px;
+            text-decoration: none;
+            color: rgba(248, 249, 250, 0.85);
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+
+        .feedback-card:hover {
+            background: rgba(60, 120, 253, 0.12);
+            border-color: rgba(60, 120, 253, 0.4);
+            color: var(--paper-white);
+            transform: translateY(-1px);
+        }
+
+        .feedback-card .feedback-icon {
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .feedback-section {
+                animation: none;
+            }
+            .feedback-card {
+                transition: none;
+            }
+            .feedback-card:hover {
+                transform: none;
+            }
+        }
+
         @media (max-width: 767.98px) {
             .slides-list {
                 grid-template-columns: 1fr;
@@ -203,6 +264,10 @@
             .btn-start {
                 padding: 14px 28px;
                 font-size: 15px;
+            }
+
+            .feedback-grid {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -237,7 +302,6 @@
 
                 <!-- Slides Index -->
                 <div class="slides-index">
-                    <h2 class="slides-index-title">Contenido</h2>
                     <ol class="slides-list">
                         <li><a href="slides/intro.html"><span class="slide-number">1</span> Introducción</a></li>
                         <li><a href="slides/ai-taxonomy.html"><span class="slide-number">2</span> Taxonomía de IA</a></li>
@@ -262,6 +326,25 @@
                     </ol>
                 </div>
 
+                <!-- Feedback & Source -->
+                <div class="feedback-section">
+                    <p class="feedback-section-title">Feedback y Código</p>
+                    <div class="feedback-grid">
+                        <a href="#GOOGLE_FORM_URL" target="_blank" rel="noopener" class="feedback-card">
+                            <span class="feedback-icon">📝</span>
+                            Danos tu feedback
+                        </a>
+                        <a id="email-link" href="#" class="feedback-card">
+                            <span class="feedback-icon">✉️</span>
+                            <span id="email-text">Escríbenos</span>
+                        </a>
+                        <a href="https://github.com/trifolia-spa/educacion" target="_blank" rel="noopener" class="feedback-card">
+                            <span class="feedback-icon">💻</span>
+                            Código fuente
+                        </a>
+                    </div>
+                </div>
+
                 <!-- License Badge -->
                 <div class="license-badge">
                     <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="license noopener">
@@ -281,5 +364,17 @@
             </a>
         </footer>
     </div>
+
+    <script>
+        (function() {
+            var u = 'educacion';
+            var d = 'trifolia.cl';
+            var addr = u + '@' + d;
+            var el = document.getElementById('email-link');
+            var txt = document.getElementById('email-text');
+            if (el) el.href = 'mailto:' + addr;
+            if (txt) txt.textContent = addr;
+        })();
+    </script>
 </body>
 </html>
