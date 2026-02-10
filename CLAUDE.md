@@ -22,9 +22,9 @@ Alternatively, open `index.html` directly in a browser. All CSS/JS is vanilla; e
 - `slides/*.html` — Each slide is a self-contained HTML file with its own inline `<style>` block for slide-specific styles
 
 ### Shared Assets
-- `css/slides-base.css` — Base styles, CSS variables (Trifolia brand colors), layout system, fullscreen presentation mode (16:9 scaling at 1280x720 reference resolution), footer, animations, responsive breakpoints
-- `css/slide-nav.css` — Fixed bottom navigation bar, dot indicators, progress bar, fullscreen auto-hide behavior
-- `js/slide-nav.js` — Keyboard navigation (arrows, PageUp/Down, Space/Enter/Tab), touch swipe, presentation mode toggle (P key, persisted via localStorage), fullscreen detection, `window.slideInteraction` API for interactive slides
+- `css/slides-base.css` — Base styles, CSS variables (Trifolia brand colors), 16:9 layout (1280×720 reference resolution scaled to viewport), animations, responsive breakpoints
+- `css/slide-nav.css` — Auto-hiding bottom navigation bar, dot indicators, progress bar
+- `js/slide-nav.js` — Keyboard navigation (arrows, PageUp/Down, Space/Enter/Tab), touch swipe, 16:9 viewport scaling, nav auto-hide, `window.slideInteraction` API for interactive slides
 - `js/llm-context-viz.js` — Standalone interactive visualization for the context-window slide; demonstrates LLM token processing with animated chat conversation
 - `images/` — SVG logo and PNG images used in specific slides
 
@@ -42,8 +42,8 @@ Navigation between slides is hardcoded — each slide has explicit prev/next lin
 ### Interactive Slides
 Slides with JavaScript interactions use `window.slideInteraction.register(fn)` to intercept Space/Enter so the interaction runs before advancing to the next slide. The handler returns `true` to navigate or `false` to stay.
 
-### Presentation Mode
-Press **P** to toggle presentation mode (16:9, 1280x720 reference scaled to fit viewport). State persists in localStorage across slide navigation. The nav bar auto-hides and shows a minimal progress bar; mouse movement briefly reveals the nav.
+### Display
+Slides always render in 16:9 presentation layout (1280×720 reference resolution, scaled to fit the viewport). The nav bar auto-hides and shows a minimal progress bar; mouse movement briefly reveals the nav.
 
 ### CSS Variables
 Key brand colors defined in `slides-base.css`:
