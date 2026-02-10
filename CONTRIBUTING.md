@@ -4,13 +4,12 @@ Gracias por tu interés en contribuir a este proyecto educativo.
 
 ## Desarrollo local
 
-Abre `index.html` directamente en el navegador o usa un servidor HTTP local:
-
 ```bash
-python3 -m http.server 8000
+npm run setup   # Instala dependencias + pre-commit hook (solo la primera vez)
+npm start       # Servidor local en http://localhost:3000
 ```
 
-No hay build, bundler ni dependencias que instalar.
+Alternativamente, abre `index.html` directamente en el navegador o usa `python3 -m http.server 8000`.
 
 ## Cómo agregar una nueva slide
 
@@ -22,6 +21,17 @@ No hay build, bundler ni dependencias que instalar.
    - Nav: `<nav class="slide-nav">` con prev/next y 20+ dots
    - Scripts: `slide-nav.css` y `slide-nav.js` al final del `<body>`
 3. **Actualiza la navegación en TODOS los archivos**: cada slide tiene links prev/next hardcodeados y una lista de dots con el `.active` correspondiente. Al agregar una slide, hay que actualizar `index.html` y las 20+ slides existentes
+4. **Ejecuta `npm run validate:nav`** para verificar que la navegación es consistente en todos los archivos. El pre-commit hook también lo verifica automáticamente
+
+## Linting y validación
+
+```bash
+npm run lint           # HTMLHint + Stylelint + JS syntax check
+npm run validate:nav   # Consistencia de navegación entre slides
+npm run validate       # Todo junto (lint + nav)
+```
+
+El pre-commit hook ejecuta estas verificaciones automáticamente sobre los archivos staged. Si el hook bloquea un commit, corrige los errores reportados y vuelve a intentar.
 
 ## Convenciones de estilo
 

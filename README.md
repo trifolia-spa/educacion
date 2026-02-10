@@ -35,22 +35,21 @@ Serie educativa de visualizaciones interactivas sobre inteligencia artificial di
 
 ## Uso local
 
-No requiere instalación ni build — todo es HTML/CSS/JS vanilla con dependencias externas vía CDN.
+Todo es HTML/CSS/JS vanilla con dependencias externas vía CDN.
 
-### Opción 1: Abrir directamente
+### Opción 1: npm (recomendado)
 
-Abre `index.html` en tu navegador (doble clic o arrastrar al navegador).
+```bash
+npm run setup   # Instala dependencias + pre-commit hook
+npm start       # Servidor local en http://localhost:3000
+```
 
-### Opción 2: Servidor local (recomendado)
-
-Un servidor HTTP local evita restricciones del navegador con `file://` y refleja mejor el comportamiento en producción.
+### Opción 2: Servidor local sin npm
 
 Con Python (incluido en macOS/Linux):
 
 ```bash
-# Python 3
 python3 -m http.server 8000
-
 # Luego abre http://localhost:8000
 ```
 
@@ -58,9 +57,12 @@ Con Node.js:
 
 ```bash
 npx serve .
-
 # Luego abre http://localhost:3000
 ```
+
+### Opción 3: Abrir directamente
+
+Abre `index.html` en tu navegador (doble clic o arrastrar al navegador).
 
 ### Navegación
 
@@ -68,6 +70,32 @@ npx serve .
 - Botones de navegación
 - Swipe en mobile
 - Presiona **P** para modo presentación (16:9)
+
+## Desarrollo
+
+### Linting
+
+```bash
+npm run lint           # HTML + CSS + JS
+npm run lint:html      # Solo HTMLHint
+npm run lint:css       # Solo Stylelint
+```
+
+### Validación de navegación
+
+```bash
+npm run validate:nav   # Verifica dots, prev/next, progress bar en las 20 slides
+npm run validate       # Lint + validación de navegación
+```
+
+### Pre-commit hook
+
+`npm run setup` instala un hook que ejecuta automáticamente antes de cada commit:
+
+1. Detecta marcadores de conflicto de merge
+2. Verifica sintaxis JS (`node --check`)
+3. Lint HTML (HTMLHint) y CSS (Stylelint) de archivos staged
+4. Validación de consistencia de navegación
 
 ## Despliegue
 
@@ -98,6 +126,13 @@ El sitio está publicado en `https://educacion.trifolia.cl`.
 ├── images/
 │   ├── logo.svg            # Logo Trifolia
 │   └── og-cover.png        # Imagen para previsualizaciones sociales
+├── scripts/
+│   ├── validate-nav.js     # Validador de consistencia de navegación entre slides
+│   ├── pre-commit          # Git pre-commit hook
+│   └── install-hooks.sh    # Instalador del hook (symlink a .git/hooks/)
+├── package.json            # Scripts npm y devDependencies
+├── .htmlhintrc             # Configuración HTMLHint
+├── .stylelintrc.json       # Configuración Stylelint
 ├── CONTRIBUTING.md         # Guía para contribuir
 └── CLAUDE.md               # Instrucciones para Claude Code
 ```
@@ -135,3 +170,4 @@ Al compartir o adaptar este material:
 - [Bootstrap 5](https://getbootstrap.com/) (MIT License)
 - [Google Fonts](https://fonts.google.com/) - Inter, Libre Baskerville, JetBrains Mono
 - [Bootstrap Icons](https://icons.getbootstrap.com/) (MIT License)
+- Dev: [HTMLHint](https://htmlhint.com/), [Stylelint](https://stylelint.io/)
