@@ -108,4 +108,4 @@ window.slideInteraction.register(function() {
 
 ## Modo presentación
 
-Presiona **P** para alternar el modo presentación (16:9, referencia 1280x720). Si tu slide necesita ajustes visuales en este modo, agrega reglas bajo `body.fullscreen-mode`.
+Los slides se muestran siempre en modo presentación (16:9, referencia 1280×720, escalado al viewport). El nav bar se oculta automáticamente y se muestra al mover el mouse.

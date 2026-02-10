@@ -10,6 +10,8 @@
  * - Arrow keys (left/right)
  * - PageUp/PageDown (for presentation clickers)
  * - Space/Enter (with slide interaction support)
+ * - Auto-hiding nav bar with mouse-reveal
+ * - 16:9 viewport scaling (1280×720 reference)
  */
 (function() {
     'use strict';
@@ -31,9 +33,9 @@
     var prevLink = nav.querySelector('.slide-nav-prev a');
     var nextLink = nav.querySelector('.slide-nav-next a');
 
-    // ===========================================
-    // FULLSCREEN PRESENTATION MODE
-    // ===========================================
+    // -------------------------------------------
+    // 16:9 VIEWPORT SCALING
+    // -------------------------------------------
 
     // Reference design resolution (16:9)
     var REF_WIDTH = 1280;
@@ -49,13 +51,8 @@
         document.documentElement.style.setProperty('--slide-scale', scale);
     }
 
-    // Always-on presentation mode
-    document.body.classList.add('fullscreen-mode');
     updateSlideScale();
     window.addEventListener('resize', updateSlideScale);
-
-    // Clean up stale localStorage from old toggle mode
-    try { localStorage.removeItem('slidePresentationMode'); } catch (e) {}
 
     // Auto-hide nav after inactivity
     function showNavBriefly() {
@@ -66,7 +63,7 @@
         }, 2000);
     }
 
-    // Show nav on mouse movement in fullscreen
+    // Show nav on mouse movement
     document.addEventListener('mousemove', showNavBriefly);
 
     // Navigate to next slide
@@ -147,6 +144,4 @@
         }
     }
 
-    // Add body class for padding
-    document.body.classList.add('has-slide-nav');
 })();

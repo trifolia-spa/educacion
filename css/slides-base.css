@@ -10,9 +10,9 @@
  *   <link href="css/slides-base.css" rel="stylesheet">
  */
 
-/* ==========================================================================
+/* --------------------------------------------------------------------------
    CSS Variables - Trifolia Brand Colors
-   ========================================================================== */
+   -------------------------------------------------------------------------- */
 
 :root {
     /* Primary colors */
@@ -38,9 +38,9 @@
     --viz-padding-mobile: 24px 16px;
 }
 
-/* ==========================================================================
+/* --------------------------------------------------------------------------
    Base Reset & Typography
-   ========================================================================== */
+   -------------------------------------------------------------------------- */
 
 * {
     box-sizing: border-box;
@@ -53,28 +53,44 @@ html, body {
 }
 
 body {
-    background: linear-gradient(165deg, #0d1117 0%, var(--law-navy) 50%, #0d1420 100%);
+    /* Black background for letterbox/pillarbox around 16:9 slide */
+    background: #000;
     color: var(--paper-white);
     font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     line-height: 1.6;
+    overflow: hidden;
 }
 
-/* ==========================================================================
+/* --------------------------------------------------------------------------
    Page Layout
-   ========================================================================== */
+   -------------------------------------------------------------------------- */
 
 .page-container {
-    min-height: 100vh;
+    position: fixed;
+    inset: 0;
     display: flex;
-    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
-/* Main Content Container */
+/* Main Content Container - 16:9 reference resolution */
 .viz-container {
-    flex: 1;
+    /* Fixed reference resolution */
+    width: 1280px;
+    height: 720px;
+    min-height: 720px;
     padding: var(--viz-padding);
-    position: relative;
+
+    /* Scale to fit viewport */
+    transform: scale(var(--slide-scale, 1));
+    transform-origin: center;
+
+    /* Slide background */
+    background: linear-gradient(165deg, #0d1117 0%, var(--law-navy) 50%, #0d1420 100%);
+    border-radius: 4px;
     overflow: hidden;
+    flex: none;
+    position: relative;
 }
 
 /* Subtle noise texture overlay */
@@ -95,9 +111,9 @@ body {
     z-index: 1;
 }
 
-/* ==========================================================================
+/* --------------------------------------------------------------------------
    Decorative Corner Elements
-   ========================================================================== */
+   -------------------------------------------------------------------------- */
 
 .corner-top-left {
     position: absolute;
@@ -121,9 +137,9 @@ body {
     opacity: 0.4;
 }
 
-/* ==========================================================================
+/* --------------------------------------------------------------------------
    Header Styles
-   ========================================================================== */
+   -------------------------------------------------------------------------- */
 
 .viz-header {
     text-align: center;
@@ -173,18 +189,12 @@ body {
     margin: 0 auto;
 }
 
-/* ==========================================================================
+/* --------------------------------------------------------------------------
    Brand Footer
-   ========================================================================== */
+   -------------------------------------------------------------------------- */
 
 .brand-footer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 16px 24px;
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
-    background: rgba(0, 0, 0, 0.2);
-    gap: 16px;
+    display: none;
 }
 
 .footer-brand {
@@ -248,9 +258,9 @@ body {
     box-shadow: 0 4px 12px rgba(60, 120, 253, 0.3);
 }
 
-/* ==========================================================================
+/* --------------------------------------------------------------------------
    Animations
-   ========================================================================== */
+   -------------------------------------------------------------------------- */
 
 @keyframes fadeIn {
     from {
@@ -293,9 +303,9 @@ body {
     animation: fadeIn 0.4s ease-out;
 }
 
-/* ==========================================================================
+/* --------------------------------------------------------------------------
    Global Focus Indicators
-   ========================================================================== */
+   -------------------------------------------------------------------------- */
 
 a:focus-visible,
 button:focus-visible {
@@ -304,9 +314,9 @@ button:focus-visible {
     border-radius: 2px;
 }
 
-/* ==========================================================================
+/* --------------------------------------------------------------------------
    Accessibility - Reduced Motion
-   ========================================================================== */
+   -------------------------------------------------------------------------- */
 
 @media (prefers-reduced-motion: reduce) {
     *,
@@ -322,9 +332,9 @@ button:focus-visible {
     }
 }
 
-/* ==========================================================================
+/* --------------------------------------------------------------------------
    Responsive - Mobile
-   ========================================================================== */
+   -------------------------------------------------------------------------- */
 
 @media (max-width: 767.98px) {
     .viz-container {
@@ -354,9 +364,9 @@ button:focus-visible {
     }
 }
 
-/* ==========================================================================
+/* --------------------------------------------------------------------------
    Responsive - Large Screens
-   ========================================================================== */
+   -------------------------------------------------------------------------- */
 
 @media (min-width: 1400px) {
     .viz-title {
@@ -364,48 +374,11 @@ button:focus-visible {
     }
 }
 
-/* ==========================================================================
-   Fullscreen Presentation Mode - 16:9 Scaling
-   ========================================================================== */
+/* --------------------------------------------------------------------------
+   Trifolia Watermark Logo
+   -------------------------------------------------------------------------- */
 
-body.fullscreen-mode {
-    /* Black background for letterbox/pillarbox */
-    background: #000;
-    overflow: hidden;
-}
-
-body.fullscreen-mode .page-container {
-    position: fixed;
-    inset: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: auto;
-}
-
-body.fullscreen-mode .viz-container {
-    /* Fixed reference resolution */
-    width: 1280px;
-    height: 720px;
-    min-height: 720px;
-    padding: var(--viz-padding);
-
-    /* Scale to fit viewport */
-    transform: scale(var(--slide-scale, 1));
-    transform-origin: center;
-
-    /* Restore slide background */
-    background: linear-gradient(165deg, #0d1117 0%, var(--law-navy) 50%, #0d1420 100%);
-    border-radius: 4px;
-    overflow: hidden;
-    flex: none; /* Don't grow/shrink */
-}
-
-body.fullscreen-mode .brand-footer {
-    display: none;
-}
-
-body.fullscreen-mode .page-container::after {
+.page-container::after {
     content: "";
     position: fixed;
     bottom: 12px;
