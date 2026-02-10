@@ -378,3 +378,16 @@ body.fullscreen-mode .viz-container {
 body.fullscreen-mode .brand-footer {
     display: none;
 }
+
+body.fullscreen-mode .page-container::after {
+    content: "";
+    position: fixed;
+    bottom: 12px;
+    right: 12px;
+    width: 88px;
+    height: 88px;
+    background: url("../images/logo-trifolia-white.png") no-repeat center / contain;
+    opacity: 0.25;
+    pointer-events: none;
+    z-index: 9999;
+}
