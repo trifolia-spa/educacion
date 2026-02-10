@@ -197,6 +197,32 @@ body {
     font-weight: 500;
 }
 
+/* Brand Wordmark Image */
+
+.brand-wordmark {
+    display: inline-block;
+    height: 1em;
+    width: auto;
+    vertical-align: baseline;
+    position: relative;
+    top: 0.1em;
+}
+
+.brand-wordmark--footer {
+    height: 14px;
+    top: 2px;
+}
+
+.brand-wordmark--heading {
+    height: 0.85em;
+    top: 0.05em;
+}
+
+.brand-wordmark--body {
+    height: 0.9em;
+    top: 0.12em;
+}
+
 .btn-cta {
     display: inline-flex;
     align-items: center;
