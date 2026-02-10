@@ -104,88 +104,88 @@
 
         /* Layer-specific styling */
         .layer-ai {
-            background: rgba(26, 35, 50, 0.6);
-            border: 2px solid rgba(60, 120, 253, 0.2);
+            background: rgba(0, 0, 0, 0.03);
+            border: 2px solid rgba(43, 94, 199, 0.12);
             padding: 32px 40px;
         }
 
         .layer-ai > .set-label {
             font-size: 18px;
-            color: rgba(248, 249, 250, 0.7);
-            background: rgba(60, 120, 253, 0.1);
-            border: 1px solid rgba(60, 120, 253, 0.2);
+            color: rgba(28, 25, 23, 0.55);
+            background: rgba(43, 94, 199, 0.06);
+            border: 1px solid rgba(43, 94, 199, 0.12);
         }
 
         .layer-ai:hover,
         .layer-ai.active {
-            border-color: rgba(60, 120, 253, 0.5);
-            background: rgba(26, 35, 50, 0.8);
+            border-color: rgba(43, 94, 199, 0.3);
+            background: rgba(0, 0, 0, 0.05);
         }
 
         .layer-ml {
-            background: rgba(60, 120, 253, 0.06);
-            border: 2px solid rgba(60, 120, 253, 0.25);
+            background: rgba(43, 94, 199, 0.04);
+            border: 2px solid rgba(43, 94, 199, 0.15);
             margin-top: 18px;
             padding: 28px 34px;
         }
 
         .layer-ml > .set-label {
             font-size: 16px;
-            color: rgba(60, 120, 253, 0.9);
-            background: rgba(60, 120, 253, 0.12);
-            border: 1px solid rgba(60, 120, 253, 0.25);
+            color: rgba(43, 94, 199, 0.85);
+            background: rgba(43, 94, 199, 0.07);
+            border: 1px solid rgba(43, 94, 199, 0.15);
         }
 
         .layer-ml:hover,
         .layer-ml.active {
-            border-color: rgba(60, 120, 253, 0.6);
-            background: rgba(60, 120, 253, 0.12);
+            border-color: rgba(43, 94, 199, 0.35);
+            background: rgba(43, 94, 199, 0.07);
         }
 
         .layer-dl {
-            background: rgba(80, 100, 200, 0.08);
-            border: 2px solid rgba(100, 120, 220, 0.3);
+            background: rgba(98, 0, 214, 0.04);
+            border: 2px solid rgba(98, 0, 214, 0.15);
             margin-top: 16px;
             padding: 26px 32px;
         }
 
         .layer-dl > .set-label {
             font-size: 15px;
-            color: rgba(130, 150, 240, 0.95);
-            background: rgba(100, 120, 220, 0.15);
-            border: 1px solid rgba(100, 120, 220, 0.3);
+            color: rgba(98, 0, 214, 0.8);
+            background: rgba(98, 0, 214, 0.06);
+            border: 1px solid rgba(98, 0, 214, 0.15);
         }
 
         .layer-dl:hover,
         .layer-dl.active {
-            border-color: rgba(100, 120, 220, 0.7);
-            background: rgba(80, 100, 200, 0.15);
+            border-color: rgba(98, 0, 214, 0.35);
+            background: rgba(98, 0, 214, 0.08);
         }
 
         .layer-genai {
-            background: rgba(114, 0, 252, 0.08);
-            border: 2px solid rgba(114, 0, 252, 0.3);
+            background: rgba(98, 0, 214, 0.06);
+            border: 2px solid rgba(98, 0, 214, 0.18);
             margin-top: 14px;
             padding: 24px 30px;
         }
 
         .layer-genai > .set-label {
             font-size: 14px;
-            color: rgba(160, 100, 255, 0.95);
-            background: rgba(114, 0, 252, 0.15);
-            border: 1px solid rgba(114, 0, 252, 0.3);
+            color: rgba(98, 0, 214, 0.85);
+            background: rgba(98, 0, 214, 0.1);
+            border: 1px solid rgba(98, 0, 214, 0.18);
         }
 
         .layer-genai:hover,
         .layer-genai.active {
-            border-color: rgba(114, 0, 252, 0.7);
-            background: rgba(114, 0, 252, 0.15);
+            border-color: rgba(98, 0, 214, 0.45);
+            background: rgba(98, 0, 214, 0.1);
         }
 
         .layer-llm {
-            background: linear-gradient(135deg, rgba(0, 255, 255, 0.08) 0%, rgba(114, 0, 252, 0.12) 100%);
+            background: linear-gradient(135deg, rgba(43, 94, 199, 0.05) 0%, rgba(98, 0, 214, 0.08) 100%);
             border: 2px solid;
-            border-image: linear-gradient(135deg, rgba(0, 255, 255, 0.5), rgba(114, 0, 252, 0.5)) 1;
+            border-image: linear-gradient(135deg, rgba(43, 94, 199, 0.3), rgba(98, 0, 214, 0.3)) 1;
             margin-top: 12px;
             padding: 22px 28px;
             min-width: 220px;
@@ -194,7 +194,7 @@
         .layer-llm > .set-label {
             font-size: 15px;
             font-weight: 700;
-            background: linear-gradient(90deg, var(--gradient-cyan), var(--gradient-purple));
+            background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -204,7 +204,7 @@
 
         .layer-llm .llm-examples {
             font-size: 14px;
-            color: rgba(248, 249, 250, 0.6);
+            color: rgba(28, 25, 23, 0.5);
             margin-top: 6px;
             font-weight: 400;
             letter-spacing: 0.5px;
@@ -213,14 +213,14 @@
 
         .layer-llm:hover,
         .layer-llm.active {
-            background: linear-gradient(135deg, rgba(0, 255, 255, 0.12) 0%, rgba(114, 0, 252, 0.18) 100%);
-            box-shadow: 0 0 30px rgba(114, 0, 252, 0.2), 0 0 60px rgba(0, 255, 255, 0.1);
+            background: linear-gradient(135deg, rgba(43, 94, 199, 0.07) 0%, rgba(98, 0, 214, 0.12) 100%);
+            box-shadow: 0 0 30px rgba(98, 0, 214, 0.12), 0 0 60px rgba(43, 94, 199, 0.06);
         }
 
         /* Description Panel */
         .description-panel {
-            background: rgba(60, 120, 253, 0.06);
-            border: 1px solid rgba(60, 120, 253, 0.2);
+            background: rgba(43, 94, 199, 0.04);
+            border: 1px solid rgba(43, 94, 199, 0.12);
             border-radius: 6px;
             padding: 32px;
             flex: 1;
@@ -234,8 +234,8 @@
         }
 
         .description-panel.active {
-            border-color: rgba(60, 120, 253, 0.4);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            border-color: rgba(43, 94, 199, 0.2);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
         }
 
         .description-header {
@@ -259,22 +259,22 @@
             font-family: "Inter", system-ui, sans-serif;
             font-size: 24px;
             font-weight: 600;
-            color: var(--paper-white);
+            color: var(--text-primary);
             margin: 0;
         }
 
         .description-text {
             font-size: 22px;
-            color: rgba(248, 249, 250, 0.8);
+            color: rgba(28, 25, 23, 0.7);
             line-height: 1.7;
             margin: 0 0 16px 0;
         }
 
         .description-examples {
             font-size: 18px;
-            color: rgba(248, 249, 250, 0.6);
+            color: rgba(28, 25, 23, 0.5);
             padding-left: 16px;
-            border-left: 2px solid rgba(60, 120, 253, 0.3);
+            border-left: 2px solid rgba(43, 94, 199, 0.18);
         }
 
         .description-examples strong {

@@ -40,10 +40,10 @@
         /* Slide-specific CSS Variables */
         :root {
             --viz-max-width: 1100px;
-            --token-bg: rgba(114, 0, 252, 0.15);
-            --token-border: rgba(114, 0, 252, 0.4);
-            --context-bg: rgba(60, 120, 253, 0.08);
-            --context-border: rgba(60, 120, 253, 0.3);
+            --token-bg: rgba(98, 0, 214, 0.1);
+            --token-border: rgba(98, 0, 214, 0.22);
+            --context-bg: rgba(43, 94, 199, 0.05);
+            --context-border: rgba(43, 94, 199, 0.18);
         }
 
         .viz-header {
@@ -57,8 +57,8 @@
 
         /* Visualization Area */
         .viz-area {
-            background: rgba(0, 0, 0, 0.2);
-            border: 1px solid rgba(60, 120, 253, 0.15);
+            background: rgba(0, 0, 0, 0.025);
+            border: 1px solid rgba(43, 94, 199, 0.1);
             border-radius: 12px;
             padding: 40px 30px 32px;
             margin-bottom: 16px;
@@ -86,12 +86,12 @@
             border-radius: 8px;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 20px rgba(60, 120, 253, 0.3);
+            box-shadow: 0 4px 20px rgba(43, 94, 199, 0.18);
         }
 
         .start-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 30px rgba(60, 120, 253, 0.4);
+            box-shadow: 0 6px 30px rgba(43, 94, 199, 0.2);
         }
 
         .start-btn:disabled {
@@ -151,7 +151,7 @@
             top: -10px;
             left: 50%;
             transform: translateX(-50%);
-            background: var(--law-navy);
+            background: var(--paper-white);
             padding: 2px 12px;
             font-size: 11px;
             font-weight: 600;
@@ -182,7 +182,7 @@
             font-family: "JetBrains Mono", monospace;
             font-size: 18px;
             font-weight: 500;
-            color: var(--paper-white);
+            color: var(--text-primary);
             opacity: 0;
             transform: translateY(10px);
             transition: all 0.3s ease;
@@ -195,21 +195,21 @@
         }
 
         .token.selected {
-            background: linear-gradient(135deg, rgba(0, 255, 255, 0.2), rgba(114, 0, 252, 0.3));
-            border-color: var(--gradient-cyan);
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+            background: linear-gradient(135deg, rgba(43, 94, 199, 0.12), rgba(98, 0, 214, 0.1));
+            border-color: var(--gradient-start);
+            box-shadow: 0 0 12px rgba(43, 94, 199, 0.15);
         }
 
         /* Generated token (distinct from context tokens) */
         .token.generated {
-            background: linear-gradient(135deg, rgba(0, 255, 255, 0.12), rgba(114, 0, 252, 0.18));
-            border-color: rgba(0, 255, 255, 0.4);
-            color: rgba(0, 255, 255, 0.9);
+            background: linear-gradient(135deg, rgba(43, 94, 199, 0.07), rgba(98, 0, 214, 0.12));
+            border-color: rgba(43, 94, 199, 0.3);
+            color: var(--clover-purple);
         }
 
         .token.generated.final-highlight {
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.35), 0 0 40px rgba(0, 255, 255, 0.15);
-            border-color: rgba(0, 255, 255, 0.6);
+            box-shadow: 0 0 12px rgba(43, 94, 199, 0.2), 0 0 24px rgba(98, 0, 214, 0.08);
+            border-color: rgba(43, 94, 199, 0.4);
             transition: all 0.6s ease;
         }
 
@@ -222,7 +222,7 @@
 
         /* Arrow between tokens */
         .arrow {
-            color: rgba(60, 120, 253, 0.6);
+            color: rgba(43, 94, 199, 0.35);
             font-size: 16px;
             opacity: 0;
             transition: opacity 0.3s ease;
@@ -234,7 +234,7 @@
 
         /* Question Token */
         .token-question {
-            background: rgba(245, 158, 11, 0.15);
+            background: rgba(217, 119, 6, 0.08);
             border: 2px solid rgba(245, 158, 11, 0.5);
             color: var(--warning-amber);
             font-weight: 700;
@@ -252,7 +252,7 @@
                 box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.4);
             }
             50% {
-                box-shadow: 0 0 20px 5px rgba(245, 158, 11, 0.2);
+                box-shadow: 0 0 20px 5px rgba(217, 119, 6, 0.1);
             }
         }
 
@@ -283,7 +283,7 @@
         .prediction-line {
             width: 30px;
             height: 2px;
-            background: rgba(60, 120, 253, 0.4);
+            background: rgba(43, 94, 199, 0.2);
             position: relative;
         }
 
@@ -293,7 +293,7 @@
             right: 0;
             top: -3px;
             border: 4px solid transparent;
-            border-left-color: rgba(60, 120, 253, 0.4);
+            border-left-color: rgba(43, 94, 199, 0.2);
         }
 
         .prediction-box {
@@ -310,7 +310,7 @@
         .prediction-word {
             font-family: "JetBrains Mono", monospace;
             font-size: 20px;
-            color: var(--paper-white);
+            color: var(--text-primary);
         }
 
         .prediction-prob {
@@ -318,18 +318,18 @@
             font-weight: 600;
             padding: 3px 10px;
             border-radius: 4px;
-            background: rgba(60, 120, 253, 0.2);
+            background: rgba(43, 94, 199, 0.12);
             color: var(--clover-purple);
         }
 
         /* High probability prediction */
         .prediction.high .prediction-box {
-            background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(16, 185, 129, 0.25));
+            background: linear-gradient(135deg, rgba(5, 150, 105, 0.08), rgba(16, 185, 129, 0.25));
             border-color: var(--success-green);
         }
 
         .prediction.high .prediction-prob {
-            background: rgba(16, 185, 129, 0.3);
+            background: rgba(5, 150, 105, 0.15);
             color: var(--success-green);
         }
 
@@ -349,7 +349,7 @@
 
         /* Medium probability */
         .prediction.medium .prediction-prob {
-            background: rgba(60, 120, 253, 0.2);
+            background: rgba(43, 94, 199, 0.12);
             color: var(--clover-purple);
         }
 
@@ -359,8 +359,8 @@
         }
 
         .prediction.low .prediction-prob {
-            background: rgba(255, 255, 255, 0.1);
-            color: rgba(248, 249, 250, 0.6);
+            background: rgba(0, 0, 0, 0.06);
+            color: rgba(28, 25, 23, 0.5);
         }
 
         /* Reset Button */
@@ -368,8 +368,8 @@
             visibility: hidden;
             opacity: 0;
             background: transparent;
-            color: rgba(248, 249, 250, 0.6);
-            border: 1px solid rgba(248, 249, 250, 0.2);
+            color: rgba(28, 25, 23, 0.5);
+            border: 1px solid rgba(0, 0, 0, 0.1);
             padding: 10px 20px;
             font-size: 14px;
             font-family: "Inter", system-ui, sans-serif;
@@ -381,7 +381,7 @@
         }
 
         .reset-btn:hover {
-            color: var(--paper-white);
+            color: var(--text-primary);
             border-color: var(--clover-purple);
         }
 
@@ -631,8 +631,8 @@
         .comparison-section {
             margin-top: 20px;
             padding: 20px 24px;
-            background: rgba(0, 0, 0, 0.15);
-            border: 1px solid rgba(60, 120, 253, 0.1);
+            background: rgba(0, 0, 0, 0.02);
+            border: 1px solid rgba(43, 94, 199, 0.06);
             border-radius: 10px;
         }
 
@@ -660,7 +660,7 @@
             font-size: 13px;
             font-weight: 600;
             letter-spacing: 1px;
-            color: rgba(248, 249, 250, 0.5);
+            color: rgba(28, 25, 23, 0.4);
             text-transform: uppercase;
             margin-bottom: 8px;
         }
@@ -674,7 +674,7 @@
 
         .phone-value {
             font-size: 16px;
-            color: rgba(248, 249, 250, 0.6);
+            color: rgba(28, 25, 23, 0.5);
             font-family: "Inter", system-ui, sans-serif;
         }
 
@@ -686,7 +686,7 @@
         .llm-value {
             font-size: 16px;
             font-weight: 600;
-            background: linear-gradient(90deg, var(--gradient-cyan), var(--gradient-purple));
+            background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
