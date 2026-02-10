@@ -78,6 +78,7 @@
   let btnStart;
   let btnReset;
   let explanationPanel;
+  let controls;
 
   /**
    * Initialize DOM references
@@ -89,6 +90,7 @@
     btnStart = document.getElementById("btn-start");
     btnReset = document.getElementById("btn-reset");
     explanationPanel = document.getElementById("explanation-panel");
+    controls = btnStart.parentElement;
   }
 
   /**
@@ -374,6 +376,17 @@
   }
 
   /**
+   * Place the start button inside the chat viewport as a centered overlay
+   */
+  function showStartOverlay() {
+    var overlay = document.createElement("div");
+    overlay.className = "chat-start-overlay";
+    overlay.appendChild(btnStart);
+    chatViewport.appendChild(overlay);
+    controls.style.display = "none";
+  }
+
+  /**
    * Start the conversation animation
    */
   function startConversation() {
@@ -384,7 +397,11 @@
     currentMessageIndex = 0;
     totalTokens = 0;
 
-    // Clear previous conversation
+    // Move button back to controls before clearing the viewport
+    controls.insertBefore(btnStart, btnReset);
+    controls.style.display = "";
+
+    // Clear previous conversation (removes the overlay div)
     chatViewport.innerHTML = "";
 
     // Update UI
@@ -436,6 +453,9 @@
     btnStart.textContent = "Iniciar Conversacion";
     btnReset.classList.remove("visible");
     explanationPanel.style.display = "block";
+
+    // Move button back inside viewport
+    showStartOverlay();
   }
 
   /**
@@ -459,6 +479,9 @@
   function init() {
     initDOMReferences();
     initEventListeners();
+
+    // Place start button inside viewport on initial load
+    showStartOverlay();
 
     // Register with slide navigation for clicker support
     if (window.slideInteraction) {

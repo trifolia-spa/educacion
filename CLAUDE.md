@@ -49,4 +49,4 @@ Key brand colors defined in `slides-base.css`:
 - `--viz-max-width: 1000px` (overridable per slide)
 
 ### Slide Order
-intro → ai-taxonomy → ai-ecosystem → autocomplete → context-window → ai-intelligence → practical-implications → practical-tips → model-tradeoffs → prompting-tips → hallucinations → knowledge-problem → trifolia-demo → tools-context → sources-section → trifolia → conclusiones → privacidad-datos → privacidad-proteccion → privacidad-onpremise
+intro → ai-taxonomy → ai-ecosystem → autocomplete → context-window → practical-implications → practical-tips → ai-intelligence → model-tradeoffs → prompting-tips → hallucinations → knowledge-problem → trifolia-demo → tools-context → sources-section → trifolia → conclusiones → privacidad-datos → privacidad-proteccion → privacidad-onpremise

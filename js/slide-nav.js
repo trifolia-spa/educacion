@@ -40,37 +40,8 @@
     var REF_HEIGHT = 720;
 
     var activityTimeout = null;
-    var manualPresentationMode = false;
-
-    // Check localStorage for persisted presentation mode
-    try {
-        manualPresentationMode = localStorage.getItem('slidePresentationMode') === 'true';
-    } catch (e) {
-        // localStorage not available
-    }
-
-    function isInFullscreen() {
-        // Check Fullscreen API first
-        if (document.fullscreenElement ||
-            document.webkitFullscreenElement ||
-            document.mozFullScreenElement) {
-            return true;
-        }
-
-        // Check if window covers most of the screen (F11 mode)
-        // Use 95% threshold to account for menu bars, notches, etc.
-        var heightRatio = window.innerHeight / screen.height;
-        var widthRatio = window.innerWidth / screen.width;
-
-        return heightRatio >= 0.95 && widthRatio >= 0.95;
-    }
 
     function updateSlideScale() {
-        if (!document.body.classList.contains('fullscreen-mode')) {
-            document.documentElement.style.removeProperty('--slide-scale');
-            return;
-        }
-
         var scaleX = window.innerWidth / REF_WIDTH;
         var scaleY = window.innerHeight / REF_HEIGHT;
         var scale = Math.min(scaleX, scaleY);
@@ -78,41 +49,16 @@
         document.documentElement.style.setProperty('--slide-scale', scale);
     }
 
-    function updateFullscreenMode() {
-        var isFullscreen = manualPresentationMode || isInFullscreen();
-        document.body.classList.toggle('fullscreen-mode', isFullscreen);
-        updateSlideScale();
-    }
+    // Always-on presentation mode
+    document.body.classList.add('fullscreen-mode');
+    updateSlideScale();
+    window.addEventListener('resize', updateSlideScale);
 
-    function togglePresentationMode() {
-        manualPresentationMode = !manualPresentationMode;
-        // Persist across page navigations
-        try {
-            localStorage.setItem('slidePresentationMode', manualPresentationMode);
-        } catch (e) {
-            // localStorage not available
-        }
-        updateFullscreenMode();
-    }
+    // Clean up stale localStorage from old toggle mode
+    try { localStorage.removeItem('slidePresentationMode'); } catch (e) {}
 
-    // Expose toggle function for external use
-    window.togglePresentationMode = togglePresentationMode;
-
-    // Listen for fullscreen changes (API-triggered fullscreen)
-    document.addEventListener('fullscreenchange', updateFullscreenMode);
-    document.addEventListener('webkitfullscreenchange', updateFullscreenMode);
-    document.addEventListener('mozfullscreenchange', updateFullscreenMode);
-
-    // Also check on resize (for F11 which doesn't fire fullscreenchange)
-    window.addEventListener('resize', updateFullscreenMode);
-
-    // Check initial state on page load
-    updateFullscreenMode();
-
-    // Auto-hide nav after inactivity in fullscreen mode
+    // Auto-hide nav after inactivity
     function showNavBriefly() {
-        if (!document.body.classList.contains('fullscreen-mode')) return;
-
         document.body.classList.add('nav-active');
         clearTimeout(activityTimeout);
         activityTimeout = setTimeout(function() {
@@ -156,13 +102,6 @@
             return;
         }
 
-        // Toggle presentation mode: P key
-        if (e.key === 'p' || e.key === 'P') {
-            e.preventDefault();
-            togglePresentationMode();
-            return;
-        }
-
         // Previous slide: ArrowLeft, PageUp
         if ((e.key === 'ArrowLeft' || e.key === 'PageUp') && prevLink) {
             e.preventDefault();
@@ -179,18 +118,6 @@
             handleAdvance();
         }
     });
-
-    // Show keyboard hint briefly on load
-    var hint = document.getElementById('slideNavHint');
-    if (hint) {
-        setTimeout(function() {
-            hint.classList.add('visible');
-        }, 1500);
-
-        setTimeout(function() {
-            hint.classList.remove('visible');
-        }, 5000);
-    }
 
     // Touch swipe support for mobile
     var touchStartX = 0;
