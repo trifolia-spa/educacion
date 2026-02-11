@@ -37,67 +37,114 @@
     <link href="../css/slides-base.css" rel="stylesheet">
 
     <style>
-        /* Override max-width for this slide */
+        /* Override max-width and padding for this dense slide */
         :root {
             --viz-max-width: 1200px;
+            --viz-padding: 32px 20px;
+        }
+
+        .viz-header {
+            margin-bottom: 16px;
         }
 
         /* Main Grid - unequal columns: Empresas, Apps narrow, Modelos wide */
         .main-grid {
             display: grid;
             grid-template-columns: 1fr 1fr 2fr;
-            gap: 16px;
-            margin-bottom: 20px;
-        }
-
-        /* Slide-specific size adjustments */
-        .viz-header {
-            margin-bottom: 16px;
-        }
-
-        .main-grid {
             gap: 12px;
             margin-bottom: 12px;
         }
 
+        /* Card Styles */
         .card {
+            background: rgba(60, 120, 253, 0.06);
+            border: 1px solid rgba(60, 120, 253, 0.2);
+            border-radius: 6px;
             padding: 14px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2), 0 0 20px rgba(60, 120, 253, 0.06);
         }
 
         .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
             margin-bottom: 10px;
             padding-bottom: 8px;
-            gap: 8px;
+            border-bottom: 1px solid rgba(60, 120, 253, 0.15);
         }
 
         .card-header h2 {
+            font-family: "Inter", system-ui, sans-serif;
             font-size: 13px;
+            font-weight: 600;
+            color: var(--clover-purple);
+            letter-spacing: 2px;
+            margin: 0;
+            text-transform: uppercase;
         }
 
         .header-icon {
             font-size: 20px;
         }
 
+        /* Item List */
         .item-list {
+            display: flex;
+            flex-direction: column;
             gap: 6px;
         }
 
         .item {
-            padding: 10px;
+            display: flex;
+            align-items: center;
             gap: 10px;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 4px;
+            border: 1px solid transparent;
+            transition: all 0.2s ease;
+        }
+
+        .item:hover {
+            border-color: rgba(60, 120, 253, 0.2);
+            background: rgba(0, 0, 0, 0.3);
         }
 
         .item-logo {
             width: 32px;
             height: 32px;
             min-width: 32px;
+            border-radius: 6px;
+            object-fit: contain;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 4px;
+        }
+
+        .item-content {
+            flex: 1;
+            min-width: 0;
         }
 
         .item-name {
+            font-family: "Inter", system-ui, sans-serif;
             font-size: 14px;
+            font-weight: 600;
+            color: var(--paper-white);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
+        /* Models grid - 2 columns for better readability */
         .models-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
             gap: 6px;
         }
 
@@ -117,136 +164,9 @@
 
         .open-source-badge {
             font-size: 8px;
-            padding: 1px 4px;
-        }
-
-        .note-section {
-            padding: 12px 16px;
-        }
-
-        .note-section p {
-            font-size: 14px;
-        }
-
-        @media (max-width: 1024px) {
-            .main-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* Card Styles */
-        .card {
-            background: rgba(60, 120, 253, 0.06);
-            border: 1px solid rgba(60, 120, 253, 0.2);
-            border-radius: 6px;
-            padding: 20px;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        .card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2), 0 0 20px rgba(60, 120, 253, 0.06);
-        }
-
-        .card-header {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 12px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid rgba(60, 120, 253, 0.15);
-        }
-
-        .card-header h2 {
-            font-family: "Inter", system-ui, sans-serif;
-            font-size: 16px;
-            font-weight: 600;
-            color: var(--clover-purple);
-            letter-spacing: 2px;
-            margin: 0;
-            text-transform: uppercase;
-        }
-
-        .header-icon {
-            font-size: 26px;
-        }
-
-        /* Item List */
-        .item-list {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        /* Models grid - 2 columns for better readability */
-        .models-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-        }
-
-        .item {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            padding: 14px;
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 4px;
-            border: 1px solid transparent;
-            transition: all 0.2s ease;
-        }
-
-        .item:hover {
-            border-color: rgba(60, 120, 253, 0.2);
-            background: rgba(0, 0, 0, 0.3);
-        }
-
-        .item-logo {
-            width: 40px;
-            height: 40px;
-            min-width: 40px;
-            border-radius: 6px;
-            object-fit: contain;
-            background: rgba(255, 255, 255, 0.95);
-            padding: 4px;
-        }
-
-        .item-content {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .item-name {
-            font-family: "Inter", system-ui, sans-serif;
-            font-size: 17px;
-            font-weight: 600;
-            color: var(--paper-white);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        /* Compact items in models grid */
-        .models-grid .item {
-            padding: 12px;
-        }
-
-        .models-grid .item-logo {
-            width: 36px;
-            height: 36px;
-            min-width: 36px;
-        }
-
-        .models-grid .item-name {
-            font-size: 16px;
-        }
-
-        .open-source-badge {
-            font-size: 9px;
             color: var(--success-green);
             background: rgba(16, 185, 129, 0.15);
-            padding: 2px 6px;
+            padding: 1px 4px;
             border-radius: 2px;
             margin-left: 8px;
             font-weight: 500;
@@ -259,12 +179,12 @@
             background: rgba(60, 120, 253, 0.08);
             border: 1px solid rgba(60, 120, 253, 0.25);
             border-radius: 4px;
-            padding: 16px 24px;
+            padding: 12px 16px;
             text-align: center;
         }
 
         .note-section p {
-            font-size: 17px;
+            font-size: 14px;
             color: rgba(248, 249, 250, 0.8);
             line-height: 1.5;
             margin: 0;
@@ -305,11 +225,13 @@
         }
 
         /* Responsive */
-        @media (max-width: 767.98px) {
-            .card {
-                padding: 20px;
+        @media (max-width: 1024px) {
+            .main-grid {
+                grid-template-columns: 1fr;
             }
+        }
 
+        @media (max-width: 767.98px) {
             .models-grid {
                 grid-template-columns: 1fr;
             }
@@ -467,7 +389,7 @@
                             <div class="item">
                                 <img src="https://www.google.com/s2/favicons?domain=mistral.ai&sz=64" alt="Mistral" class="item-logo">
                                 <div class="item-content">
-                                    <div class="item-name">Mistral Large 3</div>
+                                    <div class="item-name">Mistral Large 3<span class="open-source-badge">Open Source</span></div>
                                 </div>
                             </div>
                             <div class="item">
@@ -491,6 +413,9 @@
                     <p>
                         <strong>🚗 La analogía:</strong> Las <strong>EMPRESAS</strong> (fabricantes) crean <strong>APLICACIONES</strong> (autos) impulsadas por sus <strong>MODELOS</strong> (motores).<br>
                         Los modelos <strong>Open Source</strong> son como motores que cualquier fabricante puede usar.
+                    </p>
+                    <p style="font-size: 12px; margin-top: 8px; opacity: 0.6;">
+                        Los logos y marcas pertenecen a sus respectivos propietarios. Para información actualizada: <a href="https://artificialanalysis.ai" target="_blank" rel="noopener" style="color: var(--clover-purple);">artificialanalysis.ai</a>
                     </p>
                 </section>
             </div>
