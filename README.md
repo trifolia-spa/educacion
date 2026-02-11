@@ -69,7 +69,6 @@ Abre `index.html` en tu navegador (doble clic o arrastrar al navegador).
 - Flechas del teclado (← →)
 - Botones de navegación
 - Swipe en mobile
-- Presiona **P** para modo presentación (16:9)
 
 ## Desarrollo
 
