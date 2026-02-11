@@ -77,7 +77,7 @@
         }
 
         .viz-header {
-            margin-bottom: 40px;
+            margin-bottom: 32px;
         }
 
         .viz-title {
@@ -94,6 +94,69 @@
             font-size: clamp(0.95rem, 1.8vw, 1.1rem);
             max-width: 700px;
             margin: 0 auto;
+        }
+
+        /* Welcome info cards */
+        .welcome-section {
+            max-width: 800px;
+            margin: 0 auto 36px;
+            animation: fadeIn 0.6s ease-out 0.15s both;
+        }
+
+        .welcome-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .welcome-card {
+            padding: 20px 18px;
+            background: rgba(60, 120, 253, 0.05);
+            border: 1px solid rgba(60, 120, 253, 0.15);
+            border-radius: 8px;
+        }
+
+        .welcome-card-icon {
+            font-size: 22px;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .welcome-card-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--clover-purple);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 8px;
+        }
+
+        .welcome-card p {
+            font-size: 14px;
+            line-height: 1.6;
+            color: rgba(248, 249, 250, 0.75);
+            margin: 0;
+        }
+
+        .welcome-card ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .welcome-card ul li {
+            font-size: 13px;
+            line-height: 1.5;
+            color: rgba(248, 249, 250, 0.7);
+            padding: 3px 0;
+        }
+
+        .welcome-card ul li::before {
+            content: ">";
+            color: var(--clover-purple);
+            font-weight: 600;
+            margin-right: 8px;
+            font-size: 12px;
         }
 
         /* Slide index */
@@ -160,6 +223,7 @@
         /* CTA */
         .cta-section {
             text-align: center;
+            margin-bottom: 36px;
             animation: fadeIn 0.5s ease-out 0.4s both;
         }
 
@@ -222,7 +286,7 @@
             .btn-start:hover, .slides-list li a:hover {
                 transform: none;
             }
-            .cta-section, .slides-index, .license-badge {
+            .cta-section, .slides-index, .license-badge, .welcome-section {
                 animation: none;
             }
         }
@@ -232,6 +296,18 @@
             max-width: 700px;
             margin: 0 auto 24px;
             animation: fadeIn 0.5s ease-out 0.4s both;
+        }
+
+        .feedback-intro {
+            text-align: center;
+            margin-bottom: 16px;
+        }
+
+        .feedback-intro p {
+            font-size: 14px;
+            color: rgba(248, 249, 250, 0.65);
+            margin: 0;
+            line-height: 1.5;
         }
 
         .feedback-section-title {
@@ -289,6 +365,11 @@
         }
 
         @media (max-width: 767.98px) {
+            .welcome-grid {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
             .slides-list {
                 grid-template-columns: 1fr;
             }
@@ -318,9 +399,37 @@
                     </h1>
                     <p class="viz-question">¿Qué hay detrás del chat?</p>
                     <p class="viz-description">
-                        20 visualizaciones interactivas para entender cómo funcionan los modelos de lenguaje y usarlos de manera efectiva en el ejercicio del derecho.
+                        Una serie abierta de 20 visualizaciones interactivas para entender cómo funcionan los modelos de lenguaje y usarlos con criterio en el ejercicio del derecho.
                     </p>
                 </header>
+
+                <!-- Welcome info cards -->
+                <div class="welcome-section">
+                    <div class="welcome-grid">
+                        <div class="welcome-card">
+                            <span class="welcome-card-icon" aria-hidden="true">&#128218;</span>
+                            <div class="welcome-card-title">Qué es esto</div>
+                            <p>Material educativo que explica los fundamentos técnicos de la IA generativa sin jerga innecesaria. Cubre desde cómo funciona un LLM hasta consejos prácticos de uso, alucinaciones y privacidad de datos.</p>
+                        </div>
+                        <div class="welcome-card">
+                            <span class="welcome-card-icon" aria-hidden="true">&#128101;</span>
+                            <div class="welcome-card-title">Para quién</div>
+                            <ul>
+                                <li>Abogados y equipos legales</li>
+                                <li>Profesionales que usan IA en su trabajo</li>
+                                <li>Cualquier persona curiosa por entender la tecnología detrás del chat</li>
+                            </ul>
+                        </div>
+                        <div class="welcome-card">
+                            <span class="welcome-card-icon" aria-hidden="true">&#129517;</span>
+                            <div class="welcome-card-title">Cómo navegar</div>
+                            <ul>
+                                <li>Recorre en orden o salta a cualquier tema</li>
+                                <li>Usa flechas del teclado o swipe en móvil</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
 
                 <!-- CTA -->
                 <div class="cta-section">
@@ -334,6 +443,7 @@
 
                 <!-- Slides Index -->
                 <div class="slides-index">
+                    <p class="slides-index-title">Contenidos</p>
                     <ol class="slides-list">
                         <li><a href="slides/intro.html"><span class="slide-number">1</span> Introducción</a></li>
                         <li><a href="slides/ai-taxonomy.html"><span class="slide-number">2</span> Taxonomía de IA</a></li>
@@ -360,7 +470,10 @@
 
                 <!-- Feedback & Source -->
                 <div class="feedback-section">
-                    <p class="feedback-section-title">Feedback y Código</p>
+                    <p class="feedback-section-title">Ayúdanos a mejorar</p>
+                    <div class="feedback-intro">
+                        <p>Este material es abierto y evoluciona con tu aporte. Si algo no quedó claro, falta un tema o tienes sugerencias, nos encantaría saberlo.</p>
+                    </div>
                     <div class="feedback-grid">
                         <a href="https://docs.google.com/forms/d/e/1FAIpQLScslaZIivYWm5VsJdxO5aPvTaszBTbszSDwzIwBDqKOR0TQVw/viewform?usp=publish-editor" target="_blank" rel="noopener" class="feedback-card">
                             <span class="feedback-icon">📝</span>
