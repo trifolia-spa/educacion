@@ -14,10 +14,10 @@
     left: 0;
     right: 0;
     z-index: 1000;
-    background: rgba(13, 17, 23, 0.92);
+    background: rgba(250, 249, 246, 0.92);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    border-top: 1px solid rgba(60, 120, 253, 0.2);
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
     padding: 14px 24px;
 }
 
@@ -42,20 +42,20 @@
     gap: 8px;
     padding: 10px 18px;
     border-radius: 4px;
-    color: rgba(255, 255, 255, 0.8);
+    color: rgba(28, 25, 23, 0.7);
     text-decoration: none;
     font-size: 13px;
     font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
     letter-spacing: 0.5px;
     transition: all 0.2s ease;
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    background: rgba(0, 0, 0, 0.02);
 }
 
 .slide-nav-btn:hover:not(.disabled) {
-    color: white;
-    background: rgba(60, 120, 253, 0.2);
-    border-color: rgba(60, 120, 253, 0.4);
+    color: var(--text-primary);
+    background: rgba(43, 94, 199, 0.08);
+    border-color: rgba(43, 94, 199, 0.25);
     transform: translateY(-1px);
     text-decoration: none;
 }
@@ -88,8 +88,8 @@
     width: 10px;
     height: 10px;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.25);
+    background: rgba(0, 0, 0, 0.12);
+    border: 1px solid rgba(0, 0, 0, 0.15);
     transition: all 0.2s ease;
     text-decoration: none;
     position: relative;
@@ -108,30 +108,30 @@
 }
 
 .slide-nav-dot:hover {
-    background: rgba(255, 255, 255, 0.35);
+    background: rgba(0, 0, 0, 0.22);
     transform: scale(1.15);
 }
 
 .slide-nav-dot.active {
-    background: linear-gradient(135deg, #00ffff 0%, #3c78fd 50%, #7200fc 100%);
+    background: var(--clover-purple, #2b5ec7);
     border-color: transparent;
     transform: scale(1.2);
-    box-shadow: 0 0 8px rgba(60, 120, 253, 0.5);
+    box-shadow: 0 0 8px rgba(43, 94, 199, 0.35);
 }
 
 /* Focus Indicators */
 .slide-nav-btn:focus-visible {
-    outline: 2px solid #3c78fd;
+    outline: 2px solid var(--clover-purple, #2b5ec7);
     outline-offset: 2px;
-    color: white;
-    background: rgba(60, 120, 253, 0.2);
-    border-color: rgba(60, 120, 253, 0.4);
+    color: var(--text-primary);
+    background: rgba(43, 94, 199, 0.08);
+    border-color: rgba(43, 94, 199, 0.25);
 }
 
 .slide-nav-dot:focus-visible {
-    outline: 2px solid #3c78fd;
+    outline: 2px solid var(--clover-purple, #2b5ec7);
     outline-offset: 4px;
-    background: rgba(255, 255, 255, 0.4);
+    background: rgba(0, 0, 0, 0.25);
 }
 
 /* Body padding to account for fixed nav */
@@ -183,9 +183,9 @@ body.has-slide-nav {
     }
 }
 
-/* ===========================================
+/* -------------------------------------------
    FULLSCREEN PRESENTATION MODE
-   =========================================== */
+   ------------------------------------------- */
 
 /* Hide main nav in fullscreen mode */
 body.fullscreen-mode .slide-nav {
@@ -206,7 +206,7 @@ body.fullscreen-mode.has-slide-nav {
     left: 0;
     right: 0;
     height: 4px;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(0, 0, 0, 0.06);
     opacity: 0;
     transition: opacity 0.3s ease;
     z-index: 999;
@@ -215,7 +215,7 @@ body.fullscreen-mode.has-slide-nav {
 
 .slide-progress-indicator .progress-fill {
     height: 100%;
-    background: linear-gradient(90deg, #00ffff, #7200fc);
+    background: linear-gradient(90deg, var(--clover-purple, #2b5ec7), var(--petal-accent, #6200d6));
     transition: width 0.3s ease;
 }
 

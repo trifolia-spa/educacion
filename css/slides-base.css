@@ -10,26 +10,37 @@
  *   <link href="css/slides-base.css" rel="stylesheet">
  */
 
-/* ==========================================================================
-   CSS Variables - Trifolia Brand Colors
-   ========================================================================== */
+/* --------------------------------------------------------------------------
+   CSS Variables - Trifolia Brand Colors (Light Theme)
+   -------------------------------------------------------------------------- */
 
 :root {
     /* Primary colors */
-    --clover-purple: #3c78fd;
+    --clover-purple: #2b5ec7;
     --law-navy: #1A2332;
-    --paper-white: #F8F9FA;
+    --paper-white: #FAF9F6;
     --leaf-green: #5B7D52;
-    --petal-accent: #7200fc;
+    --petal-accent: #6200d6;
+
+    /* Text colors */
+    --text-primary: #1C1917;
+    --text-secondary: #57534E;
+    --text-muted: #A8A29E;
+
+    /* Surface colors */
+    --surface: #FFFFFF;
+    --surface-warm: #F5F3EF;
+    --border-color: #E7E5E4;
+    --border-light: #F0EEEB;
 
     /* Gradient colors */
-    --gradient-cyan: #00ffff;
-    --gradient-purple: #a855f7;
+    --gradient-start: #2b5ec7;
+    --gradient-end: #6200d6;
 
     /* State colors */
-    --success-green: #10B981;
-    --warning-amber: #F59E0B;
-    --danger-red: #EF4444;
+    --success-green: #059669;
+    --warning-amber: #D97706;
+    --danger-red: #DC2626;
     --error-red: #DC3545;
 
     /* Layout defaults (can be overridden per slide) */
@@ -38,9 +49,9 @@
     --viz-padding-mobile: 24px 16px;
 }
 
-/* ==========================================================================
+/* --------------------------------------------------------------------------
    Base Reset & Typography
-   ========================================================================== */
+   -------------------------------------------------------------------------- */
 
 * {
     box-sizing: border-box;
@@ -53,15 +64,15 @@ html, body {
 }
 
 body {
-    background: linear-gradient(165deg, #0d1117 0%, var(--law-navy) 50%, #0d1420 100%);
-    color: var(--paper-white);
+    background: var(--paper-white);
+    color: var(--text-primary);
     font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     line-height: 1.6;
 }
 
-/* ==========================================================================
+/* --------------------------------------------------------------------------
    Page Layout
-   ========================================================================== */
+   -------------------------------------------------------------------------- */
 
 .page-container {
     min-height: 100vh;
@@ -77,13 +88,13 @@ body {
     overflow: hidden;
 }
 
-/* Subtle noise texture overlay */
+/* Subtle paper texture overlay */
 .viz-container::before {
     content: "";
     position: absolute;
     inset: 0;
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-    opacity: 0.02;
+    opacity: 0.015;
     pointer-events: none;
 }
 
@@ -95,9 +106,9 @@ body {
     z-index: 1;
 }
 
-/* ==========================================================================
+/* --------------------------------------------------------------------------
    Decorative Corner Elements
-   ========================================================================== */
+   -------------------------------------------------------------------------- */
 
 .corner-top-left {
     position: absolute;
@@ -105,9 +116,9 @@ body {
     left: 20px;
     width: 50px;
     height: 50px;
-    border-top: 2px solid var(--clover-purple);
-    border-left: 2px solid var(--clover-purple);
-    opacity: 0.4;
+    border-top: 1.5px solid var(--clover-purple);
+    border-left: 1.5px solid var(--clover-purple);
+    opacity: 0.25;
 }
 
 .corner-bottom-right {
@@ -116,14 +127,14 @@ body {
     right: 20px;
     width: 50px;
     height: 50px;
-    border-bottom: 2px solid var(--petal-accent);
-    border-right: 2px solid var(--petal-accent);
-    opacity: 0.4;
+    border-bottom: 1.5px solid var(--petal-accent);
+    border-right: 1.5px solid var(--petal-accent);
+    opacity: 0.25;
 }
 
-/* ==========================================================================
+/* --------------------------------------------------------------------------
    Header Styles
-   ========================================================================== */
+   -------------------------------------------------------------------------- */
 
 .viz-header {
     text-align: center;
@@ -147,11 +158,11 @@ body {
     margin: 0 0 16px 0;
     line-height: 1.3;
     letter-spacing: -0.5px;
-    color: var(--paper-white);
+    color: var(--text-primary);
 }
 
 .viz-title .highlight {
-    background: linear-gradient(90deg, var(--gradient-cyan), var(--gradient-purple));
+    background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -161,39 +172,39 @@ body {
 .viz-question {
     font-family: "Libre Baskerville", Georgia, serif;
     font-size: clamp(18px, 2.5vw, 24px);
-    color: rgba(248, 249, 250, 0.8);
+    color: var(--text-secondary);
     font-style: italic;
     margin: 0 0 24px 0;
 }
 
 .viz-description {
     font-size: 16px;
-    color: rgba(248, 249, 250, 0.7);
+    color: var(--text-secondary);
     max-width: 600px;
     margin: 0 auto;
 }
 
-/* ==========================================================================
+/* --------------------------------------------------------------------------
    Brand Footer
-   ========================================================================== */
+   -------------------------------------------------------------------------- */
 
 .brand-footer {
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 16px 24px;
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
-    background: rgba(0, 0, 0, 0.2);
+    border-top: 1px solid var(--border-color);
+    background: var(--surface-warm);
     gap: 16px;
 }
 
 .footer-brand {
-    color: rgba(255, 255, 255, 0.6);
+    color: var(--text-muted);
     font-size: 14px;
 }
 
 .footer-brand strong {
-    color: var(--paper-white);
+    color: var(--text-primary);
     font-weight: 500;
 }
 
@@ -206,6 +217,7 @@ body {
     vertical-align: baseline;
     position: relative;
     top: 0.1em;
+    filter: brightness(0.15);
 }
 
 .brand-wordmark--footer {
@@ -245,12 +257,12 @@ body {
     background: var(--clover-purple);
     color: white;
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(60, 120, 253, 0.3);
+    box-shadow: 0 4px 12px rgba(43, 94, 199, 0.25);
 }
 
-/* ==========================================================================
+/* --------------------------------------------------------------------------
    Animations
-   ========================================================================== */
+   -------------------------------------------------------------------------- */
 
 @keyframes fadeIn {
     from {
@@ -293,9 +305,9 @@ body {
     animation: fadeIn 0.4s ease-out;
 }
 
-/* ==========================================================================
+/* --------------------------------------------------------------------------
    Global Focus Indicators
-   ========================================================================== */
+   -------------------------------------------------------------------------- */
 
 a:focus-visible,
 button:focus-visible {
@@ -304,9 +316,9 @@ button:focus-visible {
     border-radius: 2px;
 }
 
-/* ==========================================================================
+/* --------------------------------------------------------------------------
    Accessibility - Reduced Motion
-   ========================================================================== */
+   -------------------------------------------------------------------------- */
 
 @media (prefers-reduced-motion: reduce) {
     *,
@@ -322,9 +334,9 @@ button:focus-visible {
     }
 }
 
-/* ==========================================================================
+/* --------------------------------------------------------------------------
    Responsive - Mobile
-   ========================================================================== */
+   -------------------------------------------------------------------------- */
 
 @media (max-width: 767.98px) {
     .viz-container {
@@ -354,9 +366,9 @@ button:focus-visible {
     }
 }
 
-/* ==========================================================================
+/* --------------------------------------------------------------------------
    Responsive - Large Screens
-   ========================================================================== */
+   -------------------------------------------------------------------------- */
 
 @media (min-width: 1400px) {
     .viz-title {
@@ -364,13 +376,13 @@ button:focus-visible {
     }
 }
 
-/* ==========================================================================
+/* --------------------------------------------------------------------------
    Fullscreen Presentation Mode - 16:9 Scaling
-   ========================================================================== */
+   -------------------------------------------------------------------------- */
 
 body.fullscreen-mode {
-    /* Black background for letterbox/pillarbox */
-    background: #000;
+    /* Neutral background for letterbox/pillarbox */
+    background: #E8E6E1;
     overflow: hidden;
 }
 
@@ -395,10 +407,11 @@ body.fullscreen-mode .viz-container {
     transform-origin: center;
 
     /* Restore slide background */
-    background: linear-gradient(165deg, #0d1117 0%, var(--law-navy) 50%, #0d1420 100%);
+    background: var(--paper-white);
     border-radius: 4px;
     overflow: hidden;
     flex: none; /* Don't grow/shrink */
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
 }
 
 body.fullscreen-mode .brand-footer {
@@ -413,7 +426,8 @@ body.fullscreen-mode .page-container::after {
     width: 88px;
     height: 88px;
     background: url("../images/logo-trifolia-white.png") no-repeat center / contain;
-    opacity: 0.25;
+    opacity: 0.15;
     pointer-events: none;
     z-index: 9999;
+    filter: brightness(0.3);
 }
