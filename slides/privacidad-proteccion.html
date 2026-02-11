@@ -208,74 +208,6 @@
             line-height: 1.5;
         }
 
-        /* Reduced motion */
-        @media (prefers-reduced-motion: reduce) {
-            .security-layer {
-                transition: none;
-            }
-            .security-layer:hover {
-                transform: none;
-            }
-        }
-
-        /* Responsive - Tablet */
-        @media (max-width: 991.98px) {
-            .layer-items {
-                grid-template-columns: 1fr;
-                gap: 8px;
-            }
-
-            .layer-item {
-                display: flex;
-                align-items: center;
-                text-align: left;
-                gap: 10px;
-            }
-
-            .layer-item-icon {
-                margin-bottom: 0;
-                flex-shrink: 0;
-            }
-        }
-
-        /* Responsive - Mobile */
-        @media (max-width: 767.98px) {
-            .viz-description {
-                font-size: 15px;
-            }
-
-            .section-card {
-                padding: 16px;
-            }
-
-            .section-icon {
-                font-size: 24px;
-            }
-
-            .section-text {
-                font-size: 14px;
-            }
-
-            .security-layer {
-                padding: 12px;
-            }
-
-            .key-message {
-                font-size: 13px;
-            }
-        }
-
-        /* Small mobile */
-        @media (max-width: 479.98px) {
-            .layer-item-title {
-                font-size: 12px;
-            }
-
-            .layer-item-desc {
-                font-size: 10px;
-            }
-        }
-
         /* Slide-specific size adjustments */
         .viz-header {
             margin-bottom: 14px;
@@ -351,6 +283,74 @@
             margin-top: 14px;
             font-size: 14px;
             padding: 10px 14px;
+        }
+
+        /* Reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            .security-layer {
+                transition: none;
+            }
+            .security-layer:hover {
+                transform: none;
+            }
+        }
+
+        /* Responsive - Tablet */
+        @media (max-width: 991.98px) {
+            .layer-items {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+
+            .layer-item {
+                display: flex;
+                align-items: center;
+                text-align: left;
+                gap: 10px;
+            }
+
+            .layer-item-icon {
+                margin-bottom: 0;
+                flex-shrink: 0;
+            }
+        }
+
+        /* Responsive - Mobile */
+        @media (max-width: 767.98px) {
+            .viz-description {
+                font-size: 15px;
+            }
+
+            .section-card {
+                padding: 16px;
+            }
+
+            .section-icon {
+                font-size: 24px;
+            }
+
+            .section-text {
+                font-size: 14px;
+            }
+
+            .security-layer {
+                padding: 12px;
+            }
+
+            .key-message {
+                font-size: 13px;
+            }
+        }
+
+        /* Small mobile */
+        @media (max-width: 479.98px) {
+            .layer-item-title {
+                font-size: 12px;
+            }
+
+            .layer-item-desc {
+                font-size: 10px;
+            }
         }
     </style>
 </head>

@@ -43,7 +43,15 @@
 
     var activityTimeout = null;
 
+    function isMobile() {
+        return window.innerWidth <= 767.98;
+    }
+
     function updateSlideScale() {
+        if (isMobile()) {
+            document.documentElement.style.setProperty('--slide-scale', 1);
+            return;
+        }
         var scaleX = window.innerWidth / REF_WIDTH;
         var scaleY = window.innerHeight / REF_HEIGHT;
         var scale = Math.min(scaleX, scaleY);
@@ -54,8 +62,9 @@
     updateSlideScale();
     window.addEventListener('resize', updateSlideScale);
 
-    // Auto-hide nav after inactivity
+    // Auto-hide nav after inactivity (skip on mobile — nav is always visible)
     function showNavBriefly() {
+        if (isMobile()) return;
         document.body.classList.add('nav-active');
         clearTimeout(activityTimeout);
         activityTimeout = setTimeout(function() {
@@ -118,27 +127,35 @@
 
     // Touch swipe support for mobile
     var touchStartX = 0;
+    var touchStartY = 0;
     var touchEndX = 0;
+    var touchEndY = 0;
     var minSwipeDistance = 60;
 
     document.addEventListener('touchstart', function(e) {
         touchStartX = e.changedTouches[0].screenX;
+        touchStartY = e.changedTouches[0].screenY;
     }, { passive: true });
 
     document.addEventListener('touchend', function(e) {
         touchEndX = e.changedTouches[0].screenX;
+        touchEndY = e.changedTouches[0].screenY;
         handleSwipe();
     }, { passive: true });
 
     function handleSwipe() {
-        var swipeDistance = touchEndX - touchStartX;
+        var swipeDistanceX = touchEndX - touchStartX;
+        var swipeDistanceY = touchEndY - touchStartY;
 
-        if (Math.abs(swipeDistance) < minSwipeDistance) return;
+        // Ignore vertical swipes (user is scrolling content)
+        if (Math.abs(swipeDistanceY) > Math.abs(swipeDistanceX)) return;
 
-        if (swipeDistance > 0 && prevLink) {
+        if (Math.abs(swipeDistanceX) < minSwipeDistance) return;
+
+        if (swipeDistanceX > 0 && prevLink) {
             // Swipe right - go to previous
             window.location.href = prevLink.href;
-        } else if (swipeDistance < 0 && nextLink) {
+        } else if (swipeDistanceX < 0 && nextLink) {
             // Swipe left - go to next
             window.location.href = nextLink.href;
         }

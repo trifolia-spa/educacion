@@ -293,47 +293,6 @@
         }
 
         /* Responsive - Tablet */
-        @media (max-width: 991.98px) {
-            .context-layout {
-                grid-template-columns: 1fr;
-            }
-
-            .side-callout {
-                flex-direction: row;
-            }
-
-            .callout-card {
-                flex: 1;
-            }
-        }
-
-        /* Responsive - Mobile */
-        @media (max-width: 767.98px) {
-            .side-callout {
-                flex-direction: column;
-            }
-
-            .context-section {
-                padding: 10px 14px;
-            }
-
-            .mini-case-list {
-                gap: 4px;
-            }
-
-            .key-insight-box {
-                padding: 12px 18px;
-            }
-        }
-
-        /* Reduced motion */
-        @media (prefers-reduced-motion: reduce) {
-            * {
-                animation-duration: 0.01ms !important;
-                transition-duration: 0.01ms !important;
-            }
-        }
-
         /* Slide-specific size adjustments */
         .viz-container {
             padding: 16px 24px;
@@ -423,6 +382,47 @@
 
         .brand-footer {
             display: none;
+        }
+
+        @media (max-width: 991.98px) {
+            .context-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .side-callout {
+                flex-direction: row;
+            }
+
+            .callout-card {
+                flex: 1;
+            }
+        }
+
+        /* Responsive - Mobile */
+        @media (max-width: 767.98px) {
+            .side-callout {
+                flex-direction: column;
+            }
+
+            .context-section {
+                padding: 10px 14px;
+            }
+
+            .mini-case-list {
+                gap: 4px;
+            }
+
+            .key-insight-box {
+                padding: 12px 18px;
+            }
+        }
+
+        /* Reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
         }
     </style>
 </head>

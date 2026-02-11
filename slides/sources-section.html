@@ -145,32 +145,6 @@
         }
 
         /* Responsive - Tablet */
-        @media (max-width: 991.98px) {
-            .explanation-cards {
-                grid-template-columns: 1fr;
-                gap: 10px;
-            }
-        }
-
-        /* Responsive - Mobile */
-        @media (max-width: 767.98px) {
-            .explanation-card {
-                padding: 12px 14px;
-            }
-
-            .key-insight-box {
-                padding: 12px 18px;
-            }
-        }
-
-        /* Reduced motion */
-        @media (prefers-reduced-motion: reduce) {
-            * {
-                animation-duration: 0.01ms !important;
-                transition-duration: 0.01ms !important;
-            }
-        }
-
         /* Slide-specific size adjustments */
         .viz-container {
             padding: 16px 24px;
@@ -222,6 +196,32 @@
 
         .brand-footer {
             display: none;
+        }
+
+        @media (max-width: 991.98px) {
+            .explanation-cards {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+        }
+
+        /* Responsive - Mobile */
+        @media (max-width: 767.98px) {
+            .explanation-card {
+                padding: 12px 14px;
+            }
+
+            .key-insight-box {
+                padding: 12px 18px;
+            }
+        }
+
+        /* Reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
         }
     </style>
 </head>

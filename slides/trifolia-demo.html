@@ -109,20 +109,6 @@
         }
 
         /* Responsive - Mobile */
-        @media (max-width: 767.98px) {
-            .bridge-box {
-                padding: 12px 20px;
-            }
-        }
-
-        /* Reduced motion */
-        @media (prefers-reduced-motion: reduce) {
-            * {
-                animation-duration: 0.01ms !important;
-                transition-duration: 0.01ms !important;
-            }
-        }
-
         /* Slide-specific size adjustments */
         .viz-container {
             padding: 20px 24px;
@@ -155,6 +141,20 @@
 
         .brand-footer {
             display: none;
+        }
+
+        @media (max-width: 767.98px) {
+            .bridge-box {
+                padding: 12px 20px;
+            }
+        }
+
+        /* Reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
         }
     </style>
 </head>

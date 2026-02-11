@@ -337,7 +337,34 @@ button:focus-visible {
    -------------------------------------------------------------------------- */
 
 @media (max-width: 767.98px) {
+    /* Switch from 16:9 letterbox to native mobile layout */
+    body {
+        overflow-y: auto;
+        overflow-x: hidden;
+        background: linear-gradient(165deg, #0d1117 0%, var(--law-navy) 50%, #0d1420 100%);
+        padding-bottom: 60px;
+    }
+
+    .page-container {
+        position: static;
+        min-height: 100vh;
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: flex-start;
+    }
+
+    /* Hide watermark on mobile */
+    .page-container::after {
+        display: none;
+    }
+
     .viz-container {
+        width: 100%;
+        height: auto;
+        min-height: auto;
+        transform: none !important;
+        overflow: visible;
+        border-radius: 0;
         padding: var(--viz-padding-mobile);
     }
 
@@ -350,7 +377,12 @@ button:focus-visible {
         margin-bottom: 24px;
     }
 
+    .viz-content {
+        overflow-x: hidden;
+    }
+
     .brand-footer {
+        display: flex;
         padding: 14px 16px;
     }
 }

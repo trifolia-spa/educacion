@@ -206,64 +206,6 @@
             margin: 0;
         }
 
-        /* Reduced motion */
-        @media (prefers-reduced-motion: reduce) {
-            .content-grid {
-                animation: none;
-            }
-        }
-
-        /* Responsive - Tablet */
-        @media (max-width: 1023px) {
-            .content-grid {
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
-        }
-
-        /* Responsive - Mobile */
-        @media (max-width: 767.98px) {
-            :root {
-                --viz-padding: 20px 16px;
-            }
-
-            .content-grid {
-                gap: 16px;
-            }
-
-            .tweet-container {
-                padding: 12px;
-            }
-
-            .key-message-card {
-                padding: 14px 16px;
-            }
-
-            .key-points li {
-                font-size: 13px;
-            }
-
-            .insight-card,
-            .difference-highlight {
-                padding: 12px 14px;
-            }
-        }
-
-        /* Large screen optimization */
-        @media (min-width: 1400px) {
-            .viz-title {
-                font-size: 36px;
-            }
-
-            .key-message-card {
-                padding: 20px 24px;
-            }
-
-            .key-points li {
-                font-size: 15px;
-            }
-        }
-
         /* Slide-specific size adjustments */
         .viz-header {
             margin-bottom: 20px;
@@ -322,6 +264,64 @@
             width: 7px;
             height: 7px;
             top: 7px;
+        }
+
+        /* Reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            .content-grid {
+                animation: none;
+            }
+        }
+
+        /* Responsive - Tablet */
+        @media (max-width: 1023px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+        }
+
+        /* Responsive - Mobile */
+        @media (max-width: 767.98px) {
+            :root {
+                --viz-padding: 20px 16px;
+            }
+
+            .content-grid {
+                gap: 16px;
+            }
+
+            .tweet-container {
+                padding: 12px;
+            }
+
+            .key-message-card {
+                padding: 14px 16px;
+            }
+
+            .key-points li {
+                font-size: 13px;
+            }
+
+            .insight-card,
+            .difference-highlight {
+                padding: 12px 14px;
+            }
+        }
+
+        /* Large screen optimization */
+        @media (min-width: 1400px) {
+            .viz-title {
+                font-size: 36px;
+            }
+
+            .key-message-card {
+                padding: 20px 24px;
+            }
+
+            .key-points li {
+                font-size: 15px;
+            }
         }
     </style>
 </head>

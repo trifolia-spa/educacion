@@ -378,80 +378,6 @@
             color: white;
         }
 
-        /* Reduced motion */
-        @media (prefers-reduced-motion: reduce) {
-            .chat-bubble, .context-bar-fill, .btn-start, .btn-reset, .word {
-                transition: none;
-            }
-            .chat-bubble {
-                animation: none;
-                opacity: 1;
-                transform: none;
-            }
-            .cursor {
-                animation: none;
-                opacity: 1;
-            }
-            .word.new {
-                animation: none;
-            }
-        }
-
-        /* Responsive */
-        @media (max-width: 767.98px) {
-            .chat-viewport {
-                height: 300px;
-                padding: 16px;
-            }
-
-            .chat-bubble {
-                max-width: 90%;
-                font-size: 14px;
-                padding: 10px 14px;
-            }
-
-            .attachment-indicator {
-                padding: 6px 10px;
-                font-size: 11px;
-            }
-
-            .attachment-indicator i {
-                font-size: 14px;
-            }
-
-            .attachment-tokens {
-                font-size: 10px;
-            }
-
-            .controls {
-                flex-direction: column;
-                gap: 12px;
-            }
-
-            .btn-start, .btn-reset {
-                width: 100%;
-            }
-        }
-
-        /* Large screen / projector optimization */
-        @media (min-width: 1400px) {
-            :root {
-                --viz-max-width: 1000px;
-            }
-
-            .viz-title {
-                font-size: 42px;
-            }
-
-            .chat-viewport {
-                height: 450px;
-            }
-
-            .chat-bubble {
-                font-size: 16px;
-            }
-        }
-
         /* Slide-specific size adjustments */
         .viz-header {
             margin-bottom: 16px;
@@ -528,6 +454,80 @@
         .btn-reset {
             padding: 10px 24px;
             font-size: 11px;
+        }
+
+        /* Reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            .chat-bubble, .context-bar-fill, .btn-start, .btn-reset, .word {
+                transition: none;
+            }
+            .chat-bubble {
+                animation: none;
+                opacity: 1;
+                transform: none;
+            }
+            .cursor {
+                animation: none;
+                opacity: 1;
+            }
+            .word.new {
+                animation: none;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 767.98px) {
+            .chat-viewport {
+                height: 300px;
+                padding: 16px;
+            }
+
+            .chat-bubble {
+                max-width: 90%;
+                font-size: 14px;
+                padding: 10px 14px;
+            }
+
+            .attachment-indicator {
+                padding: 6px 10px;
+                font-size: 11px;
+            }
+
+            .attachment-indicator i {
+                font-size: 14px;
+            }
+
+            .attachment-tokens {
+                font-size: 10px;
+            }
+
+            .controls {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .btn-start, .btn-reset {
+                width: 100%;
+            }
+        }
+
+        /* Large screen / projector optimization */
+        @media (min-width: 1400px) {
+            :root {
+                --viz-max-width: 1000px;
+            }
+
+            .viz-title {
+                font-size: 42px;
+            }
+
+            .chat-viewport {
+                height: 450px;
+            }
+
+            .chat-bubble {
+                font-size: 16px;
+            }
         }
     </style>
 </head>

@@ -215,3 +215,41 @@ body.nav-active .slide-nav {
 body.nav-active .slide-progress-indicator {
     opacity: 0;
 }
+
+/* Mobile: always-visible nav */
+@media (max-width: 767.98px) {
+    .slide-nav {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    .slide-progress-indicator {
+        display: none;
+    }
+
+    .slide-nav-dots {
+        gap: 6px;
+        min-width: 0;
+    }
+
+    .slide-nav-dot {
+        width: 8px;
+        height: 8px;
+    }
+}
+
+/* Narrow mobile: fit all 20 dots + arrows on small screens */
+@media (max-width: 480px) {
+    .slide-nav-container {
+        gap: 10px;
+    }
+
+    .slide-nav-dots {
+        gap: 3px;
+    }
+
+    .slide-nav-dot {
+        width: 6px;
+        height: 6px;
+    }
+}
