@@ -37,6 +37,38 @@
     <link href="css/slides-base.css" rel="stylesheet">
 
     <style>
+        /* Override slides-base.css presentation mode — index is a scrollable page, not a 16:9 slide */
+        body {
+            background: linear-gradient(165deg, #0d1117 0%, var(--law-navy) 50%, #0d1420 100%);
+            overflow: auto;
+        }
+
+        .page-container {
+            position: static;
+            min-height: 100vh;
+            flex-direction: column;
+        }
+
+        .viz-container {
+            width: auto;
+            height: auto;
+            min-height: auto;
+            transform: none;
+            flex: 1;
+            border-radius: 0;
+            overflow: visible;
+        }
+
+        .brand-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 24px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(0, 0, 0, 0.2);
+            gap: 16px;
+        }
+
         .viz-container {
             display: flex;
             flex-direction: column;
